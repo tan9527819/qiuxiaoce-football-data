@@ -8,399 +8,323 @@
 
 <style>
 *{box-sizing:border-box}
-html,body{
+body{
   margin:0;
-  padding:0;
-  background:#eeeeee;
+  background:#eee;
   color:#222;
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",
   "Microsoft YaHei",Arial,sans-serif
 }
 button{font:inherit;border:0;background:none}
 .app{
-  width:100%;
   max-width:520px;
   min-height:100vh;
   margin:auto;
-  background:#f7f8fa;
-  padding-bottom:82px
+  background:#f6f7f8;
+  padding-bottom:80px
 }
 .browser{
-  height:72px;
+  height:68px;
   background:#fff;
-  border-bottom:1px solid #eee;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:10px 22px
+  padding:0 20px;
+  border-bottom:1px solid #eee
 }
-.browser-btn{
-  width:44px;
-  height:44px;
-  border:1px solid #ddd;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px
+.browser b{font-size:18px}
+.circle{
+  width:42px;height:42px;border:1px solid #ddd;
+  border-radius:50%;display:flex;
+  align-items:center;justify-content:center
 }
-.browser-title{
-  font-size:19px;
-  font-weight:700
+.top{
+  height:65px;background:#fff;
+  display:grid;grid-template-columns:55px 1fr 80px;
+  align-items:center;padding:0 15px;
+  border-bottom:1px solid #eee
 }
-.topbar{
-  height:68px;
-  background:#fff;
-  display:grid;
-  grid-template-columns:55px 1fr 80px;
-  align-items:center;
-  border-bottom:1px solid #eee;
-  padding:0 16px
-}
-.top-left{font-size:28px}
-.logo{
-  text-align:center;
-  color:#52ae63;
-  font-size:34px
-}
-.top-right{
-  text-align:right;
-  font-size:24px
-}
-.content{padding:16px}
+.logo{text-align:center;font-size:32px;color:#4ead63}
+.menu{font-size:27px}
+.right{text-align:right;font-size:23px}
+.content{padding:15px}
 .page{display:none}
 .page.active{display:block}
+
 .notice{
-  background:#fff1f1;
-  border:1px solid #ffcaca;
-  color:#b72d2d;
+  background:#effaf2;
+  border:1px solid #cdebd4;
+  color:#347d48;
+  padding:12px 14px;
   border-radius:12px;
-  padding:13px 15px;
-  line-height:1.6;
   font-size:14px;
+  line-height:1.6;
   margin-bottom:12px
 }
-.notice.green{
-  background:#effbf2;
-  border-color:#ccefd4;
-  color:#31844a
-}
+
 .title{
   font-size:24px;
   font-weight:800;
-  margin:18px 4px 14px
+  margin:18px 3px 14px
 }
+
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:9px
+  gap:8px
 }
 .stat{
   background:#fff;
-  border:1px solid #e3e7e4;
-  border-radius:14px;
-  padding:14px 8px;
+  border-radius:13px;
+  padding:15px 5px;
   text-align:center
 }
-.stat-name{
-  color:#888f98;
-  font-size:12px
-}
-.stat-value{
-  margin-top:7px;
-  color:#42a463;
+.stat small{color:#858b94}
+.stat strong{
+  display:block;
+  color:#45a463;
   font-size:22px;
-  font-weight:800
+  margin-top:6px
 }
-.menu-grid{
-  background:#fff;
-  border-radius:16px;
-  padding:20px 10px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:23px 5px
-}
-.menu-item{text-align:center;cursor:pointer}
-.menu-icon{
-  width:54px;
-  height:54px;
-  margin:auto;
-  border-radius:16px;
-  background:#f0f7ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:29px
-}
-.menu-item:nth-child(2n) .menu-icon{background:#fff7e8}
-.menu-item:nth-child(3n) .menu-icon{background:#effbf3}
-.menu-name{
-  font-size:13px;
-  margin-top:7px;
-  white-space:nowrap
-}
+
+/* 比赛 */
 .match{
   background:#fff;
-  border:1px solid #e1e4e8;
+  border:1px solid #e0e3e7;
   border-radius:17px;
-  margin-bottom:13px;
+  margin-bottom:12px;
   overflow:hidden;
   cursor:pointer
 }
-.match:hover{border-color:#51b96d}
-.match-top{
+.match:active{transform:scale(.99)}
+.match-head{
   display:flex;
   align-items:center;
-  gap:7px;
-  padding:12px 14px;
+  gap:6px;
+  padding:11px 13px;
   border-bottom:1px solid #eee;
   font-size:12px
 }
 .league{
-  color:#3471d0;
   background:#edf3ff;
-  border-radius:5px;
-  padding:4px 7px
+  color:#3c70c8;
+  padding:4px 7px;
+  border-radius:5px
 }
-.match-time{
+.time{
   margin-left:auto;
-  font-weight:700;
-  font-size:15px
+  font-size:15px;
+  font-weight:bold
 }
-.ai{
-  background:#f5a11a;
+.level{
+  background:#f5a31c;
   color:white;
   border-radius:5px;
   padding:4px 6px
 }
 .teams{
   display:grid;
-  grid-template-columns:1fr 60px 1fr;
+  grid-template-columns:1fr 55px 1fr;
   align-items:center;
   text-align:center;
-  padding:20px 12px 12px
+  padding:19px 10px 10px
 }
 .team{
   font-weight:700;
-  font-size:15px;
-  line-height:1.45
+  font-size:15px
 }
-.team-icon{
-  font-size:35px;
-  margin-bottom:4px
-}
+.team-icon{font-size:34px;margin-bottom:4px}
 .vs{
-  color:#c4c7cc;
+  color:#b9bdc4;
   font-weight:800;
   font-size:20px
-}
-.zero{
-  color:#9298a1;
-  font-size:12px;
-  margin-top:4px
 }
 .actions{
   display:flex;
   justify-content:center;
   gap:7px;
-  padding:4px 10px 15px
+  padding:5px 10px 15px
 }
-.action{
-  color:#777f8a;
+.tag{
   background:#f3f4f6;
-  padding:7px 10px;
+  color:#747b84;
   border-radius:18px;
+  padding:7px 9px;
   font-size:12px
 }
-.detail-head{
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-  margin-bottom:12px
-}
+
+/* 详情 */
 .back{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:14px 15px;
-  border-bottom:1px solid #eee;
-  color:#555;
+  background:#fff;
+  border-radius:13px;
+  padding:13px 15px;
+  margin-bottom:10px;
   cursor:pointer
 }
-.detail-league{
+.hero{
+  background:#fff;
+  border-radius:16px;
   text-align:center;
-  color:#6f7782;
-  font-size:13px;
-  padding:14px 10px 4px
+  overflow:hidden;
+  margin-bottom:11px
 }
-.detail-teams{
+.hero-league{
+  padding-top:15px;
+  color:#777e88;
+  font-size:13px
+}
+.hero-teams{
   display:grid;
-  grid-template-columns:1fr 70px 1fr;
+  grid-template-columns:1fr 60px 1fr;
   align-items:center;
-  text-align:center;
-  padding:15px
+  padding:18px 10px
 }
-.detail-team{
-  font-weight:800;
-  font-size:18px
-}
-.detail-team-icon{
-  font-size:43px;
-  margin-bottom:5px
-}
-.detail-vs{
-  font-size:23px;
-  color:#b8bdc5;
+.hero-team{
+  font-size:17px;
   font-weight:800
 }
-.kickoff{
-  text-align:center;
+.hero-icon{font-size:42px;margin-bottom:5px}
+.hero-vs{
+  color:#babec5;
+  font-size:22px;
+  font-weight:800
+}
+.hero-time{
   color:#777e88;
   font-size:13px;
-  padding-bottom:18px
+  padding-bottom:17px
 }
 .section{
   background:#fff;
-  border-radius:16px;
-  margin-bottom:12px;
+  border-radius:15px;
+  margin-bottom:11px;
   overflow:hidden
 }
 .section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:15px;
+  padding:14px 15px;
   border-bottom:1px solid #eee;
   font-size:17px;
   font-weight:800
 }
 .section-title span{
-  font-size:12px;
+  float:right;
   color:#9298a0;
-  font-weight:400
+  font-size:12px;
+  font-weight:normal
 }
-.section-body{padding:15px}
-.grid2{
+.section-body{padding:14px}
+.grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px
-}
-.data{
-  background:#f7f8fa;
-  border-radius:10px;
-  padding:12px
-}
-.data-label{
-  color:#858c96;
-  font-size:12px
-}
-.data-value{
-  margin-top:6px;
-  font-weight:800;
-  font-size:18px
-}
-.form{
-  display:flex;
-  gap:6px;
-  margin-top:10px
-}
-.form i{
-  width:30px;
-  height:30px;
-  border-radius:7px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-style:normal;
-  font-weight:700;
-  font-size:12px
-}
-.w{background:#54b86c}
-.d{background:#e2a535}
-.l{background:#db6262}
-.table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px
-}
-.table th,.table td{
-  padding:10px 5px;
-  border-bottom:1px solid #eee;
-  text-align:center
-}
-.table th{color:#858c96;font-weight:400}
-.prob-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
   gap:8px
+}
+.item{
+  background:#f6f7f8;
+  border-radius:10px;
+  padding:11px
+}
+.item small{
+  display:block;
+  color:#858c95;
+  font-size:12px
+}
+.item b{
+  display:block;
+  margin-top:6px;
+  font-size:16px
+}
+.pick{
+  border-left:4px solid #4bae66;
+  background:#f1faf3;
+  border-radius:10px;
+  padding:13px;
+  margin-bottom:9px;
+  line-height:1.6
+}
+.pick b{color:#379453}
+.warning{
+  border-left-color:#e39b22;
+  background:#fff8e9
+}
+.score{
+  display:inline-block;
+  background:#f3f4f6;
+  padding:8px 13px;
+  border-radius:8px;
+  margin:3px;
+  font-weight:800
 }
 .prob{
-  background:#f6f8fa;
-  border-radius:10px;
-  padding:13px 7px;
-  text-align:center
-}
-.prob-label{
-  color:#7d8590;
-  font-size:12px
-}
-.prob-number{
-  font-size:25px;
-  font-weight:900;
-  margin-top:6px;
-  color:#3fa360
-}
-.risk{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px
 }
-.risk-item{
-  border-radius:10px;
-  padding:12px 7px;
+.prob-item{
+  background:#f5f7f8;
   text-align:center;
-  background:#f5f6f8
+  border-radius:10px;
+  padding:12px 5px
 }
-.risk-label{
-  font-size:12px;
-  color:#7f8791
+.prob-item small{color:#818891}
+.prob-item b{
+  display:block;
+  font-size:22px;
+  color:#43a362;
+  margin-top:5px
 }
-.risk-value{
-  font-size:16px;
-  font-weight:800;
-  margin-top:6px
-}
-.medium{color:#db951e}
-.low{color:#42a462}
-.high{color:#d85a5a}
-.analysis-box{
-  background:#f4faf6;
-  border:1px solid #d5efdc;
-  border-radius:12px;
-  padding:14px;
-  line-height:1.75;
+.analysis{
+  line-height:1.8;
   font-size:14px
 }
-.conclusion{
-  background:#fff;
-  border:1px solid #dbe8df;
-  border-radius:14px;
-  padding:15px;
-  line-height:1.75
+.risk{
+  background:#fff6e8;
+  border:1px solid #f1d59d;
+  color:#96651b;
+  padding:13px;
+  border-radius:10px;
+  line-height:1.7
 }
-.conclusion strong{color:#3e9d5f}
 .empty{
   background:#fff;
   border-radius:15px;
-  padding:50px 20px;
   text-align:center;
+  padding:45px 15px;
   color:#999
 }
+
+/* 功能 */
+.grid-menu{
+  background:#fff;
+  border-radius:16px;
+  padding:20px 8px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:22px 3px
+}
+.menu-item{text-align:center;cursor:pointer}
+.menu-icon{
+  width:52px;height:52px;
+  margin:auto;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  background:#eef7ff
+}
+.menu-item:nth-child(2n) .menu-icon{background:#fff7e8}
+.menu-item:nth-child(3n) .menu-icon{background:#effaf2}
+.menu-name{
+  font-size:12px;
+  margin-top:6px;
+  white-space:nowrap
+}
+
+/* 底部 */
 .bottom{
   position:fixed;
-  left:50%;
   bottom:0;
+  left:50%;
   transform:translateX(-50%);
   width:min(520px,100%);
   height:76px;
@@ -412,21 +336,26 @@ button{font:inherit;border:0;background:none}
 }
 .nav{
   text-align:center;
-  color:#9aa0a8;
-  font-size:12px;
+  color:#999;
   padding-top:8px;
+  font-size:12px;
   cursor:pointer
 }
 .nav-icon{
   display:block;
   font-size:27px;
-  margin-bottom:3px
+  margin-bottom:2px
 }
-.nav.active{color:#45aa63}
+.nav.active{color:#46a963}
+
+.loading{
+  text-align:center;
+  padding:35px 10px;
+  color:#888
+}
+
 @media(max-width:390px){
-  .menu-grid{grid-template-columns:repeat(4,1fr)}
-  .stats{grid-template-columns:1fr}
-  .risk{grid-template-columns:1fr 1fr 1fr}
+  .grid-menu{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
@@ -436,15 +365,15 @@ button{font:inherit;border:0;background:none}
 <div class="app">
 
   <div class="browser">
-    <button class="browser-btn">×</button>
-    <div class="browser-title">qiuxiaoce.com</div>
-    <button class="browser-btn">☰</button>
+    <div class="circle">×</div>
+    <b>qiuxiaoce.com</b>
+    <div class="circle">☰</div>
   </div>
 
-  <div class="topbar">
-    <div class="top-left">☰</div>
+  <div class="top">
+    <div class="menu">☰</div>
     <div class="logo">⚽</div>
-    <div class="top-right">⌕　♙</div>
+    <div class="right">⌕　♙</div>
   </div>
 
   <main class="content">
@@ -453,149 +382,85 @@ button{font:inherit;border:0;background:none}
     <section id="home" class="page active">
 
       <div class="notice">
-        ℹ️ <b>免费开放模式：</b>
-        赛事数据、历史数据、分析页面均不设置会员、VIP、充值或点数解锁。
-      </div>
-
-      <div class="notice green">
-        ✓ 数据分析功能开放。真实比赛数据接入后，详情页将按实际数据计算。
+        ✓ 全部分析功能免费开放，不设置会员、VIP、充值、点数或付费解锁。
       </div>
 
       <div class="title">数据统计</div>
 
       <div class="stats">
         <div class="stat">
-          <div class="stat-name">预测场次</div>
-          <div class="stat-value">4783</div>
+          <small>预测场次</small>
+          <strong>4783</strong>
         </div>
         <div class="stat">
-          <div class="stat-name">整体准确率</div>
-          <div class="stat-value">79.9%</div>
+          <small>整体准确率</small>
+          <strong>79.9%</strong>
         </div>
         <div class="stat">
-          <div class="stat-name">命中场次</div>
-          <div class="stat-value">3822</div>
+          <small>命中场次</small>
+          <strong>3822</strong>
         </div>
       </div>
 
       <div class="title">今日赛事</div>
 
-      <div class="match" onclick="openMatch()">
-
-        <div class="match-top">
-          <span>10/05</span>
-          <span class="league">阿甲</span>
-          <span>北单115</span>
-          <span class="match-time">08:30</span>
-          <span class="ai">AI 中</span>
-        </div>
-
-        <div class="teams">
-
-          <div class="team">
-            <div class="team-icon">🛡️</div>
-            里奥夸尔托大学生
-          </div>
-
-          <div class="vs">
-            VS
-            <div class="zero">0 - 0</div>
-          </div>
-
-          <div class="team">
-            <div class="team-icon">🔵</div>
-            竞技
-          </div>
-
-        </div>
-
-        <div class="actions">
-          <span class="action">🧭 方向</span>
-          <span class="action">⚽ 进球</span>
-          <span class="action">🔢 比分</span>
-          <span class="action">📈 半全</span>
-        </div>
-
+      <div id="matchList">
+        <div class="loading">正在读取赛事数据...</div>
       </div>
 
-      <div class="match" onclick="openMatch()">
+    </section>
 
-        <div class="match-top">
-          <span>10/05</span>
-          <span class="league">阿甲</span>
-          <span>北单114</span>
-          <span class="match-time">06:15</span>
-          <span class="ai">AI 中</span>
-        </div>
+    <!-- 详情 -->
+    <section id="detail" class="page">
 
-        <div class="teams">
-
-          <div class="team">
-            <div class="team-icon">🔴</div>
-            阿根廷青年人
-          </div>
-
-          <div class="vs">
-            VS
-            <div class="zero">0 - 0</div>
-          </div>
-
-          <div class="team">
-            <div class="team-icon">🔵</div>
-            蒂格雷
-          </div>
-
-        </div>
-
-        <div class="actions">
-          <span class="action">🧭 方向</span>
-          <span class="action">⚽ 进球</span>
-          <span class="action">🔢 比分</span>
-          <span class="action">📈 半全</span>
-        </div>
-
+      <div class="back" onclick="showPage('home')">
+        ← 返回赛事列表
       </div>
+
+      <div id="detailContent"></div>
 
     </section>
 
     <!-- 功能 -->
     <section id="functions" class="page">
 
-      <div class="menu-grid">
+      <div class="title">功能中心</div>
 
-        <div class="menu-item" onclick="openPage('report')">
-          <div class="menu-icon">📊</div>
-          <div class="menu-name">每日报告</div>
+      <div class="grid-menu">
+
+        <div class="menu-item" onclick="showPage('home')">
+          <div class="menu-icon">⚽</div>
+          <div class="menu-name">赛事</div>
         </div>
 
-        <div class="menu-item" onclick="openPage('home')">
+        <div class="menu-item" onclick="showPage('detail')">
           <div class="menu-icon">🔮</div>
-          <div class="menu-name">赛事前瞻</div>
-        </div>
-
-        <div class="menu-item" onclick="openPage('data')">
-          <div class="menu-icon">🎯</div>
-          <div class="menu-name">数据中心</div>
-        </div>
-
-        <div class="menu-item" onclick="openPage('analysis')">
-          <div class="menu-icon">🤖</div>
           <div class="menu-name">深度分析</div>
         </div>
 
-        <div class="menu-item" onclick="openPage('history')">
+        <div class="menu-item">
+          <div class="menu-icon">📊</div>
+          <div class="menu-name">数据中心</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-icon">📈</div>
+          <div class="menu-name">走势</div>
+        </div>
+
+        <div class="menu-item">
           <div class="menu-icon">📒</div>
           <div class="menu-name">历史数据</div>
         </div>
 
         <div class="menu-item">
-          <div class="menu-icon">📅</div>
-          <div class="menu-name">今日数据</div>
+          <div class="menu-icon">🎯</div>
+          <div class="menu-name">命中统计</div>
         </div>
 
         <div class="menu-item">
-          <div class="menu-icon">🔔</div>
-          <div class="menu-name">通知公告</div>
+          <div class="menu-icon">📅</div>
+          <div class="menu-name">每日报告</div>
         </div>
 
         <div class="menu-item">
@@ -604,480 +469,15 @@ button{font:inherit;border:0;background:none}
         </div>
 
         <div class="menu-item">
-          <div class="menu-icon">📈</div>
-          <div class="menu-name">数据走势</div>
+          <div class="menu-icon">🔔</div>
+          <div class="menu-name">公告</div>
         </div>
 
         <div class="menu-item">
           <div class="menu-icon">ℹ️</div>
-          <div class="menu-name">系统说明</div>
+          <div class="menu-name">说明</div>
         </div>
 
-      </div>
-
-    </section>
-
-    <!-- 比赛详情 -->
-    <section id="detail" class="page">
-
-      <div class="detail-head">
-
-        <div class="back" onclick="openPage('home')">
-          ← 返回赛事列表
-        </div>
-
-        <div class="detail-league">
-          阿甲　|　北单115
-        </div>
-
-        <div class="detail-teams">
-
-          <div class="detail-team">
-            <div class="detail-team-icon">🛡️</div>
-            里奥夸尔托大学生
-          </div>
-
-          <div class="detail-vs">
-            VS
-          </div>
-
-          <div class="detail-team">
-            <div class="detail-team-icon">🔵</div>
-            竞技
-          </div>
-
-        </div>
-
-        <div class="kickoff">
-          10月5日 08:30　·　赛前分析
-        </div>
-
-      </div>
-
-      <!-- 基本面 -->
-      <div class="section">
-
-        <div class="section-title">
-          基本面
-          <span>球队概况</span>
-        </div>
-
-        <div class="section-body">
-
-          <div class="grid2">
-
-            <div class="data">
-              <div class="data-label">主队排名</div>
-              <div class="data-value">待接入</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">客队排名</div>
-              <div class="data-value">待接入</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">主场表现</div>
-              <div class="data-value">待接入</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">客场表现</div>
-              <div class="data-value">待接入</div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 近期状态 -->
-      <div class="section">
-
-        <div class="section-title">
-          近期状态
-          <span>最近5场</span>
-        </div>
-
-        <div class="section-body">
-
-          <div class="grid2">
-
-            <div class="data">
-              <div class="data-label">主队</div>
-              <div class="form">
-                <i class="w">W</i>
-                <i class="d">D</i>
-                <i class="l">L</i>
-                <i class="w">W</i>
-                <i class="d">D</i>
-              </div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">客队</div>
-              <div class="form">
-                <i class="w">W</i>
-                <i class="w">W</i>
-                <i class="d">D</i>
-                <i class="l">L</i>
-                <i class="w">W</i>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 攻防 -->
-      <div class="section">
-
-        <div class="section-title">
-          攻防数据
-          <span>实时数据接入后更新</span>
-        </div>
-
-        <div class="section-body">
-
-          <div class="grid2">
-
-            <div class="data">
-              <div class="data-label">主队场均进球</div>
-              <div class="data-value">--</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">客队场均进球</div>
-              <div class="data-value">--</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">主队场均失球</div>
-              <div class="data-value">--</div>
-            </div>
-
-            <div class="data">
-              <div class="data-label">客队场均失球</div>
-              <div class="data-value">--</div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 交锋 -->
-      <div class="section">
-
-        <div class="section-title">
-          历史交锋
-          <span>H2H</span>
-        </div>
-
-        <div class="section-body">
-
-          <table class="table">
-
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>比赛</th>
-                <th>结果</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td>--</td>
-                <td>历史交锋数据</td>
-                <td>待接入</td>
-              </tr>
-
-              <tr>
-                <td>--</td>
-                <td>历史交锋数据</td>
-                <td>待接入</td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-      <!-- 盘口赔率 -->
-      <div class="section">
-
-        <div class="section-title">
-          盘口与赔率
-          <span>数据异动</span>
-        </div>
-
-        <div class="section-body">
-
-          <table class="table">
-
-            <thead>
-              <tr>
-                <th>项目</th>
-                <th>初始</th>
-                <th>即时</th>
-                <th>变化</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td>胜平负</td>
-                <td>--</td>
-                <td>--</td>
-                <td>待接入</td>
-              </tr>
-
-              <tr>
-                <td>让球</td>
-                <td>--</td>
-                <td>--</td>
-                <td>待接入</td>
-              </tr>
-
-              <tr>
-                <td>大小球</td>
-                <td>--</td>
-                <td>--</td>
-                <td>待接入</td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-      <!-- 概率 -->
-      <div class="section">
-
-        <div class="section-title">
-          模型概率
-          <span>非保证结果</span>
-        </div>
-
-        <div class="section-body">
-
-          <div class="prob-grid">
-
-            <div class="prob">
-              <div class="prob-label">主胜</div>
-              <div class="prob-number">--</div>
-            </div>
-
-            <div class="prob">
-              <div class="prob-label">平局</div>
-              <div class="prob-number">--</div>
-            </div>
-
-            <div class="prob">
-              <div class="prob-label">客胜</div>
-              <div class="prob-number">--</div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 风险 -->
-      <div class="section">
-
-        <div class="section-title">
-          风险评估
-        </div>
-
-        <div class="section-body">
-
-          <div class="risk">
-
-            <div class="risk-item">
-              <div class="risk-label">平局风险</div>
-              <div class="risk-value medium">中</div>
-            </div>
-
-            <div class="risk-item">
-              <div class="risk-label">冷门风险</div>
-              <div class="risk-value medium">中</div>
-            </div>
-
-            <div class="risk-item">
-              <div class="risk-label">数据完整度</div>
-              <div class="risk-value low">待更新</div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 综合分析 -->
-      <div class="section">
-
-        <div class="section-title">
-          综合分析
-          <span>分析框架</span>
-        </div>
-
-        <div class="section-body">
-
-          <div class="analysis-box">
-
-            <b>基本面：</b>
-            等待球队排名、近期战绩及主客场数据接入。<br><br>
-
-            <b>状态面：</b>
-            等待最近5至10场真实比赛结果后计算趋势。<br><br>
-
-            <b>交锋面：</b>
-            将根据历史交锋记录判断双方相互克制关系。<br><br>
-
-            <b>盘面：</b>
-            将比较初始数据与即时数据，识别异常变化。<br><br>
-
-            <b>模型：</b>
-            数据完整后综合球队实力、状态、主客场、
-            进失球及市场变化进行概率计算。
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- 最终结论 -->
-      <div class="section">
-
-        <div class="section-title">
-          综合结论
-        </div>
-
-        <div class="section-body">
-
-          <div class="conclusion">
-
-            <strong>当前状态：等待真实数据</strong>
-            <br><br>
-
-            目前页面已经建立完整分析框架，
-            但没有真实数据时不会人为制造概率、
-            赔率或预测结论。
-
-            <br><br>
-
-            数据接入后将自动形成：
-
-            <br>
-            基本面 → 近期状态 → 主客场 → 历史交锋
-            → 赔率变化 → 数据异动 → 模型概率
-            → 风险等级 → 综合判断。
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- 数据中心 -->
-    <section id="data" class="page">
-
-      <div class="title">数据中心</div>
-
-      <div class="empty">
-        等待赛事接口数据。
-        <br><br>
-        数据接入后这里显示球队、排名、近期战绩、
-        进失球、交锋及盘口变化。
-      </div>
-
-    </section>
-
-    <!-- 历史数据 -->
-    <section id="history" class="page">
-
-      <div class="title">历史数据</div>
-
-      <div class="empty">
-        历史数据库接口准备中。
-        <br><br>
-        后续可以接入你的 CSV 历史数据库，
-        用于相似盘型、历史同赔和回测。
-      </div>
-
-    </section>
-
-    <!-- 每日报告 -->
-    <section id="report" class="page">
-
-      <div class="title">每日报告</div>
-
-      <div class="empty">
-        每日报告将在真实赛事数据接入后生成。
-      </div>
-
-    </section>
-
-    <!-- 深度分析 -->
-    <section id="analysis" class="page">
-
-      <div class="title">深度分析</div>
-
-      <div class="notice green">
-        深度分析采用多维数据框架，不以单一赔率或单一指标直接下结论。
-      </div>
-
-      <div class="section">
-        <div class="section-title">
-          分析流程
-        </div>
-
-        <div class="section-body">
-
-          <div class="analysis-box">
-
-            ① 球队基本实力<br>
-            ↓<br>
-            ② 近期状态<br>
-            ↓<br>
-            ③ 主客场差异<br>
-            ↓<br>
-            ④ 历史交锋<br>
-            ↓<br>
-            ⑤ 进攻防守质量<br>
-            ↓<br>
-            ⑥ 初始盘面<br>
-            ↓<br>
-            ⑦ 即时变化<br>
-            ↓<br>
-            ⑧ 数据异动<br>
-            ↓<br>
-            ⑨ 概率模型<br>
-            ↓<br>
-            ⑩ 风险复核
-
-          </div>
-
-        </div>
       </div>
 
     </section>
@@ -1112,20 +512,28 @@ button{font:inherit;border:0;background:none}
 
 <script>
 
-function hidePages(){
+/*
+ * ============================================================
+ * 球小策免费版
+ *
+ * 直接读取 GitHub Pages 同仓库中的：
+ *
+ * 2026/10/04/*.json
+ *
+ * 不使用会员、VIP、充值、点数。
+ * ============================================================
+ */
+
+const DATA_ROOT = "2026/10/04/";
+let matches = [];
+
+/* 页面切换 */
+function showPage(id){
 
   document.querySelectorAll(".page")
-  .forEach(function(page){
-    page.classList.remove("active");
-  });
+    .forEach(p => p.classList.remove("active"));
 
-}
-
-function openPage(id){
-
-  hidePages();
-
-  var page=document.getElementById(id);
+  const page = document.getElementById(id);
 
   if(page){
     page.classList.add("active");
@@ -1135,35 +543,765 @@ function openPage(id){
     top:0,
     behavior:"smooth"
   });
-
-}
-
-function openMatch(){
-
-  hidePages();
-
-  document.getElementById("detail")
-    .classList.add("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
 }
 
 function nav(id,button){
 
-  openPage(id);
+  showPage(id);
 
   document.querySelectorAll(".nav")
-    .forEach(function(item){
-      item.classList.remove("active");
-    });
+    .forEach(n => n.classList.remove("active"));
 
-  button.classList.add("active");
+  if(button){
+    button.classList.add("active");
+  }
+}
+
+/* GitHub API读取目录 */
+async function loadMatches(){
+
+  const list = document.getElementById("matchList");
+
+  try{
+
+    /*
+     * GitHub Pages环境下，
+     * 使用GitHub API读取同一个公开仓库的目录。
+     */
+
+    const api =
+      "https://api.github.com/repos/" +
+      "tan9527819/qiuxiaoce-football-data/" +
+      "contents/" + DATA_ROOT;
+
+    const response = await fetch(api);
+
+    if(!response.ok){
+      throw new Error("无法读取赛事目录");
+    }
+
+    const files = await response.json();
+
+    const jsonFiles = files.filter(
+      file =>
+        file.type === "file" &&
+        file.name.toLowerCase().endsWith(".json")
+    );
+
+    if(!jsonFiles.length){
+
+      list.innerHTML = `
+        <div class="empty">
+          暂时没有找到今日赛事数据。
+        </div>
+      `;
+
+      return;
+    }
+
+    const loaded = await Promise.all(
+
+      jsonFiles.map(async file => {
+
+        try{
+
+          const r = await fetch(file.download_url);
+
+          if(!r.ok) return null;
+
+          const data = await r.json();
+
+          return {
+            file:file.name,
+            data:data
+          };
+
+        }catch(e){
+
+          return null;
+
+        }
+
+      })
+
+    );
+
+    matches = loaded.filter(Boolean);
+
+    renderMatches();
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerHTML = `
+      <div class="empty">
+
+        <div style="font-size:32px">⚠️</div>
+
+        <br>
+
+        暂时无法读取赛事数据。
+
+        <br><br>
+
+        请确认 GitHub Pages 已经成功部署，
+        并且仓库中的
+        <b>2026/10/04</b>
+        目录存在。
+
+      </div>
+    `;
+
+  }
 
 }
+
+/* 获取球队名称 */
+function getTeams(data){
+
+  const info = data.info || {};
+  const analysis = data.analysis || {};
+
+  let home =
+    analysis.home ||
+    info.home ||
+    "";
+
+  let away =
+    analysis.away ||
+    info.away ||
+    "";
+
+  if(!home || !away){
+
+    const teams = info.teams || "";
+
+    if(teams.includes(" vs ")){
+
+      const arr = teams.split(" vs ");
+
+      home = home || arr[0];
+      away = away || arr[1];
+
+    }
+
+  }
+
+  return {
+    home:home || "主队",
+    away:away || "客队"
+  };
+
+}
+
+/* 渲染赛事 */
+function renderMatches(){
+
+  const list = document.getElementById("matchList");
+
+  if(!matches.length){
+
+    list.innerHTML =
+      `<div class="empty">暂无赛事</div>`;
+
+    return;
+
+  }
+
+  list.innerHTML = matches.map((item,index)=>{
+
+    const data = item.data || {};
+    const info = data.info || {};
+    const teams = getTeams(data);
+
+    return `
+
+      <div class="match"
+           onclick="openMatch(${index})">
+
+        <div class="match-head">
+
+          <span>${escapeHtml(info.code || "赛事")}</span>
+
+          <span class="league">
+            ${escapeHtml(info.comp || "赛事")}
+          </span>
+
+          <span class="time">
+            ${escapeHtml(
+              (info.time || data.analysis?.kickoff || "--")
+              .toString()
+              .slice(-5)
+            )}
+          </span>
+
+          <span class="level">
+            ${escapeHtml(data.level || "中")}
+          </span>
+
+        </div>
+
+        <div class="teams">
+
+          <div class="team">
+
+            <div class="team-icon">🛡️</div>
+
+            ${escapeHtml(teams.home)}
+
+          </div>
+
+          <div class="vs">
+            VS
+          </div>
+
+          <div class="team">
+
+            <div class="team-icon">🔵</div>
+
+            ${escapeHtml(teams.away)}
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <span class="tag">🧭 方向</span>
+          <span class="tag">⚽ 进球</span>
+          <span class="tag">🔢 比分</span>
+          <span class="tag">📈 半全</span>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+/* 打开真实比赛分析 */
+function openMatch(index){
+
+  const item = matches[index];
+
+  if(!item) return;
+
+  const data = item.data || {};
+
+  renderDetail(data);
+
+  showPage("detail");
+
+}
+
+/* 深度分析页面 */
+function renderDetail(data){
+
+  const info = data.info || {};
+  const analysis = data.analysis || {};
+  const forecasts = data.forecasts || {};
+  const risk = data.riskAlert || {};
+  const charts = data.charts || {};
+
+  const teams = getTeams(data);
+
+  const win = analysis.win || {};
+  const handicap = analysis.handicap || {};
+  const exact = analysis.exact || {};
+  const overUnder = analysis.overUnder || {};
+  const htft = analysis.htft || {};
+
+  const directions = Array.isArray(data.directions)
+    ? data.directions
+    : [];
+
+  const scorelines = Array.isArray(forecasts.scoreline)
+    ? forecasts.scoreline
+    : [];
+
+  const goals = Array.isArray(forecasts.goals)
+    ? forecasts.goals
+    : [];
+
+  const halftime = Array.isArray(forecasts.halftime)
+    ? forecasts.halftime
+    : [];
+
+  document.getElementById("detailContent").innerHTML = `
+
+    <div class="hero">
+
+      <div class="hero-league">
+
+        ${escapeHtml(info.code || analysis.code || "")}
+       　
+        ${escapeHtml(info.comp || analysis.comp || "")}
+
+      </div>
+
+      <div class="hero-teams">
+
+        <div class="hero-team">
+
+          <div class="hero-icon">🛡️</div>
+
+          ${escapeHtml(teams.home)}
+
+        </div>
+
+        <div class="hero-vs">VS</div>
+
+        <div class="hero-team">
+
+          <div class="hero-icon">🔵</div>
+
+          ${escapeHtml(teams.away)}
+
+        </div>
+
+      </div>
+
+      <div class="hero-time">
+
+        ${escapeHtml(info.time || analysis.kickoff || "")}
+
+      </div>
+
+    </div>
+
+
+    <!-- 综合方向 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        综合预测
+        <span>
+          信心：${escapeHtml(data.level || analysis.confidence || "未定")}
+        </span>
+      </div>
+
+      <div class="section-body">
+
+        ${
+          data.mainPick
+          ?
+          `<div class="pick">
+            <b>主要方向</b><br>
+            ${escapeHtml(data.mainPick)}
+          </div>`
+          :
+          ""
+        }
+
+        ${
+          directions.map(x =>
+            `<div class="pick">
+              ${escapeHtml(x)}
+            </div>`
+          ).join("")
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- 胜负 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        胜平负分析
+      </div>
+
+      <div class="section-body">
+
+        <div class="grid">
+
+          <div class="item">
+
+            <small>预测</small>
+
+            <b>
+              ${escapeHtml(win.pick || "--")}
+            </b>
+
+          </div>
+
+          <div class="item">
+
+            <small>分析结论</small>
+
+            <b>
+              ${escapeHtml(
+                win.note || "暂无分析"
+              )}
+            </b>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 让球 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        让球分析
+      </div>
+
+      <div class="section-body">
+
+        <div class="grid">
+
+          <div class="item">
+
+            <small>让球</small>
+
+            <b>
+              ${escapeHtml(
+                handicap.spread || "--"
+              )}
+            </b>
+
+          </div>
+
+          <div class="item">
+
+            <small>判断</small>
+
+            <b>
+              ${escapeHtml(
+                handicap.pick || "--"
+              )}
+            </b>
+
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="analysis">
+
+          ${escapeHtml(
+            handicap.note || "暂无让球分析"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 比分 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        比分预测
+      </div>
+
+      <div class="section-body">
+
+        ${
+          scorelines.length
+          ?
+          scorelines.map(
+            x =>
+              `<span class="score">
+                ${escapeHtml(x)}
+              </span>`
+          ).join("")
+          :
+          "<div>暂无比分预测</div>"
+        }
+
+        <br><br>
+
+        <div class="analysis">
+
+          ${escapeHtml(
+            exact.note || "暂无比分分析"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 进球 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        总进球分析
+      </div>
+
+      <div class="section-body">
+
+        <div class="grid">
+
+          <div class="item">
+
+            <small>预测进球数</small>
+
+            <b>
+
+              ${
+                goals.length
+                ?
+                goals.map(escapeHtml).join(" / ")
+                :
+                "--"
+              }
+
+            </b>
+
+          </div>
+
+          <div class="item">
+
+            <small>判断</small>
+
+            <b>
+              ${escapeHtml(
+                overUnder.pick
+                ?
+                overUnder.pick.join
+                  ?
+                  overUnder.pick.join(" / ")
+                  :
+                  overUnder.pick
+                :
+                "--"
+              )}
+            </b>
+
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="analysis">
+
+          ${escapeHtml(
+            overUnder.note || "暂无进球分析"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 半全场 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        半全场
+      </div>
+
+      <div class="section-body">
+
+        ${
+          halftime.length
+          ?
+          halftime.map(
+            x =>
+              `<span class="score">
+                ${escapeHtml(x)}
+              </span>`
+          ).join("")
+          :
+          "--"
+        }
+
+        <br><br>
+
+        <div class="analysis">
+
+          ${escapeHtml(
+            htft.note || "暂无半全场分析"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 风险 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        风险提示
+      </div>
+
+      <div class="section-body">
+
+        ${
+          risk.triggered
+          ?
+          `
+          <div class="risk">
+
+            ⚠️ <b>风险提醒</b>
+
+            <br><br>
+
+            ${escapeHtml(
+              risk.risk || "存在风险因素"
+            )}
+
+            ${
+              risk.outcome
+              ?
+              `<br><br>
+               参考风险结果：
+               <b>${escapeHtml(risk.outcome)}</b>`
+              :
+              ""
+            }
+
+          </div>
+          `
+          :
+          `
+          <div class="pick">
+            当前数据未触发明显风险警报。
+          </div>
+          `
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- 模型数据 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        模型数据
+        <span>原始数据</span>
+      </div>
+
+      <div class="section-body">
+
+        ${
+          charts.radar
+          ?
+          `
+          <div class="grid">
+
+            <div class="item">
+
+              <small>模型</small>
+
+              <b>
+                ${escapeHtml(
+                  charts.radar.name || "战力模型"
+                )}
+              </b>
+
+            </div>
+
+            <div class="item">
+
+              <small>维度</small>
+
+              <b>
+                ${
+                  Array.isArray(charts.radar.axis)
+                  ?
+                  charts.radar.axis.length
+                  :
+                  0
+                }
+                项
+              </b>
+
+            </div>
+
+          </div>
+          `
+          :
+          "<div>暂无模型图表数据</div>"
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- 原始分析 -->
+
+    <div class="section">
+
+      <div class="section-title">
+        深度文字分析
+      </div>
+
+      <div class="section-body">
+
+        <div class="analysis">
+
+          ${
+            escapeHtml(
+              win.note ||
+              analysis.highlight ||
+              "暂无详细文字分析"
+            )
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+/* HTML安全处理 */
+function escapeHtml(value){
+
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+/* 启动 */
+loadMatches();
 
 </script>
 
