@@ -2,320 +2,269 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>竞彩足球预测分析</title>
-<meta name="description" content="竞彩足球赛事数据、赛前分析、比分预测、历史追踪">
+
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
-  "Microsoft YaHei",Arial,sans-serif;
-  background:#f5f7fa;
-  color:#172033
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
+"Microsoft YaHei",Arial,sans-serif;
+background:#f5f7fa;color:#172033
 }
-button,input{font:inherit}
+button,input,select{font:inherit}
 button{cursor:pointer}
+
 .header{
-  position:sticky;top:0;z-index:20;
-  background:#fff;border-bottom:1px solid #e8ebf0
+position:sticky;top:0;z-index:20;
+background:#fff;border-bottom:1px solid #e7eaf0
 }
 .header-inner{
-  max-width:1250px;margin:auto;
-  height:64px;padding:0 18px;
-  display:flex;align-items:center;gap:25px
+height:62px;max-width:1250px;margin:auto;
+padding:0 16px;display:flex;align-items:center;gap:25px
 }
-.logo{
-  font-size:20px;font-weight:800;white-space:nowrap
-}
-.logo span{font-size:12px;font-weight:500;color:#8a94a6;margin-left:6px}
-.nav{display:flex;gap:5px}
+.logo{font-weight:900;font-size:19px;white-space:nowrap}
+.logo small{font-size:11px;color:#8b95a5;font-weight:500}
+
+.nav{display:flex;gap:4px}
 .nav button{
-  border:0;background:transparent;padding:10px 17px;
-  border-radius:9px;color:#697386
+border:0;background:transparent;padding:9px 16px;
+border-radius:8px;color:#687386
 }
-.nav button.active{
-  background:#172033;color:#fff;font-weight:700
-}
+.nav button.active{background:#172033;color:#fff}
+
 .status{
-  margin-left:auto;
-  display:flex;align-items:center;gap:7px;
-  font-size:12px;color:#687386
+margin-left:auto;font-size:12px;color:#687386;
+display:flex;align-items:center;gap:7px
 }
-.dot{
-  width:8px;height:8px;border-radius:50%;
-  background:#22a06b
-}
+.dot{width:8px;height:8px;border-radius:50%;background:#22a06b}
 
 .container{
-  max-width:1250px;margin:auto;padding:20px 18px 90px
+max-width:1250px;margin:auto;padding:20px 16px 90px
 }
 .view{display:none}
 .view.active{display:block}
 
+.title{
+display:flex;justify-content:space-between;
+align-items:end;margin-bottom:17px
+}
+.title h1{margin:0;font-size:24px}
+.title p{margin:5px 0 0;color:#8993a3;font-size:12px}
+
+.badge{
+padding:6px 9px;background:#eef1f5;
+border-radius:7px;color:#657083;font-size:11px
+}
+
 .toolbar{
-  display:flex;gap:10px;align-items:center;
-  flex-wrap:wrap;margin-bottom:18px
+display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px
 }
 .search{
-  flex:1;min-width:220px;
-  background:#fff;border:1px solid #e1e5eb;
-  border-radius:10px;padding:11px 14px;outline:none
+flex:1;min-width:200px;
+border:1px solid #e0e4ea;background:#fff;
+border-radius:9px;padding:10px 13px;outline:none
 }
-.search:focus{border-color:#8b95a7}
-.filter{
-  background:#fff;border:1px solid #e1e5eb;
-  border-radius:9px;padding:10px 13px;color:#4c5668
+select,.btn{
+border:1px solid #dfe4ea;background:#fff;
+border-radius:9px;padding:10px 12px;color:#566173
 }
-.refresh{
-  border:0;border-radius:9px;
-  padding:10px 15px;background:#172033;color:white
-}
-
-.page-title{
-  display:flex;align-items:end;justify-content:space-between;
-  margin-bottom:16px;gap:10px
-}
-.page-title h1{font-size:24px;margin:0 0 5px}
-.page-title p{margin:0;color:#8a94a6;font-size:13px}
-.badge{
-  padding:7px 10px;border-radius:8px;
-  background:#eef2f6;color:#536073;font-size:12px
-}
+.btn.dark{background:#172033;color:#fff;border-color:#172033}
 
 .layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 310px;
-  gap:18px
+display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px
 }
 
-.card{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:14px;margin-bottom:14px;
-  overflow:hidden
+.card,.side-card,.section,.metric{
+background:#fff;border:1px solid #e6e9ef;
+border-radius:13px
 }
-.match-head{
-  padding:15px 17px;
-  display:flex;justify-content:space-between;
-  align-items:center;gap:12px
-}
-.match-id{
-  font-size:12px;color:#8a94a6
+.card{margin-bottom:13px;overflow:hidden}
+
+.match-top{
+padding:14px 16px;display:flex;
+justify-content:space-between;align-items:center
 }
 .league{
-  display:inline-block;
-  padding:4px 7px;border-radius:5px;
-  background:#f0f3f7;color:#566173;
-  font-size:11px;margin-right:7px
+background:#f0f3f6;padding:4px 7px;
+border-radius:5px;font-size:11px;color:#596477
 }
-.time{font-size:13px;color:#596477}
-.confidence{
-  padding:5px 8px;border-radius:6px;
-  background:#edf7f2;color:#188153;
-  font-size:11px
-}
-.teams{
-  display:grid;
-  grid-template-columns:1fr 90px 1fr;
-  align-items:center;
-  padding:5px 18px 17px
-}
-.team{
-  font-size:17px;font-weight:700
-}
-.team.away{text-align:right}
-.vs{text-align:center;color:#9aa3b1;font-size:12px}
-.predict{
-  margin:0 17px 15px;
-  padding:13px;
-  background:#f7f9fb;
-  border-radius:10px
-}
-.predict-main{
-  font-weight:800;font-size:16px;margin-bottom:9px
-}
-.predict-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:8px
-}
-.predict-item{
-  background:#fff;border-radius:8px;padding:9px;
-  border:1px solid #edf0f4
-}
-.predict-item small{
-  display:block;color:#929baa;font-size:10px;margin-bottom:4px
-}
-.predict-item b{font-size:13px}
-.expand{
-  width:100%;border:0;border-top:1px solid #edf0f3;
-  background:#fff;padding:12px;color:#5d6879
-}
-.detail{display:none;padding:0 17px 17px}
-.detail.show{display:block}
-.detail-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:10px
-}
-.detail-box{
-  border:1px solid #e9edf2;
-  border-radius:9px;padding:12px
-}
-.detail-box h3{
-  margin:0 0 8px;font-size:13px
-}
-.detail-box p{
-  margin:0;color:#657083;
-  line-height:1.65;font-size:13px
-}
-.full{
-  grid-column:1/-1
-}
-.risk{
-  margin-top:10px;
-  padding:11px 12px;
-  background:#fff7ed;
-  color:#9a5a16;
-  border-radius:9px;
-  font-size:12px;line-height:1.6
-}
-.safe{
-  background:#eef8f3;color:#267352
+.code{font-size:11px;color:#929baa;margin-left:7px}
+.time{font-size:12px;color:#6e7888}
+.conf{
+font-size:10px;margin-left:6px;
+padding:4px 7px;background:#eef7f2;
+color:#218052;border-radius:5px
 }
 
-.side-title{
-  font-size:15px;font-weight:800;
-  margin:0 0 12px
+.teams{
+display:grid;grid-template-columns:1fr 60px 1fr;
+padding:5px 17px 15px;align-items:center
 }
-.side-card{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:14px;padding:16px;margin-bottom:14px
+.team{font-size:16px;font-weight:800}
+.away{text-align:right}
+.vs{text-align:center;color:#a1a9b5;font-size:11px}
+
+.core{
+margin:0 16px 13px;padding:12px;
+background:#f7f9fb;border-radius:9px
 }
+.core b{font-size:14px}
+.grid{
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:7px;margin-top:9px
+}
+.cell{
+background:#fff;border:1px solid #edf0f3;
+border-radius:7px;padding:8px
+}
+.cell small{
+display:block;color:#929baa;font-size:10px;margin-bottom:4px
+}
+.cell strong{font-size:12px}
+
+.expand{
+width:100%;border:0;border-top:1px solid #edf0f3;
+background:#fff;padding:11px;color:#667183
+}
+
+.detail{display:none;padding:14px 16px}
+.detail.show{display:block}
+
+.detail-grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:9px
+}
+.box{
+border:1px solid #e9edf2;border-radius:8px;padding:11px
+}
+.box h3{margin:0 0 7px;font-size:12px}
+.box p{
+margin:0;font-size:12px;line-height:1.7;color:#657083
+}
+.full{grid-column:1/-1}
+
+.risk{
+padding:10px;border-radius:8px;
+background:#fff6e9;color:#995b18;font-size:12px;line-height:1.6
+}
+.safe{background:#edf8f3;color:#267453}
+
+.side-card{padding:15px;margin-bottom:13px}
+.side-card h3{margin:0 0 10px;font-size:14px}
 .stat{
-  display:flex;justify-content:space-between;
-  padding:10px 0;border-bottom:1px solid #f0f2f5;
-  font-size:13px
+display:flex;justify-content:space-between;
+padding:9px 0;border-bottom:1px solid #f0f2f5;font-size:12px
 }
-.stat:last-child{border-bottom:0}
-.stat span{color:#7d8797}
-.stat b{color:#172033}
+.stat:last-child{border:0}
+.stat span{color:#818b9b}
 
 .metrics{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;margin-bottom:18px
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:12px;margin-bottom:15px
 }
-.metric{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:13px;padding:16px
-}
-.metric small{display:block;color:#8993a2;font-size:12px}
+.metric{padding:15px}
+.metric small{color:#8993a3;font-size:11px}
 .metric strong{display:block;font-size:25px;margin-top:5px}
 
-.section{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:14px;padding:18px;margin-bottom:16px
-}
-.section h2{
-  margin:0 0 15px;font-size:17px
-}
+.section{padding:17px;margin-bottom:14px}
+.section h2{margin:0 0 14px;font-size:16px}
+
 .bar-row{margin:12px 0}
-.bar-label{
-  display:flex;justify-content:space-between;
-  font-size:12px;margin-bottom:6px
+.bar-title{
+display:flex;justify-content:space-between;
+font-size:12px;margin-bottom:5px
 }
 .bar{
-  height:8px;background:#edf0f4;border-radius:8px;overflow:hidden
+height:8px;background:#edf0f4;border-radius:8px;overflow:hidden
 }
-.bar i{
-  display:block;height:100%;background:#273244;
-  border-radius:8px
-}
+.bar i{display:block;height:100%;background:#293344}
 
-.forecast-card{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:14px;padding:17px;margin-bottom:13px
+.forecast{
+background:#fff;border:1px solid #e6e9ef;
+border-radius:13px;padding:15px;margin-bottom:12px
 }
-.forecast-top{
-  display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:12px
-}
-.forecast-team{font-weight:800;font-size:16px}
-.forecast-main{
-  font-size:20px;font-weight:900;margin-bottom:10px
+.forecast h3{margin:0 0 8px;font-size:16px}
+.big{
+font-size:18px;font-weight:900;margin-bottom:9px
 }
 .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{
-  padding:5px 8px;border-radius:6px;
-  background:#f0f3f6;font-size:11px;color:#596477
+padding:5px 7px;border-radius:5px;
+background:#f0f3f6;font-size:10px;color:#5e6878
 }
-.forecast-note{
-  margin-top:12px;padding:11px;
-  background:#f7f9fb;border-radius:8px;
-  font-size:12px;line-height:1.65;color:#647083
-}
-.detail-btn{
-  margin-top:12px;border:1px solid #dfe4ea;
-  background:#fff;border-radius:8px;
-  padding:8px 12px;font-size:12px
+.note{
+margin-top:10px;padding:10px;
+background:#f7f9fb;border-radius:8px;
+font-size:12px;line-height:1.7;color:#657083
 }
 
-.history-table{
-  width:100%;border-collapse:collapse;font-size:13px
+.csv-area{
+border:2px dashed #dfe4ea;
+padding:25px;text-align:center;border-radius:12px;
+background:#fafbfc
 }
-.history-table th,.history-table td{
-  padding:11px 8px;
-  border-bottom:1px solid #edf0f3;
-  text-align:left
+.csv-area input{margin-top:12px}
+
+.table-wrap{overflow:auto}
+table{
+width:100%;border-collapse:collapse;
+font-size:11px;min-width:650px
 }
-.history-table th{color:#7c8797;font-weight:500}
+th,td{
+padding:9px 7px;
+border-bottom:1px solid #edf0f3;
+text-align:left
+}
+th{color:#7c8796;font-weight:600}
 
 .notice{
-  padding:14px;border-radius:10px;
-  background:#f5f7fa;color:#667183;
-  font-size:13px;line-height:1.7
+background:#f6f8fa;border-radius:9px;
+padding:12px;font-size:12px;color:#657083;line-height:1.7
 }
 
-.loading{
-  text-align:center;padding:45px;
-  color:#8993a2
+.matching{
+margin-top:12px;
+padding:12px;
+background:#f7f9fb;
+border-radius:9px
 }
-
-.bottom-nav{
-  display:none
-}
-
-@media(max-width:850px){
-  .header-inner{height:58px}
-  .nav{display:none}
-  .status{font-size:11px}
-  .container{padding:14px 12px 80px}
-  .layout{grid-template-columns:1fr}
-  .side{display:none}
-  .metrics{grid-template-columns:repeat(2,1fr)}
-  .metric strong{font-size:22px}
-  .teams{grid-template-columns:1fr 55px 1fr}
-  .team{font-size:15px}
-  .predict-grid{grid-template-columns:repeat(2,1fr)}
-  .detail-grid{grid-template-columns:1fr}
-  .full{grid-column:auto}
-  .bottom-nav{
-    display:flex;position:fixed;z-index:30;
-    bottom:0;left:0;right:0;height:62px;
-    background:#fff;border-top:1px solid #e5e8ed
-  }
-  .bottom-nav button{
-    flex:1;border:0;background:#fff;
-    color:#7d8795;font-size:11px
-  }
-  .bottom-nav button.active{
-    color:#172033;font-weight:800
-  }
+.matching strong{font-size:13px}
+.matching p{
+margin:7px 0 0;font-size:12px;
+line-height:1.7;color:#657083
 }
 
 .empty{
-  background:#fff;border:1px solid #e7eaf0;
-  border-radius:14px;padding:45px;text-align:center;
-  color:#8a94a6
+padding:40px;text-align:center;
+background:#fff;border:1px solid #e6e9ef;
+border-radius:13px;color:#8993a3
+}
+
+.bottom{
+display:none
+}
+
+@media(max-width:850px){
+.nav{display:none}
+.header-inner{height:56px}
+.status{font-size:10px}
+.container{padding:14px 11px 78px}
+.layout{grid-template-columns:1fr}
+.side{display:none}
+.metrics{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:repeat(2,1fr)}
+.detail-grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+.bottom{
+display:flex;position:fixed;bottom:0;left:0;right:0;
+height:61px;background:#fff;border-top:1px solid #e4e7ec;
+z-index:30
+}
+.bottom button{
+flex:1;border:0;background:#fff;color:#7c8695;font-size:11px
+}
+.bottom button.active{color:#172033;font-weight:800}
 }
 </style>
 </head>
@@ -323,1318 +272,1783 @@ button{cursor:pointer}
 <body>
 
 <header class="header">
-  <div class="header-inner">
-    <div class="logo">
-      竞彩足球预测分析
-      <span>数据研究版</span>
-    </div>
+<div class="header-inner">
 
-    <nav class="nav">
-      <button data-view="events" class="active">赛事</button>
-      <button data-view="data">数据</button>
-      <button data-view="forecast">前瞻</button>
-      <button data-view="history">历史</button>
-    </nav>
+<div class="logo">
+竞彩足球预测分析
+<small>数据研究引擎</small>
+</div>
 
-    <div class="status">
-      <i class="dot"></i>
-      <span id="statusText">真实数据加载中</span>
-    </div>
-  </div>
+<nav class="nav">
+<button data-view="events" class="active">赛事</button>
+<button data-view="data">数据</button>
+<button data-view="forecast">前瞻</button>
+<button data-view="history">历史</button>
+</nav>
+
+<div class="status">
+<i class="dot"></i>
+<span id="status">初始化</span>
+</div>
+
+</div>
 </header>
+
 
 <main class="container">
 
-<!-- ================= 赛事 ================= -->
+<!-- =================赛事================ -->
+
 <section id="view-events" class="view active">
 
-  <div class="page-title">
-    <div>
-      <h1>今日赛事</h1>
-      <p>实时读取仓库中的赛事 JSON 数据</p>
-    </div>
-    <div class="badge" id="matchCount">加载中</div>
-  </div>
+<div class="title">
+<div>
+<h1>今日赛事</h1>
+<p>真实赛事数据 + 历史数据库辅助分析</p>
+</div>
+<div class="badge" id="count">0场</div>
+</div>
 
-  <div class="toolbar">
-    <input id="search" class="search" placeholder="搜索球队、联赛、赛事编号">
+<div class="toolbar">
 
-    <select id="typeFilter" class="filter">
-      <option value="全部">全部类型</option>
-      <option value="北单">北单</option>
-    </select>
+<input
+id="search"
+class="search"
+placeholder="搜索球队 / 联赛 / 编号">
 
-    <select id="leagueFilter" class="filter">
-      <option value="全部">全部联赛</option>
-    </select>
+<select id="league">
+<option value="全部">全部联赛</option>
+</select>
 
-    <button class="refresh" onclick="loadTodayData()">刷新数据</button>
-  </div>
+<button class="btn dark" onclick="loadToday()">刷新</button>
 
-  <div class="layout">
+</div>
 
-    <div>
-      <div id="eventList">
-        <div class="loading">正在读取真实赛事数据……</div>
-      </div>
-    </div>
+<div class="layout">
 
-    <aside class="side">
+<div id="events">
+<div class="empty">正在加载真实赛事……</div>
+</div>
 
-      <div class="side-card">
-        <h3 class="side-title">今日概况</h3>
+<aside class="side">
 
-        <div class="stat">
-          <span>赛事数量</span>
-          <b id="sideMatches">-</b>
-        </div>
+<div class="side-card">
 
-        <div class="stat">
-          <span>主胜方向</span>
-          <b id="sideHome">-</b>
-        </div>
+<h3>今日结构</h3>
 
-        <div class="stat">
-          <span>平局防范</span>
-          <b id="sideDraw">-</b>
-        </div>
+<div class="stat">
+<span>赛事</span>
+<b id="s1">0</b>
+</div>
 
-        <div class="stat">
-          <span>冷门关注</span>
-          <b id="sideCold">-</b>
-        </div>
+<div class="stat">
+<span>主胜方向</span>
+<b id="s2">0</b>
+</div>
 
-        <div class="stat">
-          <span>中等信心</span>
-          <b id="sideMedium">-</b>
-        </div>
-      </div>
+<div class="stat">
+<span>平局防范</span>
+<b id="s3">0</b>
+</div>
 
-      <div class="side-card">
-        <h3 class="side-title">分析原则</h3>
-        <div class="notice">
-          当前版本优先读取真实赛事 JSON。
-          不凭空制造赔率、盘口、历史命中率。
-          没有数据的项目明确标记为“未接入”。
-        </div>
-      </div>
+<div class="stat">
+<span>冷门关注</span>
+<b id="s4">0</b>
+</div>
 
-    </aside>
-  </div>
+<div class="stat">
+<span>历史匹配</span>
+<b id="s5">0</b>
+</div>
+
+</div>
+
+<div class="side-card">
+
+<h3>分析引擎</h3>
+
+<div class="notice">
+当前优先级：
+<br>
+① 当前赛事数据
+<br>
+② 赔率/盘口（有数据才分析）
+<br>
+③ 历史相似盘型
+<br>
+④ 历史同赔
+<br>
+⑤ 泊松校准概率
+<br>
+⑥ 实际赛果回测
+</div>
+
+</div>
+
+</aside>
+
+</div>
 </section>
 
 
-<!-- ================= 数据 ================= -->
+<!-- =================数据================ -->
+
 <section id="view-data" class="view">
 
-  <div class="page-title">
-    <div>
-      <h1>数据分析</h1>
-      <p>根据当前真实赛事数据自动统计</p>
-    </div>
-    <div class="badge">动态统计</div>
-  </div>
+<div class="title">
+<div>
+<h1>数据分析</h1>
+<p>当前赛事自动统计</p>
+</div>
+<div class="badge">动态</div>
+</div>
 
-  <div class="metrics">
-    <div class="metric">
-      <small>今日赛事</small>
-      <strong id="mMatches">0</strong>
-    </div>
+<div class="metrics">
 
-    <div class="metric">
-      <small>主胜方向</small>
-      <strong id="mHome">0</strong>
-    </div>
+<div class="metric">
+<small>赛事数量</small>
+<strong id="m1">0</strong>
+</div>
 
-    <div class="metric">
-      <small>平局防范</small>
-      <strong id="mDraw">0</strong>
-    </div>
+<div class="metric">
+<small>主胜方向</small>
+<strong id="m2">0</strong>
+</div>
 
-    <div class="metric">
-      <small>冷门关注</small>
-      <strong id="mCold">0</strong>
-    </div>
-  </div>
+<div class="metric">
+<small>平局防范</small>
+<strong id="m3">0</strong>
+</div>
 
-  <div class="section">
-    <h2>方向结构</h2>
+<div class="metric">
+<small>冷门关注</small>
+<strong id="m4">0</strong>
+</div>
 
-    <div class="bar-row">
-      <div class="bar-label">
-        <span>主胜方向</span>
-        <b id="homePct">0%</b>
-      </div>
-      <div class="bar"><i id="homeBar" style="width:0%"></i></div>
-    </div>
+</div>
 
-    <div class="bar-row">
-      <div class="bar-label">
-        <span>平局防范</span>
-        <b id="drawPct">0%</b>
-      </div>
-      <div class="bar"><i id="drawBar" style="width:0%"></i></div>
-    </div>
+<div class="section">
 
-    <div class="bar-row">
-      <div class="bar-label">
-        <span>冷门关注</span>
-        <b id="coldPct">0%</b>
-      </div>
-      <div class="bar"><i id="coldBar" style="width:0%"></i></div>
-    </div>
-  </div>
+<h2>方向结构</h2>
 
-  <div class="section">
-    <h2>联赛分布</h2>
-    <div id="leagueStats"></div>
-  </div>
+<div class="bar-row">
+<div class="bar-title">
+<span>主胜</span>
+<b id="p1">0%</b>
+</div>
+<div class="bar">
+<i id="b1" style="width:0"></i>
+</div>
+</div>
 
-  <div class="section">
-    <h2>数据完整性</h2>
-    <div class="notice" id="dataIntegrity">
-      正在检查数据……
-    </div>
-  </div>
+<div class="bar-row">
+<div class="bar-title">
+<span>平局</span>
+<b id="p2">0%</b>
+</div>
+<div class="bar">
+<i id="b2" style="width:0"></i>
+</div>
+</div>
+
+<div class="bar-row">
+<div class="bar-title">
+<span>冷门</span>
+<b id="p3">0%</b>
+</div>
+<div class="bar">
+<i id="b3" style="width:0"></i>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>联赛分布</h2>
+
+<div id="leagueStats"></div>
+
+</div>
+
+<div class="section">
+
+<h2>数据完整性</h2>
+
+<div class="notice" id="integrity">
+等待数据……
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ================= 前瞻 ================= -->
+<!-- =================前瞻================ -->
+
 <section id="view-forecast" class="view">
 
-  <div class="page-title">
-    <div>
-      <h1>赛前前瞻</h1>
-      <p>读取赛事 JSON 中的分析结论、比分和半全场预测</p>
-    </div>
-    <div class="badge">深入分析</div>
-  </div>
+<div class="title">
 
-  <div id="forecastList">
-    <div class="loading">正在加载前瞻数据……</div>
-  </div>
+<div>
+<h1>赛前前瞻</h1>
+<p>综合当前分析与历史数据库匹配结果</p>
+</div>
+
+<div class="badge">
+历史辅助
+</div>
+
+</div>
+
+<div id="forecasts">
+<div class="empty">正在生成前瞻……</div>
+</div>
 
 </section>
 
 
-<!-- ================= 历史 ================= -->
+<!-- =================历史================ -->
+
 <section id="view-history" class="view">
 
-  <div class="page-title">
-    <div>
-      <h1>历史追踪</h1>
-      <p>真实历史数据库接入后自动计算</p>
-    </div>
-    <div class="badge">CSV待接入</div>
-  </div>
+<div class="title">
 
-  <div class="section">
+<div>
+<h1>历史数据库</h1>
+<p>威廉数据库 / 相似盘型 / 同赔回测</p>
+</div>
 
-    <h2>30天追踪</h2>
+<div class="badge" id="csvStatus">
+未加载CSV
+</div>
 
-    <div class="notice">
-      当前页面不会虚构命中率、盈利率或历史成绩。
-      <br><br>
-      下一阶段接入你的 CSV 历史数据库后，将按照：
-      <br>
-      ① 相似盘型
-      <br>
-      ② 历史同赔
-      <br>
-      ③ 联赛近期表现
-      <br>
-      ④ 预测方向
-      <br>
-      ⑤ 实际赛果
-      <br>
-      自动进行回测。
-    </div>
+</div>
 
-  </div>
 
-  <div class="section">
+<div class="section">
 
-    <h2>当前已读取赛事</h2>
+<h2>导入历史 CSV</h2>
 
-    <table class="history-table">
-      <thead>
-        <tr>
-          <th>编号</th>
-          <th>联赛</th>
-          <th>比赛</th>
-          <th>预测比分</th>
-          <th>方向</th>
-        </tr>
-      </thead>
+<div class="csv-area">
 
-      <tbody id="historyTable"></tbody>
-    </table>
+<div>
+把你的
+<b>威廉数据库_逐场泊松校准明细.csv</b>
+选择进来
+</div>
 
-  </div>
+<div style="margin-top:6px;color:#8993a3;font-size:11px">
+数据只在当前浏览器中分析，不会修改原始 CSV
+</div>
+
+<input
+type="file"
+id="csvFile"
+accept=".csv,text/csv">
+
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+<small>历史记录</small>
+<strong id="h1">0</strong>
+</div>
+
+<div class="metric">
+<small>主胜</small>
+<strong id="h2">0</strong>
+</div>
+
+<div class="metric">
+<small>平局</small>
+<strong id="h3">0</strong>
+</div>
+
+<div class="metric">
+<small>客胜</small>
+<strong id="h4">0</strong>
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h2>历史数据库状态</h2>
+
+<div class="notice" id="csvInfo">
+
+尚未加载历史 CSV。
+<br>
+加载后会自动建立：
+<br>
+相似盘型 → 同赔 → 历史结果 → 概率校准
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h2>历史匹配结果</h2>
+
+<div id="historyMatches">
+<div class="empty">
+加载 CSV 后，这里显示与今日赛事最接近的历史记录
+</div>
+</div>
+
+</div>
 
 </section>
 
 </main>
 
 
-<div class="bottom-nav">
-  <button data-view="events" class="active">赛事</button>
-  <button data-view="data">数据</button>
-  <button data-view="forecast">前瞻</button>
-  <button data-view="history">历史</button>
+<div class="bottom">
+
+<button data-view="events" class="active">赛事</button>
+<button data-view="data">数据</button>
+<button data-view="forecast">前瞻</button>
+<button data-view="history">历史</button>
+
 </div>
 
 
 <script>
 
 /* =========================================================
-   真实数据文件
-   ========================================================= */
+   今日真实数据
+========================================================= */
 
-const TODAY_FILES = [
+const TODAY_FILES=[
 
-  "2026/10/04/北单088_阿甲_国防与司法vs圣洛伦索_2026-10-04-01-45.json",
+"2026/10/04/北单088_阿甲_国防与司法vs圣洛伦索_2026-10-04-01-45.json",
 
-  "2026/10/04/北单094_阿甲_图库曼竞技vs巴拉卡斯中央_2026-10-04-04-00.json",
+"2026/10/04/北单094_阿甲_图库曼竞技vs巴拉卡斯中央_2026-10-04-04-00.json",
 
-  "2026/10/04/北单096_巴甲_米内罗竞技vs布拉干蒂诺RB_2026-10-04-05-30.json",
+"2026/10/04/北单096_巴甲_米内罗竞技vs布拉干蒂诺RB_2026-10-04-05-30.json",
 
-  "2026/10/04/北单101_日职乙_宫崎棒牛鸟vsRB大宫松鼠_2026-10-04-18-00.json",
+"2026/10/04/北单101_日职乙_宫崎棒牛鸟vsRB大宫松鼠_2026-10-04-18-00.json",
 
-  "2026/10/04/北单102_葡甲_SC法伦斯vs沙维什_2026-10-04-18-00.json"
+"2026/10/04/北单102_葡甲_SC法伦斯vs沙维什_2026-10-04-18-00.json"
 
 ];
 
-let DATA = [];
+let DATA=[];
+let CSV_DATA=[];
 
 
 /* =========================================================
-   工具
-   ========================================================= */
+   基础工具
+========================================================= */
 
-function safeArray(v){
-  if(Array.isArray(v)) return v;
-  if(v===undefined || v===null) return [];
-  return [v];
+function arr(v){
+if(Array.isArray(v))return v;
+if(v===undefined||v===null||v==="")return[];
+return[v];
 }
 
-function textValue(v, fallback="未提供"){
-  if(v===undefined || v===null || v==="") return fallback;
-  if(Array.isArray(v)) return v.join(" / ");
-  return String(v);
+function txt(v,d="暂无"){
+if(v===undefined||v===null||v==="")return d;
+if(Array.isArray(v))return v.join(" / ");
+return String(v);
 }
 
-function escapeHTML(str){
-  return String(str ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function esc(v){
+return String(v??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#39;");
 }
 
 
 /* =========================================================
-   JSON → 前端统一结构
-   ========================================================= */
+   JSON标准化
+========================================================= */
 
-function normalize(raw, file){
+function normalize(raw){
 
-  const info = raw.info || {};
-  const analysis = raw.analysis || {};
-  const forecasts = raw.forecasts || {};
-  const risk = raw.riskAlert || {};
+const info=raw.info||{};
+const analysis=raw.analysis||{};
+const forecasts=raw.forecasts||{};
 
-  const win = analysis.win || {};
-  const handicap = analysis.handicap || {};
-  const exact = analysis.exact || {};
-  const overUnder = analysis.overUnder || {};
-  const htft = analysis.htft || {};
+const win=analysis.win||{};
+const handicap=analysis.handicap||{};
+const exact=analysis.exact||{};
+const over=analysis.overUnder||{};
+const ht=analysis.htft||{};
+const risk=raw.riskAlert||{};
 
-  const teams = safeArray(info.teams);
+const teams=arr(info.teams);
 
-  const home =
-    teams[0] ||
-    info.home ||
-    "主队";
+const home=teams[0]||info.home||"主队";
+const away=teams[1]||info.away||"客队";
 
-  const away =
-    teams[1] ||
-    info.away ||
-    "客队";
+const winPick=arr(win.pick);
+const direction=arr(info.directions).length
+?arr(info.directions)
+:winPick;
 
-  let directions =
-    safeArray(info.directions);
+const score=arr(exact.pick).length
+?arr(exact.pick)
+:arr(forecasts.scoreline);
 
-  if(!directions.length && win.pick){
-    directions = safeArray(win.pick);
-  }
+const goals=arr(over.pick).length
+?arr(over.pick)
+:arr(forecasts.goals);
 
-  const mainPick =
-    info.mainPick ||
-    analysis.highlight ||
-    win.note ||
-    "暂无核心判断";
+const half=arr(ht.pick).length
+?arr(ht.pick)
+:arr(forecasts.halftime);
 
-  const score =
-    safeArray(exact.pick).length
-      ? safeArray(exact.pick)
-      : safeArray(forecasts.scoreline);
+const mainPick=
+info.mainPick||
+analysis.highlight||
+win.note||
+"暂无核心判断";
 
-  const goals =
-    safeArray(overUnder.pick).length
-      ? safeArray(overUnder.pick)
-      : safeArray(forecasts.goals);
+const allText=(
+direction.join(" ")+
+mainPick+
+(analysis.highlight||"")
+).toLowerCase();
 
-  const half =
-    safeArray(htft.pick).length
-      ? safeArray(htft.pick)
-      : safeArray(forecasts.halftime);
+return{
 
-  const joinedDirections =
-    directions.join(" ");
+id:info.code||"未知",
 
-  const cold =
-    /冷|爆冷|不败|平局防范|丢分/.test(
-      joinedDirections + " " + mainPick + " " +
-      textValue(analysis.highlight,"")
-    );
+league:info.comp||info.league||"未知联赛",
 
-  return {
+time:info.time||"未知时间",
 
-    id: info.code || file,
+home,
+away,
 
-    type: String(info.code || "").startsWith("北单")
-      ? "北单"
-      : "竞彩",
+confidence:
+analysis.confidence||
+raw.level||
+"未评级",
 
-    league:
-      info.comp ||
-      info.league ||
-      "未知联赛",
+mainPick,
 
-    time:
-      info.time ||
-      "时间未提供",
+direction,
 
-    home,
-    away,
+winPick,
 
-    level:
-      raw.level ||
-      analysis.confidence ||
-      "未评级",
+winNote:win.note||"",
 
-    mainPick,
+spread:
+handicap.spread??"未提供",
 
-    direction:
-      directions.length
-        ? directions.join(" / ")
-        : "暂未提供",
+handicapPick:
+arr(handicap.pick),
 
-    goals,
+handicapNote:
+handicap.note||"",
 
-    score,
+score,
+goals,
+half,
 
-    half,
+highlight:
+analysis.highlight||"暂无",
 
-    cold,
+risk:
+risk.triggered
+?(risk.message||risk.note||"存在风险提示")
+:"当前数据未触发明确风险",
 
-    highlight:
-      analysis.highlight ||
-      "暂无赛事重点",
+riskTriggered:Boolean(risk.triggered),
 
-    confidence:
-      analysis.confidence ||
-      raw.level ||
-      "未提供",
+cold:
+/冷|爆冷|不败|丢分/.test(allText)
 
-    winPick:
-      safeArray(win.pick),
-
-    winNote:
-      win.note ||
-      "",
-
-    handicapSpread:
-      handicap.spread !== undefined
-        ? handicap.spread
-        : "未提供",
-
-    handicapPick:
-      safeArray(handicap.pick),
-
-    handicapNote:
-      handicap.note ||
-      "",
-
-    risk:
-      risk.triggered
-        ? (
-          risk.message ||
-          risk.note ||
-          "存在风险提示"
-        )
-        : "当前数据未触发明确风险提示",
-
-    riskTriggered:
-      Boolean(risk.triggered),
-
-    raw
-
-  };
+};
 
 }
 
 
 /* =========================================================
-   读取真实 JSON
-   ========================================================= */
+   读取今日JSON
+========================================================= */
 
-async function loadTodayData(){
+async function loadToday(){
 
-  const eventList =
-    document.getElementById("eventList");
+DATA=[];
 
-  const forecastList =
-    document.getElementById("forecastList");
+document.getElementById("events").innerHTML=
+'<div class="empty">正在读取真实赛事数据……</div>';
 
-  eventList.innerHTML =
-    '<div class="loading">正在读取真实赛事数据……</div>';
+let success=0;
 
-  forecastList.innerHTML =
-    '<div class="loading">正在读取真实前瞻数据……</div>';
+for(const file of TODAY_FILES){
 
-  document.getElementById("statusText").textContent =
-    "真实数据加载中";
+try{
 
-  const results = await Promise.all(
+const r=await fetch(
+"./"+encodeURI(file)+"?t="+Date.now(),
+{cache:"no-store"}
+);
 
-    TODAY_FILES.map(async file => {
+if(!r.ok)continue;
 
-      try{
+const raw=await r.json();
 
-        const response =
-          await fetch("./" + encodeURI(file) + "?t=" + Date.now(),{
-            cache:"no-store"
-          });
+DATA.push(normalize(raw));
 
-        if(!response.ok){
-          throw new Error(
-            response.status + " " + response.statusText
-          );
-        }
+success++;
 
-        const raw = await response.json();
+}catch(e){
 
-        return normalize(raw,file);
+console.warn("读取失败",file,e);
 
-      }catch(error){
+}
 
-        console.warn(
-          "读取失败:",
-          file,
-          error
-        );
+}
 
-        return null;
-      }
+document.getElementById("status").textContent=
+success
+?"真实数据 · "+success+"场"
+:"数据读取失败";
 
-    })
+updateLeague();
+renderEvents();
+renderData();
+renderForecast();
+renderHistoryTable();
 
-  );
-
-  DATA =
-    results.filter(Boolean);
-
-  if(DATA.length){
-
-    document.getElementById("statusText").textContent =
-      "真实数据 · " + DATA.length + "场";
-
-  }else{
-
-    document.getElementById("statusText").textContent =
-      "数据读取失败";
-  }
-
-  updateLeagueFilter();
-
-  render();
-
-  renderData();
-
-  renderForecast();
-
-  renderHistory();
+if(CSV_DATA.length){
+runHistoricalMatching();
+}
 
 }
 
 
 /* =========================================================
-   导航
-   ========================================================= */
+   联赛
+========================================================= */
 
-function switchView(view){
+function updateLeague(){
 
-  document.querySelectorAll(".view")
-    .forEach(el => {
-      el.classList.toggle(
-        "active",
-        el.id === "view-" + view
-      );
-    });
+const select=document.getElementById("league");
 
-  document.querySelectorAll("[data-view]")
-    .forEach(btn => {
-      btn.classList.toggle(
-        "active",
-        btn.dataset.view === view
-      );
-    });
+const leagues=[
+...new Set(DATA.map(x=>x.league))
+];
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-}
-
-document.querySelectorAll("[data-view]")
-  .forEach(btn => {
-
-    btn.addEventListener(
-      "click",
-      () => switchView(btn.dataset.view)
-    );
-
-  });
-
-
-/* =========================================================
-   联赛筛选
-   ========================================================= */
-
-function updateLeagueFilter(){
-
-  const select =
-    document.getElementById("leagueFilter");
-
-  const leagues =
-    [...new Set(
-      DATA.map(x => x.league)
-    )];
-
-  select.innerHTML =
-    '<option value="全部">全部联赛</option>' +
-
-    leagues.map(
-      league =>
-        `<option value="${escapeHTML(league)}">
-          ${escapeHTML(league)}
-        </option>`
-    ).join("");
+select.innerHTML=
+'<option value="全部">全部联赛</option>'+
+leagues.map(x=>
+`<option value="${esc(x)}">${esc(x)}</option>`
+).join("");
 
 }
 
 
 /* =========================================================
-   当前筛选
-   ========================================================= */
+   筛选
+========================================================= */
 
-function getFilteredData(){
+function filtered(){
 
-  const keyword =
-    document.getElementById("search")
-      .value
-      .trim()
-      .toLowerCase();
+const key=
+document.getElementById("search")
+.value.trim().toLowerCase();
 
-  const type =
-    document.getElementById("typeFilter").value;
+const league=
+document.getElementById("league").value;
 
-  const league =
-    document.getElementById("leagueFilter").value;
+return DATA.filter(x=>{
 
-  return DATA.filter(item => {
+const str=[
+x.id,x.league,x.home,x.away,
+x.mainPick,x.direction.join(" ")
+].join(" ").toLowerCase();
 
-    const text =
-      [
-        item.id,
-        item.league,
-        item.home,
-        item.away,
-        item.direction,
-        item.mainPick
-      ].join(" ").toLowerCase();
+if(key&&!str.includes(key))return false;
 
-    if(keyword && !text.includes(keyword))
-      return false;
+if(league!=="全部"&&x.league!==league)return false;
 
-    if(type !== "全部" && item.type !== type)
-      return false;
+return true;
 
-    if(league !== "全部" && item.league !== league)
-      return false;
-
-    return true;
-
-  });
+});
 
 }
 
 document.getElementById("search")
-  .addEventListener("input",render);
+.addEventListener("input",renderEvents);
 
-document.getElementById("typeFilter")
-  .addEventListener("change",render);
-
-document.getElementById("leagueFilter")
-  .addEventListener("change",render);
+document.getElementById("league")
+.addEventListener("change",renderEvents);
 
 
 /* =========================================================
-   赛事页面
-   ========================================================= */
+   赛事
+========================================================= */
 
-function render(){
+function renderEvents(){
 
-  const list =
-    document.getElementById("eventList");
+const list=document.getElementById("events");
+const data=filtered();
 
-  const data =
-    getFilteredData();
+document.getElementById("count").textContent=
+"共 "+data.length+" 场";
 
-  document.getElementById("matchCount")
-    .textContent =
-      "共 " + data.length + " 场";
+if(!data.length){
 
-  if(!data.length){
+list.innerHTML=
+'<div class="empty">没有符合条件的赛事</div>';
 
-    list.innerHTML =
-      '<div class="empty">没有符合条件的赛事</div>';
+return;
 
-    return;
-  }
+}
 
-  list.innerHTML =
-    data.map(match => {
+list.innerHTML=data.map((x,i)=>{
 
-      const score =
-        match.score.length
-          ? match.score.join(" / ")
-          : "未提供";
+const score=txt(x.score.join(" / "));
+const goals=txt(x.goals.join(" / "));
+const half=txt(x.half.join(" / "));
 
-      const goals =
-        match.goals.length
-          ? match.goals.join(" / ")
-          : "未提供";
+return`
 
-      const half =
-        match.half.length
-          ? match.half.join(" / ")
-          : "未提供";
+<article class="card">
 
-      return `
+<div class="match-top">
 
-      <article class="card">
+<div>
+<span class="league">${esc(x.league)}</span>
+<span class="code">${esc(x.id)}</span>
+</div>
 
-        <div class="match-head">
+<div>
+<span class="time">${esc(x.time)}</span>
+<span class="conf">${esc(x.confidence)}</span>
+</div>
 
-          <div>
-            <span class="league">
-              ${escapeHTML(match.league)}
-            </span>
-
-            <span class="match-id">
-              ${escapeHTML(match.id)}
-            </span>
-          </div>
-
-          <div>
-            <span class="time">
-              ${escapeHTML(match.time)}
-            </span>
-
-            <span class="confidence">
-              ${escapeHTML(match.confidence)}
-            </span>
-          </div>
-
-        </div>
+</div>
 
 
-        <div class="teams">
+<div class="teams">
 
-          <div class="team">
-            ${escapeHTML(match.home)}
-          </div>
+<div class="team">${esc(x.home)}</div>
 
-          <div class="vs">
-            VS
-          </div>
+<div class="vs">VS</div>
 
-          <div class="team away">
-            ${escapeHTML(match.away)}
-          </div>
+<div class="team away">${esc(x.away)}</div>
 
-        </div>
+</div>
 
 
-        <div class="predict">
+<div class="core">
 
-          <div class="predict-main">
-            核心判断：
-            ${escapeHTML(match.mainPick)}
-          </div>
+<b>
+核心判断：
+${esc(x.mainPick)}
+</b>
 
-          <div class="predict-grid">
+<div class="grid">
 
-            <div class="predict-item">
-              <small>胜平负</small>
-              <b>${escapeHTML(
-                match.winPick.length
-                  ? match.winPick.join(" / ")
-                  : match.direction
-              )}</b>
-            </div>
+<div class="cell">
+<small>胜平负</small>
+<strong>
+${esc(
+x.winPick.length
+?x.winPick.join(" / ")
+:x.direction.join(" / ")
+)}
+</strong>
+</div>
 
-            <div class="predict-item">
-              <small>让球</small>
-              <b>${escapeHTML(
-                match.handicapPick.length
-                  ? match.handicapPick.join(" / ")
-                  : "未提供"
-              )}</b>
-            </div>
+<div class="cell">
+<small>让球</small>
+<strong>
+${esc(
+x.handicapPick.length
+?x.handicapPick.join(" / ")
+:"未提供"
+)}
+</strong>
+</div>
 
-            <div class="predict-item">
-              <small>比分</small>
-              <b>${escapeHTML(score)}</b>
-            </div>
+<div class="cell">
+<small>比分</small>
+<strong>${esc(score)}</strong>
+</div>
 
-            <div class="predict-item">
-              <small>进球</small>
-              <b>${escapeHTML(goals)}</b>
-            </div>
+<div class="cell">
+<small>进球</small>
+<strong>${esc(goals)}</strong>
+</div>
 
-          </div>
+</div>
 
-        </div>
-
-
-        <button
-          class="expand"
-          onclick="toggleMatch('${escapeHTML(match.id)}')"
-        >
-          展开深入分析
-        </button>
+</div>
 
 
-        <div
-          class="detail"
-          id="detail-${CSS.escape(match.id)}"
-        >
+<button
+class="expand"
+onclick="toggleDetail(${i})">
+展开深入分析
+</button>
 
-          <div class="detail-grid">
 
-            <div class="detail-box">
-              <h3>① 核心判断</h3>
-              <p>
-                ${escapeHTML(match.mainPick)}
-              </p>
-            </div>
+<div
+class="detail"
+id="detail-${i}">
 
-            <div class="detail-box">
-              <h3>② 赛事重点</h3>
-              <p>
-                ${escapeHTML(match.highlight)}
-              </p>
-            </div>
+<div class="detail-grid">
 
-            <div class="detail-box">
-              <h3>③ 胜平负分析</h3>
-              <p>
-                ${escapeHTML(
-                  match.winNote ||
-                  match.winPick.join(" / ") ||
-                  "暂无"
-                )}
-              </p>
-            </div>
+<div class="box">
+<h3>① 核心判断</h3>
+<p>${esc(x.mainPick)}</p>
+</div>
 
-            <div class="detail-box">
-              <h3>④ 让球分析</h3>
-              <p>
-                让球：
-                ${escapeHTML(
-                  textValue(match.handicapSpread)
-                )}
-                <br>
-                方向：
-                ${escapeHTML(
-                  match.handicapPick.length
-                    ? match.handicapPick.join(" / ")
-                    : "暂无"
-                )}
-                <br>
-                ${escapeHTML(
-                  match.handicapNote
-                )}
-              </p>
-            </div>
+<div class="box">
+<h3>② 赛事重点</h3>
+<p>${esc(x.highlight)}</p>
+</div>
 
-            <div class="detail-box">
-              <h3>⑤ 比分预测</h3>
-              <p>
-                ${escapeHTML(score)}
-              </p>
-            </div>
+<div class="box">
+<h3>③ 胜平负</h3>
+<p>
+方向：
+${esc(x.winPick.join(" / ")||"暂无")}
+<br>
+${esc(x.winNote)}
+</p>
+</div>
 
-            <div class="detail-box">
-              <h3>⑥ 进球预测</h3>
-              <p>
-                ${escapeHTML(goals)}
-              </p>
-            </div>
+<div class="box">
+<h3>④ 让球</h3>
+<p>
+让球：
+${esc(x.spread)}
+<br>
+方向：
+${esc(x.handicapPick.join(" / ")||"暂无")}
+<br>
+${esc(x.handicapNote)}
+</p>
+</div>
 
-            <div class="detail-box">
-              <h3>⑦ 半全场</h3>
-              <p>
-                ${escapeHTML(half)}
-              </p>
-            </div>
+<div class="box">
+<h3>⑤ 比分</h3>
+<p>${esc(score)}</p>
+</div>
 
-            <div class="detail-box">
-              <h3>⑧ 当前信心</h3>
-              <p>
-                ${escapeHTML(match.confidence)}
-              </p>
-            </div>
+<div class="box">
+<h3>⑥ 进球</h3>
+<p>${esc(goals)}</p>
+</div>
 
-            <div class="detail-box full">
+<div class="box">
+<h3>⑦ 半全场</h3>
+<p>${esc(half)}</p>
+</div>
 
-              <h3>⑨ 风险提示</h3>
+<div class="box">
+<h3>⑧ 历史数据库</h3>
+<p id="match-history-${i}">
+尚未加载CSV历史匹配
+</p>
+</div>
 
-              <div class="risk ${
-                match.riskTriggered
-                  ? ""
-                  : "safe"
-              }">
+<div class="box full">
 
-                ${escapeHTML(match.risk)}
+<h3>⑨ 风险</h3>
 
-              </div>
+<div class="risk ${
+x.riskTriggered?"":"safe"
+}">
+${esc(x.risk)}
+</div>
 
-            </div>
+</div>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-      </article>
+</article>
 
-      `;
+`;
 
-    }).join("");
+}).join("");
 
 }
 
 
 /* =========================================================
-   展开赛事
-   ========================================================= */
+   展开
+========================================================= */
 
-function toggleMatch(id){
+function toggleDetail(i){
 
-  const detail =
-    document.getElementById(
-      "detail-" + CSS.escape(id)
-    );
+const el=document.getElementById("detail-"+i);
 
-  if(!detail) return;
-
-  detail.classList.toggle("show");
+if(el)el.classList.toggle("show");
 
 }
 
 
 /* =========================================================
-   数据页
-   ========================================================= */
+   数据分析
+========================================================= */
 
 function renderData(){
 
-  const total =
-    DATA.length;
+const total=DATA.length;
 
-  const home =
-    DATA.filter(x =>
-      /主胜/.test(
-        x.direction +
-        x.mainPick +
-        x.winPick.join(" ")
-      )
-    ).length;
+const home=DATA.filter(x=>
+/主胜|主场.*胜|首选主胜/
+.test(
+x.mainPick+
+x.direction.join(" ")+
+x.winPick.join(" ")
+)
+).length;
 
-  const draw =
-    DATA.filter(x =>
-      /平/.test(
-        x.direction +
-        x.mainPick +
-        x.winPick.join(" ")
-      )
-    ).length;
+const draw=DATA.filter(x=>
+/平局|平/.test(
+x.mainPick+
+x.direction.join(" ")+
+x.winPick.join(" ")
+)
+).length;
 
-  const cold =
-    DATA.filter(x => x.cold).length;
+const cold=DATA.filter(x=>x.cold).length;
 
-  document.getElementById("mMatches")
-    .textContent = total;
+document.getElementById("m1").textContent=total;
+document.getElementById("m2").textContent=home;
+document.getElementById("m3").textContent=draw;
+document.getElementById("m4").textContent=cold;
 
-  document.getElementById("mHome")
-    .textContent = home;
+document.getElementById("s1").textContent=total;
+document.getElementById("s2").textContent=home;
+document.getElementById("s3").textContent=draw;
+document.getElementById("s4").textContent=cold;
+document.getElementById("s5").textContent=
+CSV_DATA.length||0;
 
-  document.getElementById("mDraw")
-    .textContent = draw;
+function pct(n){
+return total
+?Math.round(n/total*100)
+:0;
+}
 
-  document.getElementById("mCold")
-    .textContent = cold;
+let hp=pct(home);
+let dp=pct(draw);
+let cp=pct(cold);
 
-  document.getElementById("sideMatches")
-    .textContent = total;
+document.getElementById("p1").textContent=hp+"%";
+document.getElementById("p2").textContent=dp+"%";
+document.getElementById("p3").textContent=cp+"%";
 
-  document.getElementById("sideHome")
-    .textContent = home;
-
-  document.getElementById("sideDraw")
-    .textContent = draw;
-
-  document.getElementById("sideCold")
-    .textContent = cold;
-
-  document.getElementById("sideMedium")
-    .textContent =
-      DATA.filter(x =>
-        /中/.test(x.confidence)
-      ).length;
+document.getElementById("b1").style.width=hp+"%";
+document.getElementById("b2").style.width=dp+"%";
+document.getElementById("b3").style.width=cp+"%";
 
 
-  const hp =
-    total ? Math.round(home/total*100) : 0;
+const map={};
 
-  const dp =
-    total ? Math.round(draw/total*100) : 0;
+DATA.forEach(x=>{
+map[x.league]=(map[x.league]||0)+1;
+});
 
-  const cp =
-    total ? Math.round(cold/total*100) : 0;
+document.getElementById("leagueStats").innerHTML=
+Object.entries(map).map(([k,v])=>{
 
-  document.getElementById("homePct")
-    .textContent = hp + "%";
+const p=pct(v);
 
-  document.getElementById("drawPct")
-    .textContent = dp + "%";
+return`
 
-  document.getElementById("coldPct")
-    .textContent = cp + "%";
+<div class="bar-row">
 
-  document.getElementById("homeBar")
-    .style.width = hp + "%";
+<div class="bar-title">
+<span>${esc(k)}</span>
+<b>${v}场</b>
+</div>
 
-  document.getElementById("drawBar")
-    .style.width = dp + "%";
+<div class="bar">
+<i style="width:${p}%"></i>
+</div>
 
-  document.getElementById("coldBar")
-    .style.width = cp + "%";
+</div>
 
+`;
 
-  const leagueMap = {};
-
-  DATA.forEach(item => {
-
-    leagueMap[item.league] =
-      (leagueMap[item.league] || 0) + 1;
-
-  });
-
-  const leagueStats =
-    document.getElementById("leagueStats");
-
-  if(!Object.keys(leagueMap).length){
-
-    leagueStats.innerHTML =
-      '<div class="notice">暂无数据</div>';
-
-  }else{
-
-    leagueStats.innerHTML =
-      Object.entries(leagueMap)
-      .map(([league,count]) => {
-
-        const pct =
-          Math.round(count/total*100);
-
-        return `
-
-        <div class="bar-row">
-
-          <div class="bar-label">
-            <span>${escapeHTML(league)}</span>
-            <b>${count} 场 · ${pct}%</b>
-          </div>
-
-          <div class="bar">
-            <i style="width:${pct}%"></i>
-          </div>
-
-        </div>
-
-        `;
-
-      }).join("");
-
-  }
+}).join("");
 
 
-  document.getElementById("dataIntegrity")
-    .innerHTML = DATA.length
-
-      ? `
-        已成功读取
-        <b>${DATA.length}</b>
-        场真实赛事 JSON。
-        <br>
-        当前页面没有虚构赔率、盘口或历史命中率。
-        <br>
-        赔率变盘与 CSV 历史同赔属于下一阶段数据源。
-      `
-
-      : "目前没有成功读取赛事 JSON。";
+document.getElementById("integrity").innerHTML=
+total
+?`
+已成功读取 <b>${total}</b> 场真实赛事。
+<br>
+当前没有赔率数据的项目不会被系统虚构。
+<br>
+CSV历史库：
+${CSV_DATA.length?"已加载":"未加载"}。
+`
+:"暂无赛事数据";
 
 }
 
 
 /* =========================================================
    前瞻
-   ========================================================= */
+========================================================= */
 
 function renderForecast(){
 
-  const list =
-    document.getElementById("forecastList");
+const el=document.getElementById("forecasts");
 
-  if(!DATA.length){
+if(!DATA.length){
 
-    list.innerHTML =
-      '<div class="empty">暂无前瞻数据</div>';
+el.innerHTML=
+'<div class="empty">暂无前瞻</div>';
 
-    return;
-  }
+return;
 
-  list.innerHTML =
-    DATA.map(match => {
+}
 
-      const score =
-        match.score.length
-          ? match.score.join(" / ")
-          : "未提供";
+el.innerHTML=DATA.map((x,i)=>{
 
-      const goals =
-        match.goals.length
-          ? match.goals.join(" / ")
-          : "未提供";
+return`
 
-      const half =
-        match.half.length
-          ? match.half.join(" / ")
-          : "未提供";
+<div class="forecast">
 
-      return `
+<h3>
+${esc(x.home)}
+ VS
+${esc(x.away)}
+</h3>
 
-      <div class="forecast-card">
+<div class="big">
+${esc(x.mainPick)}
+</div>
 
-        <div class="forecast-top">
+<div class="tags">
 
-          <div>
-            <span class="league">
-              ${escapeHTML(match.league)}
-            </span>
+<span class="tag">
+方向：${esc(x.direction.join(" / "))}
+</span>
 
-            <span class="match-id">
-              ${escapeHTML(match.id)}
-            </span>
-          </div>
+<span class="tag">
+比分：${esc(x.score.join(" / ")||"未提供")}
+</span>
 
-          <span class="confidence">
-            ${escapeHTML(match.confidence)}
-          </span>
+<span class="tag">
+进球：${esc(x.goals.join(" / ")||"未提供")}
+</span>
 
-        </div>
+<span class="tag">
+半全场：${esc(x.half.join(" / ")||"未提供")}
+</span>
 
+<span class="tag">
+信心：${esc(x.confidence)}
+</span>
 
-        <div class="forecast-team">
-          ${escapeHTML(match.home)}
-          <span style="color:#9aa3b1"> VS </span>
-          ${escapeHTML(match.away)}
-        </div>
+</div>
 
+<div class="note">
 
-        <div class="forecast-main">
-          ${escapeHTML(match.mainPick)}
-        </div>
+<b>赛事重点：</b>
+${esc(x.highlight)}
 
+<br><br>
 
-        <div class="tags">
+<b>历史数据库：</b>
 
-          <span class="tag">
-            方向：
-            ${escapeHTML(match.direction)}
-          </span>
+<span id="forecast-history-${i}">
+${CSV_DATA.length
+?"正在匹配……"
+:"尚未加载CSV"}
+</span>
 
-          <span class="tag">
-            比分：
-            ${escapeHTML(score)}
-          </span>
+</div>
 
-          <span class="tag">
-            进球：
-            ${escapeHTML(goals)}
-          </span>
+<br>
 
-          <span class="tag">
-            半全场：
-            ${escapeHTML(half)}
-          </span>
+<button
+class="btn"
+onclick="openMatch(${i})">
+查看完整分析
+</button>
 
-          ${
-            match.cold
-              ? '<span class="tag">冷门关注</span>'
-              : ''
-          }
+</div>
 
-        </div>
+`;
 
-
-        <div class="forecast-note">
-
-          <b>分析重点：</b>
-          ${escapeHTML(match.highlight)}
-
-          <br><br>
-
-          <b>胜平负说明：</b>
-          ${escapeHTML(
-            match.winNote || "暂无"
-          )}
-
-        </div>
-
-
-        <button
-          class="detail-btn"
-          onclick="openForecastMatch('${escapeHTML(match.id)}')"
-        >
-          查看完整赛事分析
-        </button>
-
-      </div>
-
-      `;
-
-    }).join("");
+}).join("");
 
 }
 
 
 /* =========================================================
-   前瞻跳转
-   ========================================================= */
+   前瞻跳赛事
+========================================================= */
 
-function openForecastMatch(id){
+function openMatch(i){
 
-  switchView("events");
+document.querySelectorAll(".view")
+.forEach(x=>x.classList.remove("active"));
 
-  setTimeout(() => {
+document.getElementById("view-events")
+.classList.add("active");
 
-    const detail =
-      document.getElementById(
-        "detail-" + CSS.escape(id)
-      );
+document.querySelectorAll("[data-view]")
+.forEach(x=>{
+x.classList.toggle(
+"active",
+x.dataset.view==="events"
+);
+});
 
-    if(detail){
+setTimeout(()=>{
 
-      detail.classList.add("show");
+const el=document.getElementById("detail-"+i);
 
-      detail.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
+if(el){
 
-    }
+el.classList.add("show");
 
-  },100);
+el.parentElement.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
+
+},100);
 
 }
 
 
 /* =========================================================
-   历史
-   ========================================================= */
+   CSV解析
+========================================================= */
 
-function renderHistory(){
+function detectDelimiter(text){
 
-  const tbody =
-    document.getElementById("historyTable");
+const first=
+text.split(/\r?\n/)[0]||"";
 
-  if(!DATA.length){
-
-    tbody.innerHTML =
-      '<tr><td colspan="5">暂无赛事</td></tr>';
-
-    return;
-  }
-
-  tbody.innerHTML =
-    DATA.map(match => {
-
-      const score =
-        match.score.length
-          ? match.score.join(" / ")
-          : "未提供";
-
-      return `
-
-      <tr>
-
-        <td>${escapeHTML(match.id)}</td>
-
-        <td>${escapeHTML(match.league)}</td>
-
-        <td>
-          ${escapeHTML(match.home)}
-          VS
-          ${escapeHTML(match.away)}
-        </td>
-
-        <td>${escapeHTML(score)}</td>
-
-        <td>${escapeHTML(match.direction)}</td>
-
-      </tr>
-
-      `;
-
-    }).join("");
+if(first.includes("\t"))return"\t";
+if(first.includes(";"))return";";
+return",";
 
 }
+
+
+function parseCSV(text){
+
+text=text.replace(/^\uFEFF/,"");
+
+const delimiter=detectDelimiter(text);
+
+const rows=[];
+let row=[];
+let cell="";
+let quote=false;
+
+for(let i=0;i<text.length;i++){
+
+const c=text[i];
+const n=text[i+1];
+
+if(c==='"'){
+
+if(quote&&n==='"'){
+
+cell+='"';
+i++;
+
+}else{
+
+quote=!quote;
+
+}
+
+continue;
+
+}
+
+if(c===delimiter&&!quote){
+
+row.push(cell);
+cell="";
+continue;
+
+}
+
+if((c==="\n"||c==="\r")&&!quote){
+
+if(c==="\r"&&n==="\n")i++;
+
+row.push(cell);
+
+if(row.some(x=>x.trim()!==""))
+rows.push(row);
+
+row=[];
+cell="";
+continue;
+
+}
+
+cell+=c;
+
+}
+
+if(cell||row.length){
+
+row.push(cell);
+rows.push(row);
+
+}
+
+if(!rows.length)return[];
+
+const headers=rows[0].map(x=>
+String(x).trim()
+);
+
+return rows.slice(1).map(r=>{
+
+const obj={};
+
+headers.forEach((h,i)=>{
+obj[h]=r[i]??"";
+});
+
+return obj;
+
+});
+
+}
+
+
+/* =========================================================
+   CSV字段自动识别
+========================================================= */
+
+function findColumn(obj,words){
+
+const keys=Object.keys(obj);
+
+for(const word of words){
+
+const key=keys.find(k=>
+k.toLowerCase()
+.includes(word.toLowerCase())
+);
+
+if(key)return key;
+
+}
+
+return null;
+
+}
+
+
+function getCSVValue(row,words){
+
+const key=findColumn(row,words);
+
+return key?row[key]:"";
+
+}
+
+
+/* =========================================================
+   数值
+========================================================= */
+
+function num(v){
+
+if(v===undefined||v===null)return null;
+
+const n=parseFloat(
+String(v)
+.replace(/,/g,"")
+.trim()
+);
+
+return Number.isFinite(n)?n:null;
+
+}
+
+
+/* =========================================================
+   提取历史结果
+========================================================= */
+
+function resultOf(row){
+
+let v=getCSVValue(row,[
+"赛果",
+"结果",
+"胜平负",
+"result",
+"outcome"
+]);
+
+if(/胜/.test(v)||v==="3"||v==="W")return"主胜";
+if(/平/.test(v)||v==="1"||v==="D")return"平";
+if(/负|客胜/.test(v)||v==="0"||v==="L")return"客胜";
+
+const score=getCSVValue(row,[
+"比分",
+"score",
+"全场比分"
+]);
+
+const m=String(score).match(/(\d+)\s*[-:：]\s*(\d+)/);
+
+if(m){
+
+const a=Number(m[1]);
+const b=Number(m[2]);
+
+if(a>b)return"主胜";
+if(a===b)return"平";
+if(a<b)return"客胜";
+
+}
+
+return"未知";
+
+}
+
+
+/* =========================================================
+   提取历史赔率
+========================================================= */
+
+function oddsOf(row,type){
+
+const words=
+type==="home"
+?[
+"主胜","主赔","主赔率",
+"home","win"
+]
+:
+type==="draw"
+?[
+"平","平赔","平局赔率",
+"draw"
+]
+:
+[
+"客胜","客赔","客赔率",
+"away","lose"
+];
+
+return num(
+getCSVValue(row,words)
+);
+
+}
+
+
+/* =========================================================
+   盘型距离
+========================================================= */
+
+function distance(a,b){
+
+if(a===null||b===null)return 999;
+
+return Math.abs(a-b);
+
+}
+
+
+/* =========================================================
+   当前比赛需要的参考赔率
+========================================================= */
+
+function currentOdds(match){
+
+const raw=match.raw||{};
+
+const obj=
+raw.odds||
+raw.odd||
+raw.europeOdds||
+raw;
+
+return{
+
+home:
+num(
+obj.home||
+obj.homeWin||
+obj.win||
+obj["主胜"]
+),
+
+draw:
+num(
+obj.draw||
+obj["平"]
+),
+
+away:
+num(
+obj.away||
+obj.awayWin||
+obj.lose||
+obj["客胜"]
+)
+
+};
+
+}
+
+
+/* =========================================================
+   历史相似盘型
+========================================================= */
+
+function findSimilar(match,limit=10){
+
+if(!CSV_DATA.length)return[];
+
+const current=currentOdds(match);
+
+let scored=[];
+
+for(const row of CSV_DATA){
+
+const h=oddsOf(row,"home");
+const d=oddsOf(row,"draw");
+const a=oddsOf(row,"away");
+
+let score=0;
+let valid=0;
+
+if(current.home!==null&&h!==null){
+
+score+=distance(current.home,h);
+valid++;
+
+}
+
+if(current.draw!==null&&d!==null){
+
+score+=distance(current.draw,d);
+valid++;
+
+}
+
+if(current.away!==null&&a!==null){
+
+score+=distance(current.away,a);
+valid++;
+
+}
+
+if(valid===0)continue;
+
+score=score/valid;
+
+scored.push({
+row,
+score
+});
+
+}
+
+return scored
+.sort((a,b)=>a.score-b.score)
+.slice(0,limit);
+
+}
+
+
+/* =========================================================
+   历史同赔/相似盘统计
+========================================================= */
+
+function analyzeSimilar(rows){
+
+if(!rows.length){
+
+return{
+total:0,
+home:0,
+draw:0,
+away:0,
+homePct:0,
+drawPct:0,
+awayPct:0
+};
+
+}
+
+let home=0;
+let draw=0;
+let away=0;
+
+rows.forEach(x=>{
+
+const r=resultOf(x.row);
+
+if(r==="主胜")home++;
+if(r==="平")draw++;
+if(r==="客胜")away++;
+
+});
+
+const total=home+draw+away;
+
+return{
+
+total,
+
+home,
+draw,
+away,
+
+homePct:total?Math.round(home/total*100):0,
+
+drawPct:total?Math.round(draw/total*100):0,
+
+awayPct:total?Math.round(away/total*100):0
+
+};
+
+}
+
+
+/* =========================================================
+   历史数据库匹配
+========================================================= */
+
+function runHistoricalMatching(){
+
+if(!CSV_DATA.length)return;
+
+let totalMatches=0;
+
+DATA.forEach((match,i)=>{
+
+const similar=findSimilar(match,20);
+
+const stat=analyzeSimilar(similar);
+
+if(stat.total>0){
+
+totalMatches+=stat.total;
+
+const text=
+`找到 ${stat.total} 条相似历史记录。
+主胜 ${stat.homePct}%，
+平局 ${stat.drawPct}%，
+客胜 ${stat.awayPct}%。
+`;
+
+const eventEl=
+document.getElementById(
+"match-history-"+i
+);
+
+if(eventEl){
+
+eventEl.innerHTML=
+text;
+
+}
+
+const forecastEl=
+document.getElementById(
+"forecast-history-"+i
+);
+
+if(forecastEl){
+
+forecastEl.innerHTML=
+text;
+
+}
+
+}else{
+
+const eventEl=
+document.getElementById(
+"match-history-"+i
+);
+
+if(eventEl){
+
+eventEl.textContent=
+"当前赔率字段不足，暂无法建立可靠同赔匹配";
+
+}
+
+const forecastEl=
+document.getElementById(
+"forecast-history-"+i
+);
+
+if(forecastEl){
+
+forecastEl.textContent=
+"当前赔率字段不足，暂无法建立可靠同赔匹配";
+
+}
+
+}
+
+});
+
+document.getElementById("s5")
+.textContent=totalMatches;
+
+}
+
+
+/* =========================================================
+   显示历史数据库
+========================================================= */
+
+function renderHistoryTable(){
+
+const box=
+document.getElementById("historyMatches");
+
+if(!CSV_DATA.length){
+
+box.innerHTML=
+'<div class="empty">加载 CSV 后显示历史匹配</div>';
+
+return;
+
+}
+
+const rows=
+CSV_DATA.slice(0,100);
+
+box.innerHTML=`
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>#</th>
+<th>历史赛果</th>
+<th>主胜赔率</th>
+<th>平赔率</th>
+<th>客胜赔率</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+${rows.map((r,i)=>`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${esc(resultOf(r))}</td>
+
+<td>${esc(
+getCSVValue(r,["主胜","主赔","主赔率","home"])
+||"-"
+)}</td>
+
+<td>${esc(
+getCSVValue(r,["平","平赔","平局赔率","draw"])
+||"-"
+)}</td>
+
+<td>${esc(
+getCSVValue(r,["客胜","客赔","客赔率","away"])
+||"-"
+)}</td>
+
+</tr>
+
+`).join("")}
+
+</tbody>
+
+</table>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   CSV文件上传
+========================================================= */
+
+document.getElementById("csvFile")
+.addEventListener("change",function(e){
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+document.getElementById("csvStatus")
+.textContent="读取中……";
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+try{
+
+CSV_DATA=parseCSV(reader.result);
+
+document.getElementById("csvStatus")
+.textContent=
+"已加载 "+CSV_DATA.length+" 条";
+
+document.getElementById("csvInfo")
+.innerHTML=`
+
+<b>CSV加载成功</b>
+
+<br>
+
+记录数：
+<b>${CSV_DATA.length}</b>
+
+<br><br>
+
+系统现在可以进行：
+
+<br>
+① 历史赛果统计
+<br>
+② 相似赔率匹配
+<br>
+③ 历史同赔
+<br>
+④ 主胜 / 平 / 客胜比例
+<br>
+⑤ 当前预测与历史结果交叉验证
+
+`;
+
+let home=0;
+let draw=0;
+let away=0;
+
+CSV_DATA.forEach(row=>{
+
+const r=resultOf(row);
+
+if(r==="主胜")home++;
+if(r==="平")draw++;
+if(r==="客胜")away++;
+
+});
+
+document.getElementById("h1")
+.textContent=CSV_DATA.length;
+
+document.getElementById("h2")
+.textContent=home;
+
+document.getElementById("h3")
+.textContent=draw;
+
+document.getElementById("h4")
+.textContent=away;
+
+renderHistoryTable();
+
+renderData();
+
+renderForecast();
+
+runHistoricalMatching();
+
+}catch(error){
+
+console.error(error);
+
+document.getElementById("csvStatus")
+.textContent="CSV解析失败";
+
+document.getElementById("csvInfo")
+.textContent=
+"CSV格式无法解析，请检查文件编码或格式。";
+
+}
+
+};
+
+reader.readAsText(file,"UTF-8");
+
+});
+
+
+/* =========================================================
+   页面导航
+========================================================= */
+
+document.querySelectorAll("[data-view]")
+.forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+const view=btn.dataset.view;
+
+document.querySelectorAll(".view")
+.forEach(x=>{
+x.classList.toggle(
+"active",
+x.id==="view-"+view
+);
+});
+
+document.querySelectorAll("[data-view]")
+.forEach(x=>{
+x.classList.toggle(
+"active",
+x.dataset.view===view
+);
+});
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+});
+
+});
 
 
 /* =========================================================
    启动
-   ========================================================= */
+========================================================= */
 
-loadTodayData();
+loadToday();
 
 </script>
 
