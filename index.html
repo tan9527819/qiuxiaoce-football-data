@@ -1406,3 +1406,779 @@ loadToday();
 
 </body>
 </html>
+/* =====================================================
+   竞彩足球预测分析 V3 高级分析引擎
+   历史同赔 / 相似盘型 / 冷门 / 变盘 / 综合评分
+===================================================== */
+
+function advancedProbability(m){
+
+    const p = marketProbability(m);
+
+    let hp = p.home;
+    let dp = p.draw;
+    let ap = p.away;
+
+    const hist = analyzeSimilar(m);
+
+    let histHome = null;
+    let histDraw = null;
+    let histAway = null;
+
+    if(hist.count > 0){
+
+        const rows = findSimilar(m);
+
+        let w = 0;
+        let d = 0;
+        let l = 0;
+
+        rows.forEach(r=>{
+
+            const result =
+                r["赛果"] ||
+                r["结果"] ||
+                r["result"] ||
+                r["Result"] ||
+                r["竞彩结果"] ||
+                "";
+
+            const s = String(result).trim();
+
+            if(
+                s==="胜" ||
+                s==="主胜" ||
+                s==="3"
+            ) w++;
+
+            else if(
+                s==="平" ||
+                s==="1"
+            ) d++;
+
+            else if(
+                s==="负" ||
+                s==="客胜" ||
+                s==="0"
+            ) l++;
+
+        });
+
+        const total = w+d+l;
+
+        if(total >= 5){
+
+            histHome = w/total;
+            histDraw = d/total;
+            histAway = l/total;
+
+            /*
+             * 当前市场 60%
+             * 历史同赔 40%
+             */
+            hp = hp*0.60 + histHome*0.40;
+            dp = dp*0.60 + histDraw*0.40;
+            ap = ap*0.60 + histAway*0.40;
+
+            const sum = hp+dp+ap;
+
+            hp/=sum;
+            dp/=sum;
+            ap/=sum;
+        }
+    }
+
+    const arr=[
+        {name:"主胜",value:hp},
+        {name:"平",value:dp},
+        {name:"客胜",value:ap}
+    ].sort((a,b)=>b.value-a.value);
+
+    const first=arr[0];
+    const second=arr[1];
+
+    let risk=0;
+
+    /* 概率接近 */
+    if(first.value-second.value < 0.05)
+        risk+=30;
+    else if(first.value-second.value < 0.10)
+        risk+=20;
+    else if(first.value-second.value < 0.15)
+        risk+=10;
+
+    /* 平局高概率 */
+    if(dp>=0.31)
+        risk+=15;
+
+    /* 首选概率不足 */
+    if(first.value<0.40)
+        risk+=25;
+    else if(first.value<0.45)
+        risk+=15;
+
+    /* 历史样本不足 */
+    if(hist.count<5)
+        risk+=15;
+
+    risk=Math.min(100,risk);
+
+    let label="正常";
+
+    if(risk>=70)
+        label="高风险";
+    else if(risk>=50)
+        label="风险偏高";
+    else if(risk>=30)
+        label="需要防范";
+    else
+        label="相对稳定";
+
+    let cold="";
+
+    if(first.value<0.40)
+        cold="超级冷门观察";
+
+    else if(first.value<0.45)
+        cold="冷门观察";
+
+    /*
+     * 平局强化
+     */
+    let drawAlert="";
+
+    if(
+        dp>=0.31 &&
+        Math.abs(hp-ap)<=0.10
+    ){
+        drawAlert="强烈防平";
+    }
+    else if(dp>=0.29){
+        drawAlert="重点防平";
+    }
+
+    /*
+     * 让平逻辑
+     *
+     * 如果主客概率接近，而平局概率较高，
+     * 将“让平”作为保护方向。
+     */
+    let handicap="";
+
+    if(
+        Math.abs(hp-ap)<=0.12 &&
+        dp>=0.29
+    ){
+        handicap="让平观察";
+    }
+
+    return {
+        home:hp,
+        draw:dp,
+        away:ap,
+        first:first,
+        second:second,
+        risk:risk,
+        label:label,
+        cold:cold,
+        drawAlert:drawAlert,
+        handicap:handicap,
+        historyCount:hist.count,
+        histHome:histHome,
+        histDraw:histDraw,
+        histAway:histAway
+    };
+}
+
+
+/* =====================================================
+   数据异动高级判断
+===================================================== */
+
+function advancedMovement(m){
+
+    const o=m.opening;
+    const n=m.odds;
+
+    if(
+        !o.home ||
+        !o.draw ||
+        !o.away ||
+        !n.home ||
+        !n.draw ||
+        !n.away
+    ){
+        return {
+            available:false,
+            text:"暂无完整初盘/即时盘数据"
+        };
+    }
+
+    const dh=n.home-o.home;
+    const dd=n.draw-o.draw;
+    const da=n.away-o.away;
+
+    let signals=[];
+
+    if(dh<=-0.15)
+        signals.push("主胜明显降赔");
+
+    if(dh>=0.15)
+        signals.push("主胜明显升赔");
+
+    if(dd<=-0.12)
+        signals.push("平局降赔");
+
+    if(dd>=0.12)
+        signals.push("平局升赔");
+
+    if(da<=-0.15)
+        signals.push("客胜明显降赔");
+
+    if(da>=0.15)
+        signals.push("客胜明显升赔");
+
+    return {
+        available:true,
+        signals:signals
+    };
+}
+
+
+/* =====================================================
+   高级赛事卡片
+===================================================== */
+
+function renderAdvancedMatches(){
+
+    if(!matches.length)
+        return;
+
+    const list=document.getElementById("matchList");
+
+    const old=list.innerHTML;
+
+    /*
+     * 在原赛事卡片后面增加高级分析
+     */
+    list.innerHTML=old;
+
+    const cards=list.querySelectorAll(".card");
+
+    matches.forEach((m,i)=>{
+
+        if(!cards[i]) return;
+
+        const a=advancedProbability(m);
+        const mv=advancedMovement(m);
+
+        const box=document.createElement("div");
+
+        box.style.marginTop="12px";
+
+        box.innerHTML=`
+
+        <div style="
+            border-top:1px solid #eee;
+            padding-top:12px;
+        ">
+
+            <div style="
+                font-size:14px;
+                font-weight:800;
+                margin-bottom:8px;
+            ">
+                🧠 深度模型
+            </div>
+
+            <div class="grid">
+
+                <div class="stat">
+                    <b>${pct(a.home)}</b>
+                    <span>模型主胜</span>
+                </div>
+
+                <div class="stat">
+                    <b>${pct(a.draw)}</b>
+                    <span>模型平局</span>
+                </div>
+
+                <div class="stat">
+                    <b>${pct(a.away)}</b>
+                    <span>模型客胜</span>
+                </div>
+
+            </div>
+
+            <div style="margin-top:10px">
+
+                <span class="badge hot">
+                    首选：${a.first.name}
+                </span>
+
+                ${
+                    a.handicap
+                    ? `<span class="badge draw">${a.handicap}</span>`
+                    : ""
+                }
+
+                ${
+                    a.drawAlert
+                    ? `<span class="badge draw">${a.drawAlert}</span>`
+                    : ""
+                }
+
+                ${
+                    a.cold
+                    ? `<span class="badge cold">${a.cold}</span>`
+                    : ""
+                }
+
+                <span class="badge">
+                    风险 ${a.risk}/100
+                </span>
+
+            </div>
+
+            <div class="reason">
+
+                历史同赔样本：
+                <b>${a.historyCount}</b> 场
+
+                ${
+                    a.historyCount>=5
+                    ? "<br>已进入历史样本校准。"
+                    : "<br>历史样本不足，不强行使用历史数据修正。"
+                }
+
+                ${
+                    mv.available
+                    ? "<br>变盘信号："+(
+                        mv.signals.length
+                        ? mv.signals.join("、")
+                        : "暂无明显异动"
+                    )
+                    : ""
+                }
+
+            </div>
+
+        </div>
+
+        `;
+
+        cards[i].appendChild(box);
+
+    });
+
+}
+
+
+/* =====================================================
+   高级预测排行榜
+===================================================== */
+
+function renderAdvancedForecast(){
+
+    const box=document.getElementById("forecastList");
+
+    if(!box || !matches.length)
+        return;
+
+    const data=matches.map(m=>{
+
+        const a=advancedProbability(m);
+
+        return {
+            m:m,
+            a:a
+        };
+
+    }).sort((x,y)=>{
+
+        /*
+         * 不是单纯按照最高概率排序，
+         * 同时考虑风险。
+         */
+        const sx=x.a.first.value*100-x.a.risk*0.20;
+        const sy=y.a.first.value*100-y.a.risk*0.20;
+
+        return sy-sx;
+
+    });
+
+    box.innerHTML=data.map((x,i)=>{
+
+        const m=x.m;
+        const a=x.a;
+
+        return `
+
+        <div class="card">
+
+            <div class="muted">
+                NO.${i+1} · ${esc(m.league)}
+            </div>
+
+            <div class="match-title">
+                ${esc(m.home)}
+                <span class="muted"> vs </span>
+                ${esc(m.away)}
+            </div>
+
+            <div style="margin-top:8px">
+
+                <span class="badge hot">
+                    首选 ${a.first.name}
+                </span>
+
+                <span class="badge">
+                    ${pct(a.first.value)}
+                </span>
+
+                <span class="badge">
+                    风险 ${a.risk}
+                </span>
+
+                ${
+                    a.handicap
+                    ? `<span class="badge draw">${a.handicap}</span>`
+                    : ""
+                }
+
+                ${
+                    a.cold
+                    ? `<span class="badge cold">${a.cold}</span>`
+                    : ""
+                }
+
+            </div>
+
+            <div class="reason">
+
+                概率：
+                主 ${pct(a.home)} /
+                平 ${pct(a.draw)} /
+                客 ${pct(a.away)}
+
+                <br>
+
+                ${
+                    a.drawAlert
+                    ? "⚠️ "+a.drawAlert+"。"
+                    : ""
+                }
+
+                ${
+                    a.historyCount>=5
+                    ? `<br>历史同赔：${a.historyCount}场，已纳入模型。`
+                    : `<br>历史同赔：样本不足。`
+                }
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =====================================================
+   高级串关
+===================================================== */
+
+function renderAdvancedParlays(){
+
+    const box=document.getElementById("parlays");
+
+    if(!box || !matches.length)
+        return;
+
+    const data=matches.map(m=>{
+
+        const a=advancedProbability(m);
+
+        return {
+            m:m,
+            a:a
+        };
+
+    });
+
+    /*
+     * 正常候选
+     */
+    const normal=data
+        .filter(x=>
+            x.a.first.value>=0.45 &&
+            x.a.risk<55
+        )
+        .sort((a,b)=>
+            b.a.first.value-a.a.first.value
+        );
+
+    /*
+     * 平局/让平候选
+     */
+    const draw=data
+        .filter(x=>
+            x.a.draw>=0.29 &&
+            x.a.risk<70
+        )
+        .sort((a,b)=>
+            b.a.draw-a.a.draw
+        );
+
+    /*
+     * 冷门候选
+     */
+    const cold=data
+        .filter(x=>
+            x.a.cold
+        )
+        .sort((a,b)=>
+            b.a.risk-a.a.risk
+        );
+
+    let html="";
+
+    html+=`
+
+    <div class="card">
+
+        <div class="section-title">
+            🟢 高概率组合
+        </div>
+
+        ${
+            normal.length
+            ? normal.slice(0,8).map((x,i)=>`
+                <div class="reason">
+                    ${i+1}.
+                    ${esc(x.m.home)} vs ${esc(x.m.away)}
+                    → <b>${x.a.first.name}</b>
+                    (${pct(x.a.first.value)})
+                </div>
+            `).join("")
+            : `<div class="reason">暂无足够证据，不强行推荐。</div>`
+        }
+
+    </div>
+
+    <div class="card">
+
+        <div class="section-title">
+            🟡 让平 / 平重点
+        </div>
+
+        ${
+            draw.length
+            ? draw.slice(0,8).map((x,i)=>`
+                <div class="reason">
+                    ${i+1}.
+                    ${esc(x.m.home)} vs ${esc(x.m.away)}
+                    →
+                    <b>${x.a.draw>=0.31?"平":"让平观察"}</b>
+                    平局概率 ${pct(x.a.draw)}
+                </div>
+            `).join("")
+            : `<div class="reason">暂未发现明显平局结构。</div>`
+        }
+
+    </div>
+
+    <div class="card">
+
+        <div class="section-title">
+            🔴 冷门 / 超级冷门
+        </div>
+
+        ${
+            cold.length
+            ? cold.slice(0,5).map((x,i)=>`
+                <div class="reason">
+                    ${i+1}.
+                    ${esc(x.m.home)} vs ${esc(x.m.away)}
+                    →
+                    <b>${x.a.cold}</b>
+                    <br>
+                    风险 ${x.a.risk}/100，
+                    首选概率 ${pct(x.a.first.value)}
+                </div>
+            `).join("")
+            : `<div class="reason">暂无明确超级冷门信号。</div>`
+        }
+
+    </div>
+
+    `;
+
+    box.innerHTML=html;
+
+}
+
+
+/* =====================================================
+   30天真实统计
+===================================================== */
+
+function advancedThirtyDays(){
+
+    const box=document.getElementById("thirtyDays");
+
+    if(!box)
+        return;
+
+    if(!historyRows.length){
+
+        box.innerHTML="暂无历史数据库。";
+
+        return;
+    }
+
+    let wins=0;
+    let draws=0;
+    let losses=0;
+    let unknown=0;
+
+    historyRows.forEach(r=>{
+
+        const result=
+            r["赛果"]||
+            r["结果"]||
+            r["result"]||
+            r["Result"]||
+            "";
+
+        const s=String(result).trim();
+
+        if(
+            s==="胜"||
+            s==="主胜"||
+            s==="3"
+        )
+            wins++;
+
+        else if(
+            s==="平"||
+            s==="1"
+        )
+            draws++;
+
+        else if(
+            s==="负"||
+            s==="客胜"||
+            s==="0"
+        )
+            losses++;
+
+        else
+            unknown++;
+
+    });
+
+    const known=wins+draws+losses;
+
+    box.innerHTML=`
+
+        <div class="grid">
+
+            <div class="stat">
+                <b>${wins}</b>
+                <span>主胜</span>
+            </div>
+
+            <div class="stat">
+                <b>${draws}</b>
+                <span>平局</span>
+            </div>
+
+            <div class="stat">
+                <b>${losses}</b>
+                <span>客胜</span>
+            </div>
+
+        </div>
+
+        <div class="reason">
+
+            已识别赛果：
+            <b>${known}</b> 条
+
+            <br>
+
+            未识别：
+            <b>${unknown}</b> 条
+
+            <br><br>
+
+            ⚠️ 当前 CSV 如果没有“预测结果/预测方向”字段，
+            这里只能统计历史赛果分布，
+            不能冒充预测命中率。
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   自动刷新高级模块
+===================================================== */
+
+function refreshAdvanced(){
+
+    try{
+        renderAdvancedMatches();
+        renderAdvancedForecast();
+        renderAdvancedParlays();
+        advancedThirtyDays();
+    }catch(e){
+        console.log("高级分析错误",e);
+    }
+
+}
+
+
+/*
+ * 今日数据异步加载完成后自动执行
+ */
+setTimeout(refreshAdvanced,1200);
+setTimeout(refreshAdvanced,3000);
+
+
+/* =====================================================
+   拦截原来的刷新
+===================================================== */
+
+const oldLoadToday=loadToday;
+
+loadToday=async function(){
+
+    await oldLoadToday();
+
+    setTimeout(refreshAdvanced,300);
+
+};
+
+
+/* =====================================================
+   历史数据库载入后重新分析
+===================================================== */
+
+const oldUpdateHistoryInfo=updateHistoryInfo;
+
+updateHistoryInfo=function(){
+
+    oldUpdateHistoryInfo();
+
+    setTimeout(refreshAdvanced,300);
+
+};
+</script>
+</body>
+</html>
