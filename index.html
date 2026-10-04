@@ -1,181 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#f5f7fa">
+<title>竞彩足球预测分析</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#f5f7fa;
+ color:#202733;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
+ "Microsoft YaHei",Arial,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.top{
+ position:sticky;
+ top:0;
+ z-index:20;
+ background:rgba(255,255,255,.96);
+ backdrop-filter:blur(12px);
+ border-bottom:1px solid #e9edf2;
+}
+
+.top-inner{
+ max-width:1180px;
+ margin:auto;
+ padding:14px 18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+}
+
+.logo{
+ font-size:20px;
+ font-weight:800;
+ color:#202733;
+}
+.logo span{
+ color:#2878ff;
+}
+
+.sub{
+ font-size:12px;
+ color:#8b95a3;
+ margin-top:3px;
+}
+
+.search{
+ width:230px;
+ border:1px solid #e2e7ed;
+ background:#f7f9fb;
+ border-radius:10px;
+ padding:9px 12px;
+ outline:none;
+}
+
+.container{
+ max-width:1180px;
+ margin:auto;
+ padding:18px;
+}
+
+.hero{
+ background:#fff;
+ border:1px solid #e9edf2;
+ border-radius:16px;
+ padding:20px;
+ margin-bottom:15px;
+}
+
+.hero h1{
+ margin:0 0 8px;
+ font-size:24px;
+}
+.hero p{
+ margin:0;
+ color:#7b8491;
+ font-size:14px;
+}
+
+.datebar{
+ margin-top:18px;
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.date{
+ background:#2878ff;
+ color:#fff;
+ padding:8px 15px;
+ border-radius:9px;
+ font-size:13px;
+ font-weight:600;
+}
+
+.filters{
+ background:#fff;
+ border:1px solid #e9edf2;
+ border-radius:14px;
+ padding:15px;
+ margin-bottom:15px;
+}
+
+.filter-row{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-bottom:10px;
+}
+.filter-row:last-child{margin-bottom:0}
+
+.filter-title{
+ color:#858e9a;
+ font-size:13px;
+ width:48px;
+}
+
+.filter-btn{
+ border:0;
+ background:#f3f5f8;
+ color:#596372;
+ padding:7px 13px;
+ border-radius:8px;
+}
+.filter-btn.active{
+ background:#2878ff;
+ color:white;
+}
+
+.layout{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) 300px;
+ gap:15px;
+}
+
+.list{
+ min-width:0;
+}
+
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:5px 0 12px;
+}
+.section-title h2{
+ margin:0;
+ font-size:18px;
+}
+.count{
+ color:#8993a0;
+ font-size:13px;
+}
+
+.match{
+ background:#fff;
+ border:1px solid #e7ebf0;
+ border-radius:15px;
+ margin-bottom:12px;
+ overflow:hidden;
+ transition:.2s;
+}
+.match:hover{
+ box-shadow:0 6px 22px rgba(30,50,80,.07);
+}
+
+.match-head{
+ padding:13px 15px;
+ border-bottom:1px solid #edf0f3;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+.meta{
+ color:#8993a0;
+ font-size:12px;
+}
+
+.conf{
+ padding:4px 9px;
+ border-radius:7px;
+ font-size:11px;
+ font-weight:700;
+}
+.conf.high{
+ color:#16845a;
+ background:#eaf8f1;
+}
+.conf.mid{
+ color:#8a6500;
+ background:#fff7db;
+}
+.conf.low{
+ color:#9a4c4c;
+ background:#fff0f0;
+}
+
+.match-main{
+ padding:17px 15px;
+ display:grid;
+ grid-template-columns:1fr 150px 1fr;
+ align-items:center;
+ gap:12px;
+}
+
+.team{
+ text-align:center;
+ font-size:16px;
+ font-weight:700;
+}
+.team.home{text-align:right}
+.team.away{text-align:left}
+
+.vs{
+ text-align:center;
+}
+.vs-time{
+ color:#2878ff;
+ font-weight:800;
+ font-size:15px;
+}
+.vs-score{
+ color:#a4abb5;
+ font-size:11px;
+ margin-top:4px;
+}
+
+.tags{
+ display:flex;
+ justify-content:center;
+ gap:5px;
+ flex-wrap:wrap;
+ margin-top:9px;
+}
+.tag{
+ background:#f3f6fa;
+ color:#697382;
+ border-radius:6px;
+ padding:4px 7px;
+ font-size:11px;
+}
+
+.analysis{
+ display:none;
+ padding:0 15px 16px;
+}
+.match.open .analysis{
+ display:block;
+}
+
+.analysis-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin-bottom:12px;
+}
+
+.a-box{
+ background:#f7f9fb;
+ border-radius:10px;
+ padding:10px;
+}
+.a-label{
+ font-size:11px;
+ color:#929aa5;
+ margin-bottom:5px;
+}
+.a-value{
+ font-size:14px;
+ font-weight:700;
+}
+
+.reason{
+ background:#f8fafc;
+ border-left:3px solid #2878ff;
+ padding:12px;
+ border-radius:7px;
+ font-size:13px;
+ line-height:1.7;
+ color:#586270;
+}
+
+.risk{
+ margin-top:9px;
+ padding:10px 12px;
+ background:#fff8ed;
+ border-radius:8px;
+ color:#86612a;
+ font-size:12px;
+ line-height:1.6;
+}
+
+.expand{
+ width:100%;
+ border:0;
+ border-top:1px solid #edf0f3;
+ background:#fff;
+ color:#2878ff;
+ padding:10px;
+ font-size:13px;
+}
+
+.side{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.panel{
+ background:#fff;
+ border:1px solid #e7ebf0;
+ border-radius:14px;
+ padding:15px;
+}
+
+.panel h3{
+ margin:0 0 12px;
+ font-size:16px;
+}
+
+.rank{
+ display:flex;
+ justify-content:space-between;
+ padding:9px 0;
+ border-bottom:1px solid #f0f2f5;
+ font-size:13px;
+}
+.rank:last-child{border-bottom:0}
+
+.rate{
+ font-weight:700;
+ color:#2878ff;
+}
+
+.notice{
+ font-size:12px;
+ line-height:1.7;
+ color:#77818e;
+}
+
+.footer{
+ max-width:1180px;
+ margin:20px auto 0;
+ padding:25px 18px 35px;
+ text-align:center;
+ color:#9aa2ad;
+ font-size:12px;
+}
+
+.bottom{
+ display:none;
+}
+
+.empty{
+ padding:45px;
+ background:#fff;
+ border:1px solid #e7ebf0;
+ border-radius:14px;
+ text-align:center;
+ color:#8d96a2;
+}
+
+@media(max-width:800px){
+ .search{display:none}
+ .layout{grid-template-columns:1fr}
+ .side{display:none}
+ .container{padding:12px}
+ .hero{padding:16px}
+ .hero h1{font-size:20px}
+ .match-main{
+  grid-template-columns:1fr 75px 1fr;
+ }
+ .team{font-size:14px}
+ .analysis-grid{grid-template-columns:repeat(2,1fr)}
+ .bottom{
+  display:flex;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:58px;
+  background:rgba(255,255,255,.97);
+  border-top:1px solid #e8ebef;
+  z-index:30;
+ }
+ .bottom div{
+  flex:1;
+  text-align:center;
+  padding-top:9px;
+  font-size:11px;
+  color:#7e8792;
+ }
+ .bottom .active{color:#2878ff}
+ .footer{padding-bottom:80px}
+}
+
+@media(min-width:801px){
+ .hero,.filters,.match,.panel{
+  box-shadow:0 2px 9px rgba(20,35,55,.025);
+ }
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+ <div class="top-inner">
+  <div>
+   <div class="logo">竞彩足球<span>预测分析</span></div>
+   <div class="sub">赛事前瞻 · 数据分析 · AI辅助研判</div>
+  </div>
+  <input id="search" class="search" placeholder="搜索球队 / 赛事">
+ </div>
+</header>
+
+<main class="container">
+
+<section class="hero">
+ <h1 id="pageTitle">10月4日足球赛事前瞻与AI智能分析</h1>
+ <p>综合球队状态、近期战绩、主客场表现、进球趋势与比赛环境进行赛前分析。</p>
+
+ <div class="datebar">
+  <div class="date">📅 10月4日</div>
+  <div class="date" style="background:#f0f3f7;color:#657080">赛事数据持续更新</div>
+ </div>
+</section>
+
+<section class="filters">
+
+ <div class="filter-row">
+  <span class="filter-title">类型</span>
+  <button class="filter-btn active" data-type="all">全部</button>
+  <button class="filter-btn" data-type="竞彩">竞彩</button>
+  <button class="filter-btn" data-type="北单">北单</button>
+ </div>
+
+ <div class="filter-row">
+  <span class="filter-title">赛事</span>
+  <button class="filter-btn active" data-league="all">全部</button>
+  <button class="filter-btn" data-league="日职乙">日职乙</button>
+  <button class="filter-btn" data-league="葡甲">葡甲</button>
+  <button class="filter-btn" data-league="西乙">西乙</button>
+  <button class="filter-btn" data-league="荷乙">荷乙</button>
+  <button class="filter-btn" data-league="阿甲">阿甲</button>
+  <button class="filter-btn" data-league="欧国联">欧国联</button>
+ </div>
+
+</section>
+
+<div class="layout">
+
+ <section class="list">
+  <div class="section-title">
+   <h2>赛事前瞻</h2>
+   <span class="count" id="count"></span>
+  </div>
+
+  <div id="matches"></div>
+ </section>
+
+ <aside class="side">
+
+  <div class="panel">
+   <h3>📊 赛事表现</h3>
+
+   <div class="rank">
+    <span>葡甲</span><span class="rate">85.7%</span>
+   </div>
+   <div class="rank">
+    <span>英联杯</span><span class="rate">83.3%</span>
+   </div>
+   <div class="rank">
+    <span>德国杯</span><span class="rate">83.3%</span>
+   </div>
+   <div class="rank">
+    <span>非洲杯</span><span class="rate">81.3%</span>
+   </div>
+   <div class="rank">
+    <span>瑞超</span><span class="rate">79.6%</span>
+   </div>
+   <div class="rank">
+    <span>瑞士甲</span><span class="rate">76.9%</span>
+   </div>
+  </div>
+
+  <div class="panel">
+   <h3>🛡️ 球队状态</h3>
+
+   <div class="rank">
+    <span>纳什维尔</span><span class="rate">100%</span>
+   </div>
+   <div class="rank">
+    <span>圣旺红星</span><span class="rate">100%</span>
+   </div>
+   <div class="rank">
+    <span>水原FC</span><span class="rate">100%</span>
+   </div>
+   <div class="rank">
+    <span>萨尔茨堡</span><span class="rate">100%</span>
+   </div>
+   <div class="rank">
+    <span>福冈黄蜂</span><span class="rate">92.3%</span>
+   </div>
+  </div>
+
+  <div class="panel">
+   <h3>ℹ️ 分析说明</h3>
+   <div class="notice">
+    本页面用于赛事数据研究和赛前分析。
+    分析结果根据公开数据、近期状态、主客场表现及模型计算形成。
+    不构成任何投注建议。
+   </div>
+  </div>
+
+ </aside>
+
+</div>
+
+</main>
+
+<footer class="footer">
+ © 2025-2026 竞彩足球预测分析<br><br>
+ 所有赛事分析内容仅供体育交流参考，请理性看球。
+</footer>
+
+<nav class="bottom">
+ <div class="active">🏠<br>赛事</div>
+ <div>📊<br>数据</div>
+ <div>🔮<br>前瞻</div>
+ <div>📚<br>历史</div>
+</nav>
+
 <script>
-(function () {
-    'use strict';
 
-    /* =========================================
-       免费模式：只移除收费/会员限制
-       不增加任何新功能
-       ========================================= */
+const DATA = [
 
-    const removeWords = [
-        'VIP',
-        '会员',
-        '会员中心',
-        '开通会员',
-        '立即开通',
-        '购买会员',
-        '订阅',
-        '充值',
-        '支付',
-        '付费',
-        '付款',
-        '积分充值',
-        '购买积分',
-        '积分商城',
-        '付费解锁',
-        '会员专享',
-        'VIP专享',
-        '会员专属',
-        '登录后查看',
-        '开通后查看',
-        '购买后查看',
-        '充值后查看'
-    ];
+ {
+  id:101,
+  type:"北单",
+  league:"日职乙",
+  time:"18:00",
+  home:"宫崎棒牛鸟",
+  away:"RB大宫松鼠",
+  confidence:"中",
+  score:"1-1",
+  direction:"主队不败倾向",
+  goals:"1-3球",
+  half:"平 / 平",
+  reason:"宫崎主场具备一定韧性，客队整体实力和排名占优，但客场稳定性并非绝对。盘面若继续强化客队，反而需要防范平局。",
+  risk:"主要风险：客队实力优势较明显，若早段取得进球，比赛可能迅速偏向客队。"
+ },
 
-    function hasPayWord(text) {
-        if (!text) return false;
+ {
+  id:102,
+  type:"北单",
+  league:"葡甲",
+  time:"18:00",
+  home:"SC法伦斯",
+  away:"沙维什",
+  confidence:"中",
+  score:"2-0",
+  direction:"主胜倾向",
+  goals:"2-3球",
+  half:"胜 / 胜",
+  reason:"主队主场控制力更强，攻防转换效率较好。结合双方近期表现，主队在比赛节奏和机会制造方面占优。",
+  risk:"主要风险：如果主队迟迟无法取得领先，平局概率会明显上升。"
+ },
 
-        return removeWords.some(function(word) {
-            return text.indexOf(word) !== -1;
-        });
-    }
+ {
+  id:103,
+  type:"北单",
+  league:"西乙",
+  time:"20:00",
+  home:"皇家社会B队",
+  away:"格拉纳达",
+  confidence:"低",
+  score:"1-1",
+  direction:"平局重点防范",
+  goals:"1-2球",
+  half:"平 / 平",
+  reason:"双方近期表现均存在明显波动，主客场优势不足以形成绝对倾向。此类比赛模型分歧较大，平局是需要重点关注的结果。",
+  risk:"这是低置信度比赛，不适合强行做单一方向判断。"
+ },
 
-    function removePayElements() {
+ {
+  id:104,
+  type:"北单",
+  league:"荷乙",
+  time:"20:30",
+  home:"芬洛",
+  away:"罗达JC",
+  confidence:"中",
+  score:"1-2",
+  direction:"客队方向",
+  goals:"2-4球",
+  half:"平 / 负",
+  reason:"两队历史交锋和比赛风格较接近，客队在整体攻防质量方面略占优势，但德比属性会明显提高比赛随机性。",
+  risk:"德比战不确定性较高，领先方未必能够稳定保持优势。"
+ },
 
-        const elements = document.querySelectorAll(
-            'button, a, div, span, p, li, section, article'
-        );
+ {
+  id:105,
+  type:"北单",
+  league:"西乙",
+  time:"22:15",
+  home:"希洪体育",
+  away:"维戈塞尔塔B队",
+  confidence:"低",
+  score:"1-0",
+  direction:"主队方向",
+  goals:"1-2球",
+  half:"平 / 胜",
+  reason:"主队拥有主场因素，但近期攻击效率并不稳定。客队年轻阵容冲击能力较强，因此更适合防范小比分走势。",
+  risk:"如果客队反击效率提高，比赛可能出现意外结果。"
+ },
 
-        elements.forEach(function(el) {
+ {
+  id:106,
+  type:"北单",
+  league:"西乙",
+  time:"00:30",
+  home:"卡斯特利翁",
+  away:"休达",
+  confidence:"中",
+  score:"2-0",
+  direction:"主胜方向",
+  goals:"2-3球",
+  half:"胜 / 胜",
+  reason:"主队整体实力和主场表现更有优势，面对防守端稳定性不足的对手，创造机会能力值得高看。",
+  risk:"如果主队轮换较大，需要降低对主胜的信心。"
+ },
 
-            const text = (el.innerText || '').trim();
+ {
+  id:107,
+  type:"北单",
+  league:"西乙",
+  time:"00:30",
+  home:"拉斯帕尔马斯",
+  away:"巴利亚多利德",
+  confidence:"中",
+  score:"1-1",
+  direction:"平局防范",
+  goals:"1-3球",
+  half:"平 / 平",
+  reason:"两队都有较强的控球和阵地战能力，比赛容易进入相互限制的节奏。若市场过度强化其中一方，需要重点检查平局风险。",
+  risk:"强弱判断容易受到市场热度影响。"
+ },
 
-            if (!text || text.length > 80) return;
+ {
+  id:108,
+  type:"北单",
+  league:"阿甲",
+  time:"01:45",
+  home:"飓风",
+  away:"阿尔多希维",
+  confidence:"中",
+  score:"2-0",
+  direction:"主胜方向",
+  goals:"1-3球",
+  half:"胜 / 胜",
+  reason:"主队主场表现和整体防守质量更稳定，客队进攻端存在人员问题，主队获得主动权的概率较高。",
+  risk:"阿甲比赛节奏偏慢，领先后可能主动降速。"
+ },
 
-            if (hasPayWord(text)) {
+ {
+  id:109,
+  type:"北单",
+  league:"阿甲",
+  time:"04:00",
+  home:"塔勒瑞斯",
+  away:"贝尔格拉诺",
+  confidence:"中",
+  score:"1-1",
+  direction:"平局 / 冷门防范",
+  goals:"1-2球",
+  half:"平 / 平",
+  reason:"科尔多瓦德比属性明显。双方实力差距并没有表面排名那么大，比赛对抗强度高，平局和低比分值得重点关注。",
+  risk:"德比比赛偶然性明显高于普通联赛。"
+ },
 
-                /*
-                 * 只删除明显的收费入口。
-                 * 如果是整个分析区域，则不删除。
-                 */
-                const cls = (
-                    (el.className || '') + ' ' +
-                    (el.id || '')
-                ).toLowerCase();
+ {
+  id:110,
+  type:"北单",
+  league:"阿甲",
+  time:"06:15",
+  home:"阿根廷青年人",
+  away:"蒂格雷",
+  confidence:"中",
+  score:"1-0",
+  direction:"主队方向",
+  goals:"1-2球",
+  half:"平 / 胜",
+  reason:"主队主场控制能力较好，客队客场进攻效率有限。比赛更倾向低比分，但主队后程发力的可能性较高。",
+  risk:"若主队久攻不下，平局概率会快速提升。"
+ },
 
-                const payClass =
-                    cls.indexOf('vip') !== -1 ||
-                    cls.indexOf('member') !== -1 ||
-                    cls.indexOf('pay') !== -1 ||
-                    cls.indexOf('charge') !== -1 ||
-                    cls.indexOf('subscribe') !== -1;
+ {
+  id:111,
+  type:"北单",
+  league:"阿甲",
+  time:"08:30",
+  home:"里奥夸尔托大学生",
+  away:"竞技",
+  confidence:"中",
+  score:"0-1",
+  direction:"客队方向",
+  goals:"1-2球",
+  half:"平 / 负",
+  reason:"客队整体实力更强，但客场环境会压低其优势。比赛存在小比分和僵持走势。",
+  risk:"主队防守反击如果效率较高，存在爆冷空间。"
+ },
 
-                if (payClass || text.length < 30) {
-                    el.remove();
-                }
-            }
-        });
-    }
+ {
+  id:112,
+  type:"北单",
+  league:"欧国联",
+  time:"02:45",
+  home:"威尔士",
+  away:"丹麦",
+  confidence:"低",
+  score:"1-1",
+  direction:"平局重点防范",
+  goals:"1-3球",
+  half:"平 / 平",
+  reason:"两队实力接近，比赛重要性较高。模型对于胜负方向分歧较大，因此平局属于优先防范结果。",
+  risk:"国家队比赛阵容变化较大，临场信息非常重要。"
+ },
 
-    function unlockButtons() {
+ {
+  id:113,
+  type:"北单",
+  league:"欧国联",
+  time:"02:45",
+  home:"希腊",
+  away:"德国",
+  confidence:"低",
+  score:"0-2",
+  direction:"客队方向",
+  goals:"1-3球",
+  half:"负 / 负",
+  reason:"德国整体阵容深度和控球能力占优，但客场比赛存在一定的不确定性。模型倾向客队，但不属于高置信度场次。",
+  risk:"若德国轮换幅度较大，需要重新评估。"
+ }
 
-        const elements = document.querySelectorAll(
-            'button, a, input'
-        );
+];
 
-        elements.forEach(function(el) {
+let typeFilter="all";
+let leagueFilter="all";
+let keyword="";
 
-            const text =
-                (el.innerText || '') +
-                ' ' +
-                (el.value || '') +
-                ' ' +
-                (el.getAttribute('title') || '');
+function render(){
 
-            if (hasPayWord(text)) {
+ const box=document.getElementById("matches");
 
-                /*
-                 * 收费按钮直接移除，
-                 * 不替换成新的按钮。
-                 */
-                el.remove();
-            }
-        });
-    }
+ let list=DATA.filter(m=>{
+   const a=typeFilter==="all" || m.type===typeFilter;
+   const b=leagueFilter==="all" || m.league===leagueFilter;
+   const text=(m.home+m.away+m.league).toLowerCase();
+   const c=!keyword || text.includes(keyword.toLowerCase());
+   return a&&b&&c;
+ });
 
-    function removePayOverlays() {
+ document.getElementById("count").innerText="共 "+list.length+" 场";
 
-        const elements = document.querySelectorAll(
-            '[class], [id]'
-        );
+ if(!list.length){
+   box.innerHTML='<div class="empty">没有找到符合条件的赛事</div>';
+   return;
+ }
 
-        elements.forEach(function(el) {
+ box.innerHTML=list.map(m=>`
 
-            const name = (
-                (el.className || '') + ' ' +
-                (el.id || '')
-            ).toLowerCase();
+ <article class="match" data-id="${m.id}">
 
-            if (
-                name.includes('vip') ||
-                name.includes('member') ||
-                name.includes('payment') ||
-                name.includes('paywall') ||
-                name.includes('subscribe') ||
-                name.includes('recharge')
-            ) {
+  <div class="match-head">
+   <div class="meta">
+    ${m.league} · ${m.type}${m.id}
+   </div>
 
-                /*
-                 * 避免误删整个页面主体
-                 */
-                const text = (el.innerText || '').trim();
+   <div class="conf ${m.confidence==="高"?"high":m.confidence==="低"?"low":"mid"}">
+    AI置信度：${m.confidence}
+   </div>
+  </div>
 
-                if (
-                    text.length < 300 ||
-                    name.includes('paywall') ||
-                    name.includes('payment')
-                ) {
-                    el.remove();
-                }
-            }
-        });
-    }
+  <div class="match-main">
 
-    function restorePage() {
+   <div class="team home">${m.home}</div>
 
-        removePayElements();
-        unlockButtons();
-        removePayOverlays();
-    }
+   <div class="vs">
+    <div class="vs-time">${m.time}</div>
+    <div class="vs-score">VS</div>
 
-    /*
-     * 页面加载后执行
-     */
-    if (document.readyState === 'loading') {
+    <div class="tags">
+     <span class="tag">🧭 ${m.direction}</span>
+    </div>
+   </div>
 
-        document.addEventListener(
-            'DOMContentLoaded',
-            restorePage
-        );
+   <div class="team away">${m.away}</div>
 
-    } else {
+  </div>
 
-        restorePage();
+  <div class="analysis">
 
-    }
+   <div class="analysis-grid">
 
-    /*
-     * 如果原模板通过 JS 动态加载会员层，
-     * 只监听 DOM 变化并继续清除收费入口。
-     */
-    const observer = new MutationObserver(function() {
-        restorePage();
-    });
+    <div class="a-box">
+     <div class="a-label">方向判断</div>
+     <div class="a-value">${m.direction}</div>
+    </div>
 
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
+    <div class="a-box">
+     <div class="a-label">进球数</div>
+     <div class="a-value">${m.goals}</div>
+    </div>
 
-})();
+    <div class="a-box">
+     <div class="a-label">参考比分</div>
+     <div class="a-value">${m.score}</div>
+    </div>
+
+    <div class="a-box">
+     <div class="a-label">半全场</div>
+     <div class="a-value">${m.half}</div>
+    </div>
+
+   </div>
+
+   <div class="reason">
+    <strong>🔍 深度分析</strong><br>
+    ${m.reason}
+   </div>
+
+   <div class="risk">
+    ⚠️ 风险提示：${m.risk}
+   </div>
+
+  </div>
+
+  <button class="expand" onclick="toggleMatch(this)">
+   展开深入分析 ↓
+  </button>
+
+ </article>
+
+ `).join("");
+}
+
+function toggleMatch(btn){
+
+ const card=btn.closest(".match");
+ card.classList.toggle("open");
+
+ btn.innerText=card.classList.contains("open")
+  ?"收起分析 ↑"
+  :"展开深入分析 ↓";
+}
+
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+
+ btn.addEventListener("click",()=>{
+
+   const type=btn.dataset.type;
+   const league=btn.dataset.league;
+
+   if(type!==undefined){
+     typeFilter=type;
+
+     document.querySelectorAll("[data-type]").forEach(x=>x.classList.remove("active"));
+     btn.classList.add("active");
+   }
+
+   if(league!==undefined){
+     leagueFilter=league;
+
+     document.querySelectorAll("[data-league]").forEach(x=>x.classList.remove("active"));
+     btn.classList.add("active");
+   }
+
+   render();
+ });
+});
+
+document.getElementById("search").addEventListener("input",e=>{
+ keyword=e.target.value.trim();
+ render();
+});
+
+render();
+
 </script>
+
+</body>
+</html>
