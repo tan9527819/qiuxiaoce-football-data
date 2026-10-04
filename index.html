@@ -223,27 +223,13 @@ background:#f6f8fa;border-radius:9px;
 padding:12px;font-size:12px;color:#657083;line-height:1.7
 }
 
-.matching{
-margin-top:12px;
-padding:12px;
-background:#f7f9fb;
-border-radius:9px
-}
-.matching strong{font-size:13px}
-.matching p{
-margin:7px 0 0;font-size:12px;
-line-height:1.7;color:#657083
-}
-
 .empty{
 padding:40px;text-align:center;
 background:#fff;border:1px solid #e6e9ef;
 border-radius:13px;color:#8993a3
 }
 
-.bottom{
-display:none
-}
+.bottom{display:none}
 
 @media(max-width:850px){
 .nav{display:none}
@@ -294,10 +280,7 @@ flex:1;border:0;background:#fff;color:#7c8695;font-size:11px
 </div>
 </header>
 
-
 <main class="container">
-
-<!-- =================赛事================ -->
 
 <section id="view-events" class="view active">
 
@@ -369,18 +352,12 @@ placeholder="搜索球队 / 联赛 / 编号">
 
 <div class="notice">
 当前优先级：
-<br>
-① 当前赛事数据
-<br>
-② 赔率/盘口（有数据才分析）
-<br>
-③ 历史相似盘型
-<br>
-④ 历史同赔
-<br>
-⑤ 泊松校准概率
-<br>
-⑥ 实际赛果回测
+<br>① 当前赛事数据
+<br>② 赔率/盘口（有数据才分析）
+<br>③ 历史相似盘型
+<br>④ 历史同赔
+<br>⑤ 泊松校准概率
+<br>⑥ 实际赛果回测
 </div>
 
 </div>
@@ -389,9 +366,6 @@ placeholder="搜索球队 / 联赛 / 编号">
 
 </div>
 </section>
-
-
-<!-- =================数据================ -->
 
 <section id="view-data" class="view">
 
@@ -483,9 +457,6 @@ placeholder="搜索球队 / 联赛 / 编号">
 
 </section>
 
-
-<!-- =================前瞻================ -->
-
 <section id="view-forecast" class="view">
 
 <div class="title">
@@ -507,9 +478,6 @@ placeholder="搜索球队 / 联赛 / 编号">
 
 </section>
 
-
-<!-- =================历史================ -->
-
 <section id="view-history" class="view">
 
 <div class="title">
@@ -525,32 +493,34 @@ placeholder="搜索球队 / 联赛 / 编号">
 
 </div>
 
-
 <div class="section">
 
 <h2>导入历史 CSV</h2>
 
 <div class="csv-area">
 
-<div>
-把你的
-<b>威廉数据库_逐场泊松校准明细.csv</b>
-选择进来
+<div><b>历史库只需初始化一次</b></div>
+
+<div style="margin-top:7px;color:#657083;font-size:12px">
+首次选择 <b>威廉数据库_逐场泊松校准明细.csv</b> 后，
+系统会自动保存到本机缓存，以后刷新网页无需重复加载。
 </div>
 
 <div style="margin-top:6px;color:#8993a3;font-size:11px">
 数据只在当前浏览器中分析，不会修改原始 CSV
 </div>
 
-<input
-type="file"
-id="csvFile"
-accept=".csv,text/csv">
+<input type="file" id="csvFile" accept=".csv,text/csv">
 
+<div style="margin-top:12px">
+<button class="btn" id="clearCacheBtn" type="button">
+清除历史缓存
+</button>
 </div>
 
 </div>
 
+</div>
 
 <div class="metrics">
 
@@ -576,7 +546,6 @@ accept=".csv,text/csv">
 
 </div>
 
-
 <div class="section">
 
 <h2>历史数据库状态</h2>
@@ -588,10 +557,10 @@ accept=".csv,text/csv">
 加载后会自动建立：
 <br>
 相似盘型 → 同赔 → 历史结果 → 概率校准
-</div>
 
 </div>
 
+</div>
 
 <div class="section">
 
@@ -609,7 +578,6 @@ accept=".csv,text/csv">
 
 </main>
 
-
 <div class="bottom">
 
 <button data-view="events" class="active">赛事</button>
@@ -619,12 +587,7 @@ accept=".csv,text/csv">
 
 </div>
 
-
 <script>
-
-/* =========================================================
-   今日真实数据
-========================================================= */
 
 const TODAY_FILES=[
 
@@ -643,10 +606,8 @@ const TODAY_FILES=[
 let DATA=[];
 let CSV_DATA=[];
 
-
-/* =========================================================
-   基础工具
-========================================================= */
+const HISTORY_CACHE_KEY="qiuxiaoce_history_csv_v2";
+const HISTORY_META_KEY="qiuxiaoce_history_meta_v2";
 
 function arr(v){
 if(Array.isArray(v))return v;
@@ -669,11 +630,6 @@ return String(v??"")
 .replace(/'/g,"&#39;");
 }
 
-
-/* =========================================================
-   JSON标准化
-========================================================= */
-
 function normalize(raw){
 
 const info=raw.info||{};
@@ -689,23 +645,35 @@ const risk=raw.riskAlert||{};
 
 const teams=arr(info.teams);
 
+const rawOdds=
+raw.odds||
+raw.odd||
+raw.europeOdds||
+raw.oddsData||
+{};
+
 const home=teams[0]||info.home||"主队";
 const away=teams[1]||info.away||"客队";
 
 const winPick=arr(win.pick);
-const direction=arr(info.directions).length
+
+const direction=
+arr(info.directions).length
 ?arr(info.directions)
 :winPick;
 
-const score=arr(exact.pick).length
+const score=
+arr(exact.pick).length
 ?arr(exact.pick)
 :arr(forecasts.scoreline);
 
-const goals=arr(over.pick).length
+const goals=
+arr(over.pick).length
 ?arr(over.pick)
 :arr(forecasts.goals);
 
-const half=arr(ht.pick).length
+const half=
+arr(ht.pick).length
 ?arr(ht.pick)
 :arr(forecasts.halftime);
 
@@ -768,17 +736,15 @@ risk.triggered
 
 riskTriggered:Boolean(risk.triggered),
 
+raw,
+odds:rawOdds,
+
 cold:
 /冷|爆冷|不败|丢分/.test(allText)
 
 };
 
 }
-
-
-/* =========================================================
-   读取今日JSON
-========================================================= */
 
 async function loadToday(){
 
@@ -831,11 +797,6 @@ runHistoricalMatching();
 
 }
 
-
-/* =========================================================
-   联赛
-========================================================= */
-
 function updateLeague(){
 
 const select=document.getElementById("league");
@@ -852,11 +813,6 @@ leagues.map(x=>
 
 }
 
-
-/* =========================================================
-   筛选
-========================================================= */
-
 function filtered(){
 
 const key=
@@ -869,8 +825,12 @@ document.getElementById("league").value;
 return DATA.filter(x=>{
 
 const str=[
-x.id,x.league,x.home,x.away,
-x.mainPick,x.direction.join(" ")
+x.id,
+x.league,
+x.home,
+x.away,
+x.mainPick,
+x.direction.join(" ")
 ].join(" ").toLowerCase();
 
 if(key&&!str.includes(key))return false;
@@ -889,14 +849,10 @@ document.getElementById("search")
 document.getElementById("league")
 .addEventListener("change",renderEvents);
 
-
-/* =========================================================
-   赛事
-========================================================= */
-
 function renderEvents(){
 
 const list=document.getElementById("events");
+
 const data=filtered();
 
 document.getElementById("count").textContent=
@@ -935,7 +891,6 @@ return`
 
 </div>
 
-
 <div class="teams">
 
 <div class="team">${esc(x.home)}</div>
@@ -945,7 +900,6 @@ return`
 <div class="team away">${esc(x.away)}</div>
 
 </div>
-
 
 <div class="core">
 
@@ -992,13 +946,11 @@ x.handicapPick.length
 
 </div>
 
-
 <button
 class="expand"
 onclick="toggleDetail(${i})">
 展开深入分析
 </button>
-
 
 <div
 class="detail"
@@ -1085,11 +1037,6 @@ ${esc(x.risk)}
 
 }
 
-
-/* =========================================================
-   展开
-========================================================= */
-
 function toggleDetail(i){
 
 const el=document.getElementById("detail-"+i);
@@ -1097,11 +1044,6 @@ const el=document.getElementById("detail-"+i);
 if(el)el.classList.toggle("show");
 
 }
-
-
-/* =========================================================
-   数据分析
-========================================================= */
 
 function renderData(){
 
@@ -1156,7 +1098,6 @@ document.getElementById("b1").style.width=hp+"%";
 document.getElementById("b2").style.width=dp+"%";
 document.getElementById("b3").style.width=cp+"%";
 
-
 const map={};
 
 DATA.forEach(x=>{
@@ -1187,7 +1128,6 @@ return`
 
 }).join("");
 
-
 document.getElementById("integrity").innerHTML=
 total
 ?`
@@ -1201,11 +1141,6 @@ ${CSV_DATA.length?"已加载":"未加载"}。
 :"暂无赛事数据";
 
 }
-
-
-/* =========================================================
-   前瞻
-========================================================= */
 
 function renderForecast(){
 
@@ -1293,11 +1228,6 @@ onclick="openMatch(${i})">
 
 }
 
-
-/* =========================================================
-   前瞻跳赛事
-========================================================= */
-
 function openMatch(i){
 
 document.querySelectorAll(".view")
@@ -1333,11 +1263,6 @@ block:"center"
 
 }
 
-
-/* =========================================================
-   CSV解析
-========================================================= */
-
 function detectDelimiter(text){
 
 const first=
@@ -1345,10 +1270,10 @@ text.split(/\r?\n/)[0]||"";
 
 if(first.includes("\t"))return"\t";
 if(first.includes(";"))return";";
+
 return",";
 
 }
-
 
 function parseCSV(text){
 
@@ -1357,6 +1282,7 @@ text=text.replace(/^\uFEFF/,"");
 const delimiter=detectDelimiter(text);
 
 const rows=[];
+
 let row=[];
 let cell="";
 let quote=false;
@@ -1387,6 +1313,7 @@ if(c===delimiter&&!quote){
 
 row.push(cell);
 cell="";
+
 continue;
 
 }
@@ -1402,6 +1329,7 @@ rows.push(row);
 
 row=[];
 cell="";
+
 continue;
 
 }
@@ -1437,11 +1365,6 @@ return obj;
 
 }
 
-
-/* =========================================================
-   CSV字段自动识别
-========================================================= */
-
 function findColumn(obj,words){
 
 const keys=Object.keys(obj);
@@ -1461,7 +1384,6 @@ return null;
 
 }
 
-
 function getCSVValue(row,words){
 
 const key=findColumn(row,words);
@@ -1469,11 +1391,6 @@ const key=findColumn(row,words);
 return key?row[key]:"";
 
 }
-
-
-/* =========================================================
-   数值
-========================================================= */
 
 function num(v){
 
@@ -1489,11 +1406,6 @@ return Number.isFinite(n)?n:null;
 
 }
 
-
-/* =========================================================
-   提取历史结果
-========================================================= */
-
 function resultOf(row){
 
 let v=getCSVValue(row,[
@@ -1505,7 +1417,9 @@ let v=getCSVValue(row,[
 ]);
 
 if(/胜/.test(v)||v==="3"||v==="W")return"主胜";
+
 if(/平/.test(v)||v==="1"||v==="D")return"平";
+
 if(/负|客胜/.test(v)||v==="0"||v==="L")return"客胜";
 
 const score=getCSVValue(row,[
@@ -1514,7 +1428,9 @@ const score=getCSVValue(row,[
 "全场比分"
 ]);
 
-const m=String(score).match(/(\d+)\s*[-:：]\s*(\d+)/);
+const m=String(score).match(
+/(\d+)\s*[-:：]\s*(\d+)/
+);
 
 if(m){
 
@@ -1530,11 +1446,6 @@ if(a<b)return"客胜";
 return"未知";
 
 }
-
-
-/* =========================================================
-   提取历史赔率
-========================================================= */
 
 function oddsOf(row,type){
 
@@ -1562,11 +1473,6 @@ getCSVValue(row,words)
 
 }
 
-
-/* =========================================================
-   盘型距离
-========================================================= */
-
 function distance(a,b){
 
 if(a===null||b===null)return 999;
@@ -1574,11 +1480,6 @@ if(a===null||b===null)return 999;
 return Math.abs(a-b);
 
 }
-
-
-/* =========================================================
-   当前比赛需要的参考赔率
-========================================================= */
 
 function currentOdds(match){
 
@@ -1617,11 +1518,6 @@ obj["客胜"]
 };
 
 }
-
-
-/* =========================================================
-   历史相似盘型
-========================================================= */
 
 function findSimilar(match,limit=10){
 
@@ -1678,11 +1574,6 @@ return scored
 
 }
 
-
-/* =========================================================
-   历史同赔/相似盘统计
-========================================================= */
-
 function analyzeSimilar(rows){
 
 if(!rows.length){
@@ -1723,20 +1614,18 @@ home,
 draw,
 away,
 
-homePct:total?Math.round(home/total*100):0,
+homePct:
+total?Math.round(home/total*100):0,
 
-drawPct:total?Math.round(draw/total*100):0,
+drawPct:
+total?Math.round(draw/total*100):0,
 
-awayPct:total?Math.round(away/total*100):0
+awayPct:
+total?Math.round(away/total*100):0
 
 };
 
 }
-
-
-/* =========================================================
-   历史数据库匹配
-========================================================= */
 
 function runHistoricalMatching(){
 
@@ -1756,10 +1645,9 @@ totalMatches+=stat.total;
 
 const text=
 `找到 ${stat.total} 条相似历史记录。
-主胜 ${stat.homePct}%，
-平局 ${stat.drawPct}%，
-客胜 ${stat.awayPct}%。
-`;
+主胜 ${stat.homePct}%、
+平局 ${stat.drawPct}%、
+客胜 ${stat.awayPct}%。`;
 
 const eventEl=
 document.getElementById(
@@ -1767,10 +1655,7 @@ document.getElementById(
 );
 
 if(eventEl){
-
-eventEl.innerHTML=
-text;
-
+eventEl.innerHTML=text;
 }
 
 const forecastEl=
@@ -1779,10 +1664,7 @@ document.getElementById(
 );
 
 if(forecastEl){
-
-forecastEl.innerHTML=
-text;
-
+forecastEl.innerHTML=text;
 }
 
 }else{
@@ -1819,11 +1701,6 @@ document.getElementById("s5")
 .textContent=totalMatches;
 
 }
-
-
-/* =========================================================
-   显示历史数据库
-========================================================= */
 
 function renderHistoryTable(){
 
@@ -1871,18 +1748,24 @@ ${rows.map((r,i)=>`
 <td>${esc(resultOf(r))}</td>
 
 <td>${esc(
-getCSVValue(r,["主胜","主赔","主赔率","home"])
-||"-"
+getCSVValue(
+r,
+["主胜","主赔","主赔率","home"]
+)||"-"
 )}</td>
 
 <td>${esc(
-getCSVValue(r,["平","平赔","平局赔率","draw"])
-||"-"
+getCSVValue(
+r,
+["平","平赔","平局赔率","draw"]
+)||"-"
 )}</td>
 
 <td>${esc(
-getCSVValue(r,["客胜","客赔","客赔率","away"])
-||"-"
+getCSVValue(
+r,
+["客胜","客赔","客赔率","away"]
+)||"-"
 )}</td>
 
 </tr>
@@ -1901,11 +1784,187 @@ getCSVValue(r,["客胜","客赔","客赔率","away"])
 
 
 /* =========================================================
+   历史库持久缓存
+========================================================= */
+
+function saveHistoryCache(rows,fileName){
+
+try{
+
+localStorage.setItem(
+HISTORY_CACHE_KEY,
+JSON.stringify(rows)
+);
+
+localStorage.setItem(
+HISTORY_META_KEY,
+JSON.stringify({
+fileName:fileName||"历史CSV",
+count:rows.length,
+savedAt:new Date().toISOString()
+})
+);
+
+return true;
+
+}catch(e){
+
+console.error("历史缓存保存失败",e);
+
+return false;
+
+}
+
+}
+
+function updateHistoryMetrics(){
+
+let home=0;
+let draw=0;
+let away=0;
+
+CSV_DATA.forEach(row=>{
+
+const r=resultOf(row);
+
+if(r==="主胜")home++;
+
+if(r==="平")draw++;
+
+if(r==="客胜")away++;
+
+});
+
+document.getElementById("h1")
+.textContent=CSV_DATA.length;
+
+document.getElementById("h2")
+.textContent=home;
+
+document.getElementById("h3")
+.textContent=draw;
+
+document.getElementById("h4")
+.textContent=away;
+
+document.getElementById("s5")
+.textContent=CSV_DATA.length;
+
+}
+
+function loadHistoryCache(){
+
+try{
+
+const raw=
+localStorage.getItem(
+HISTORY_CACHE_KEY
+);
+
+if(!raw)return false;
+
+const rows=JSON.parse(raw);
+
+if(!Array.isArray(rows)||!rows.length)
+return false;
+
+CSV_DATA=rows;
+
+const meta=
+JSON.parse(
+localStorage.getItem(
+HISTORY_META_KEY
+)||"{}"
+);
+
+document.getElementById("csvStatus")
+.textContent=
+"缓存 "+rows.length+" 条";
+
+document.getElementById("csvInfo")
+.innerHTML=
+"<b>历史库已自动恢复</b>"+
+"<br>记录数："+rows.length+
+"<br>最近保存："+esc(
+meta.savedAt
+?new Date(meta.savedAt).toLocaleString()
+:"未知"
+)+
+"<br><br>本次打开网页无需重新选择 CSV。";
+
+updateHistoryMetrics();
+
+renderHistoryTable();
+
+renderData();
+
+renderForecast();
+
+if(DATA.length)
+runHistoricalMatching();
+
+return true;
+
+}catch(e){
+
+console.warn(
+"历史缓存读取失败",
+e
+);
+
+return false;
+
+}
+
+}
+
+function clearHistoryCache(){
+
+localStorage.removeItem(
+HISTORY_CACHE_KEY
+);
+
+localStorage.removeItem(
+HISTORY_META_KEY
+);
+
+CSV_DATA=[];
+
+document.getElementById("csvStatus")
+.textContent="未加载CSV";
+
+document.getElementById("csvInfo")
+.innerHTML=
+"历史缓存已清除。"+
+"<br>下一次选择 CSV 后会重新初始化历史库。";
+
+document.getElementById("historyMatches")
+.innerHTML=
+'<div class="empty">加载 CSV 后显示历史匹配</div>';
+
+updateHistoryMetrics();
+
+renderData();
+
+renderForecast();
+
+}
+
+document.getElementById("clearCacheBtn")
+.addEventListener(
+"click",
+clearHistoryCache
+);
+
+
+/* =========================================================
    CSV文件上传
 ========================================================= */
 
 document.getElementById("csvFile")
-.addEventListener("change",function(e){
+.addEventListener(
+"change",
+function(e){
 
 const file=e.target.files[0];
 
@@ -1920,11 +1979,18 @@ reader.onload=function(){
 
 try{
 
-CSV_DATA=parseCSV(reader.result);
+CSV_DATA=parseCSV(
+reader.result
+);
+
+saveHistoryCache(
+CSV_DATA,
+file.name
+);
 
 document.getElementById("csvStatus")
 .textContent=
-"已加载 "+CSV_DATA.length+" 条";
+"已加载 "+CSV_DATA.length+" 条 · 已缓存";
 
 document.getElementById("csvInfo")
 .innerHTML=`
@@ -1962,7 +2028,9 @@ CSV_DATA.forEach(row=>{
 const r=resultOf(row);
 
 if(r==="主胜")home++;
+
 if(r==="平")draw++;
+
 if(r==="客胜")away++;
 
 });
@@ -2002,9 +2070,13 @@ document.getElementById("csvInfo")
 
 };
 
-reader.readAsText(file,"UTF-8");
+reader.readAsText(
+file,
+"UTF-8"
+);
 
-});
+}
+);
 
 
 /* =========================================================
@@ -2014,24 +2086,30 @@ reader.readAsText(file,"UTF-8");
 document.querySelectorAll("[data-view]")
 .forEach(btn=>{
 
-btn.addEventListener("click",()=>{
+btn.addEventListener(
+"click",
+()=>{
 
 const view=btn.dataset.view;
 
 document.querySelectorAll(".view")
 .forEach(x=>{
+
 x.classList.toggle(
 "active",
 x.id==="view-"+view
 );
+
 });
 
 document.querySelectorAll("[data-view]")
 .forEach(x=>{
+
 x.classList.toggle(
 "active",
 x.dataset.view===view
 );
+
 });
 
 window.scrollTo({
@@ -2039,7 +2117,8 @@ top:0,
 behavior:"smooth"
 });
 
-});
+}
+);
 
 });
 
@@ -2047,6 +2126,8 @@ behavior:"smooth"
 /* =========================================================
    启动
 ========================================================= */
+
+loadHistoryCache();
 
 loadToday();
 
