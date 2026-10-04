@@ -3,211 +3,288 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#111827">
 <title>竞彩足球预测分析</title>
 
 <style>
 *{box-sizing:border-box}
-body{
+html,body{
  margin:0;
- background:#f4f6f8;
+ padding:0;
+ background:#f3f5f7;
  color:#17202a;
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif
 }
+body{padding-bottom:70px}
+
 header{
- background:linear-gradient(135deg,#111827,#263449);
+ background:linear-gradient(135deg,#111827,#273449);
  color:#fff;
- padding:18px 16px;
- position:sticky;
- top:0;
- z-index:10;
+ padding:17px 15px
 }
-.header-title{font-size:22px;font-weight:800}
-.header-sub{font-size:12px;opacity:.7;margin-top:5px}
+.header-title{font-size:21px;font-weight:900}
+.header-sub{margin-top:5px;font-size:12px;opacity:.72}
 
 nav{
  display:flex;
- overflow:auto;
+ overflow-x:auto;
  background:#fff;
  border-bottom:1px solid #e5e7eb;
  position:sticky;
- top:73px;
- z-index:9;
+ top:0;
+ z-index:20
 }
 nav button{
  flex:1;
- min-width:90px;
- padding:13px 8px;
+ min-width:82px;
  border:0;
  background:#fff;
  color:#667085;
- font-size:14px;
+ padding:13px 8px;
+ font-size:13px
 }
 nav button.active{
  color:#111827;
- font-weight:800;
- border-bottom:3px solid #111827;
+ font-weight:900;
+ border-bottom:3px solid #111827
 }
 
-main{padding:12px;max-width:1100px;margin:auto}
+main{
+ width:100%;
+ max-width:1100px;
+ margin:auto;
+ padding:10px
+}
+
 .page{display:none}
 .page.active{display:block}
 
 .toolbar{
  display:flex;
- gap:8px;
- margin-bottom:12px;
+ gap:7px;
  flex-wrap:wrap;
+ margin-bottom:10px
 }
+
 input,select{
  height:40px;
- border:1px solid #d8dde5;
+ border:1px solid #d7dce2;
  border-radius:9px;
  background:#fff;
- padding:0 12px;
- font-size:14px;
+ padding:0 11px;
+ font-size:14px
 }
-input{flex:1;min-width:160px}
-button.action{
+input{flex:1;min-width:150px}
+
+.action{
  height:40px;
  border:0;
  border-radius:9px;
  background:#111827;
  color:#fff;
  padding:0 15px;
- font-weight:700;
+ font-weight:800
 }
 
 .card{
  background:#fff;
  border-radius:14px;
- padding:15px;
- margin-bottom:12px;
- box-shadow:0 2px 8px rgba(0,0,0,.05);
+ padding:14px;
+ margin-bottom:10px;
+ box-shadow:0 2px 9px rgba(0,0,0,.05)
 }
-.match-head{
- display:flex;
- justify-content:space-between;
- gap:10px;
+
+.league{
+ color:#667085;
+ font-size:12px;
+ font-weight:700
 }
-.match-title{font-weight:800;font-size:16px}
-.muted{color:#7b8491;font-size:12px}
-.badge{
- display:inline-block;
- padding:4px 8px;
- border-radius:20px;
- font-size:11px;
- background:#eef1f5;
- margin:3px 3px 3px 0;
+
+.match-title{
+ margin-top:5px;
+ font-size:19px;
+ font-weight:900;
+ line-height:1.45
 }
-.badge.hot{background:#fff0e8;color:#c2410c}
-.badge.draw{background:#fff8db;color:#946200}
-.badge.cold{background:#eee8ff;color:#6841c6}
-.badge.safe{background:#e9f8ef;color:#18794e}
+
+.vs{
+ color:#98a2b3;
+ font-size:13px;
+ margin:0 7px
+}
+
+.time{
+ color:#98a2b3;
+ font-size:12px;
+ margin-top:4px
+}
 
 .grid{
  display:grid;
  grid-template-columns:repeat(3,1fr);
- gap:8px;
- margin-top:12px;
+ gap:7px;
+ margin-top:11px
 }
+
 .stat{
  background:#f7f8fa;
- border-radius:10px;
- padding:10px;
+ border-radius:9px;
+ padding:9px
 }
-.stat b{display:block;font-size:18px}
-.stat span{font-size:11px;color:#7b8491}
+
+.stat b{
+ display:block;
+ font-size:17px
+}
+
+.stat span{
+ color:#7b8491;
+ font-size:11px
+}
 
 .prob{
  display:flex;
  height:12px;
- border-radius:20px;
  overflow:hidden;
- margin:12px 0 8px;
- background:#eee;
+ border-radius:20px;
+ margin-top:12px;
+ background:#eee
 }
-.p1{background:#6b7280}
-.px{background:#a1a1aa}
-.p2{background:#374151}
+
+.p-home{background:#475467}
+.p-draw{background:#98a2b3}
+.p-away{background:#1d2939}
 
 .labels{
  display:flex;
  justify-content:space-between;
- font-size:12px;
+ margin-top:6px;
  color:#667085;
+ font-size:12px
+}
+
+.badges{margin-top:10px}
+
+.badge{
+ display:inline-block;
+ padding:4px 8px;
+ margin:2px 3px 2px 0;
+ border-radius:20px;
+ background:#eef1f5;
+ color:#475467;
+ font-size:11px
+}
+
+.badge.main{
+ background:#e8f5ed;
+ color:#18794e
+}
+
+.badge.draw{
+ background:#fff4d6;
+ color:#946200
+}
+
+.badge.cold{
+ background:#eee8ff;
+ color:#6841c6
+}
+
+.badge.danger{
+ background:#ffe9e9;
+ color:#b42318
+}
+
+.analysis{
+ margin-top:12px;
+ border-top:1px solid #eee;
+ padding-top:12px
+}
+
+.analysis-title{
+ font-size:14px;
+ font-weight:900;
+ margin-bottom:7px
+}
+
+.reason{
+ color:#59636f;
+ font-size:13px;
+ line-height:1.7
 }
 
 .pick{
- margin-top:13px;
- padding:12px;
- border-radius:11px;
+ margin-top:10px;
  background:#f7f8fa;
+ border-radius:11px;
+ padding:11px
 }
-.pick strong{font-size:18px}
-.reason{
- margin-top:8px;
- font-size:13px;
- line-height:1.65;
- color:#4b5563;
+
+.pick-main{
+ font-size:19px;
+ font-weight:900
+}
+
+.notice{
+ background:#fff8e6;
+ color:#805f00;
+ border-radius:10px;
+ padding:11px;
+ font-size:12px;
+ line-height:1.6;
+ margin-bottom:10px
 }
 
 .section-title{
  font-size:17px;
- font-weight:800;
- margin:5px 0 12px;
+ font-weight:900;
+ margin:5px 0 11px
 }
 
 .empty{
- text-align:center;
- padding:35px 15px;
- color:#8a94a3;
  background:#fff;
  border-radius:14px;
+ padding:35px 15px;
+ text-align:center;
+ color:#98a2b3
 }
 
-.table-wrap{overflow:auto}
+.table-wrap{
+ width:100%;
+ overflow:auto
+}
+
 table{
  width:100%;
- border-collapse:collapse;
- min-width:600px;
+ min-width:650px;
+ border-collapse:collapse
 }
+
 th,td{
  padding:9px;
  border-bottom:1px solid #eee;
  text-align:left;
- font-size:12px;
+ font-size:12px
 }
+
 th{background:#f7f8fa}
 
-.notice{
- padding:11px 12px;
- border-radius:10px;
- background:#fff8e6;
- color:#825f00;
- font-size:12px;
- line-height:1.6;
- margin-bottom:12px;
-}
-
-.score{
- font-size:25px;
- font-weight:900;
+.rank{
+ font-size:24px;
+ font-weight:900
 }
 
 .footer{
  text-align:center;
- color:#9aa1aa;
+ color:#98a2b3;
  font-size:11px;
- padding:25px 0 90px;
+ padding:20px 0
 }
 
 @media(max-width:600px){
- header{padding:15px 13px}
- .header-title{font-size:19px}
- main{padding:9px}
- .grid{grid-template-columns:repeat(3,1fr)}
- .card{padding:13px}
- .match-title{font-size:15px}
+ main{padding:8px}
+ .card{padding:12px}
+ .match-title{font-size:18px}
 }
 </style>
 </head>
@@ -216,7 +293,9 @@ th{background:#f7f8fa}
 
 <header>
  <div class="header-title">⚽ 竞彩足球预测分析</div>
- <div class="header-sub">数据研究 · 概率模型 · 历史同赔 · 冷门识别</div>
+ <div class="header-sub">
+  数据研究 · 概率模型 · 历史同赔 · 变盘 · 冷门识别
+ </div>
 </header>
 
 <nav>
@@ -231,47 +310,92 @@ th{background:#f7f8fa}
 <section id="matches" class="page active">
 
  <div class="toolbar">
-  <input id="search" placeholder="搜索球队 / 联赛">
+
+  <input
+   id="search"
+   placeholder="搜索球队 / 联赛">
+
   <select id="league">
    <option value="">全部联赛</option>
   </select>
-  <button class="action" onclick="loadToday()">刷新</button>
+
+  <button class="action" onclick="loadToday()">
+   刷新
+  </button>
+
  </div>
 
- <div id="matchList"></div>
+ <div id="matchList">
+  <div class="empty">
+   正在读取赛事数据...
+  </div>
+ </div>
 
 </section>
 
 
 <section id="data" class="page">
 
- <div class="section-title">📊 今日数据总览</div>
+ <div class="section-title">
+  📊 今日数据
+ </div>
 
  <div class="grid">
+
   <div class="stat">
    <b id="totalMatches">0</b>
-   <span>赛事数量</span>
+   <span>赛事</span>
   </div>
+
   <div class="stat">
-   <b id="drawCount">0</b>
-   <span>平局倾向</span>
+   <b id="homeCount">0</b>
+   <span>主胜倾向</span>
   </div>
+
   <div class="stat">
-   <b id="coldCount">0</b>
-   <span>冷门候选</span>
+   <b id="awayCount">0</b>
+   <span>客胜倾向</span>
   </div>
+
  </div>
 
- <div class="card">
-  <div class="section-title">市场方向</div>
-  <div id="direction"></div>
- </div>
 
  <div class="card">
-  <div class="section-title">数据异动</div>
+
+  <div class="section-title">
+   概率分布
+  </div>
+
+  <div id="direction">
+   暂无数据
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <div class="section-title">
+   📈 数据异动
+  </div>
+
   <div id="movement">
-   当前数据如果没有提供初盘/即时盘字段，将不会虚构变盘信息。
+   暂无完整初盘 / 即时盘数据。
   </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <div class="section-title">
+   ⚠️ 冷门监控
+  </div>
+
+  <div id="coldList">
+   暂无数据
+  </div>
+
  </div>
 
 </section>
@@ -280,14 +404,25 @@ th{background:#f7f8fa}
 <section id="forecast" class="page">
 
  <div class="notice">
-  ⚠️ 本页面采用概率与历史样本辅助判断，不强行推荐。历史样本不足时显示“暂不推荐”。
+  模型原则：先判断主胜/客胜，再判断平局，
+  最后寻找冷门。证据不足不强行推荐。
  </div>
 
- <div class="section-title">🎯 综合预测</div>
- <div id="forecastList"></div>
+ <div class="section-title">
+  🎯 单场综合预测
+ </div>
 
- <div class="section-title">🔥 串关候选</div>
- <div id="parlays"></div>
+ <div id="forecastList">
+  暂无数据
+ </div>
+
+ <div class="section-title">
+  🔗 串关候选
+ </div>
+
+ <div id="parlays">
+  暂无数据
+ </div>
 
 </section>
 
@@ -295,114 +430,1395 @@ th{background:#f7f8fa}
 <section id="history" class="page">
 
  <div class="card">
-  <div class="section-title">📁 历史数据库</div>
 
-  <input type="file" id="csvFile" accept=".csv">
-
-  <div id="historyInfo" class="reason">
-   请导入你的历史 CSV 数据库。导入后会缓存在本机浏览器，下次打开无需重新选择。
+  <div class="section-title">
+   📁 历史 CSV 数据库
   </div>
 
-  <div style="margin-top:10px">
-   <button class="action" onclick="clearHistory()">清除历史缓存</button>
+  <input
+   type="file"
+   id="csvFile"
+   accept=".csv">
+
+  <div
+   id="historyInfo"
+   class="reason"
+   style="margin-top:10px">
+
+   未加载历史数据库。
+
   </div>
+
+  <br>
+
+  <button
+   class="action"
+   onclick="clearHistory()">
+
+   清除缓存
+
+  </button>
+
  </div>
 
- <div class="card">
-  <div class="section-title">历史同赔 / 相似盘型</div>
-  <div id="similarHistory">
-   选择赛事后，这里显示历史匹配结果。
-  </div>
- </div>
 
  <div class="card">
-  <div class="section-title">📅 30天统计</div>
-  <div id="thirtyDays">
-   暂无历史数据。
+
+  <div class="section-title">
+   🔎 历史同赔 / 相似盘型
   </div>
+
+  <div
+   id="similarHistory"
+   class="reason">
+
+   选择赛事后进行历史匹配。
+
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <div class="section-title">
+   📅 30天历史统计
+  </div>
+
+  <div
+   id="thirtyDays"
+   class="reason">
+
+   暂无数据。
+
+  </div>
+
  </div>
 
 </section>
 
+
 <div class="footer">
-  竞彩足球预测分析 · 数据仅供研究参考
+ 竞彩足球预测分析 · 仅供数据研究参考
 </div>
 
 </main>
 
+
 <script>
 
+
+/* =====================================================
+   今日赛事文件
+===================================================== */
+
 const TODAY_FILES = [
-"2026/10/04/北单088_阿甲_国防与司法vs圣洛伦索_2026-10-04-01-45.json",
-"2026/10/04/北单094_阿甲_图库曼竞技vs巴拉卡斯中央_2026-10-04-04-00.json",
-"2026/10/04/北单096_巴甲_米内罗竞技vs布拉干蒂诺RB_2026-10-04-05-30.json",
-"2026/10/04/北单101_日职乙_宫崎棒牛鸟vsRB大宫松鼠_2026-10-04-18-00.json",
-"2026/10/04/北单102_葡甲_SC法伦斯vs沙维什_2026-10-04-18-00.json"
+
+ "2026/10/04/北单088_阿甲_国防与司法vs圣洛伦索_2026-10-04-01-45.json",
+
+ "2026/10/04/北单094_阿甲_图库曼竞技vs巴拉卡斯中央_2026-10-04-04-00.json",
+
+ "2026/10/04/北单096_巴甲_米内罗竞技vs布拉干蒂诺RB_2026-10-04-05-30.json",
+
+ "2026/10/04/北单101_日职乙_宫崎棒牛鸟vsRB大宫松鼠_2026-10-04-18-00.json",
+
+ "2026/10/04/北单102_葡甲_SC法伦斯vs沙维什_2026-10-04-18-00.json"
+
 ];
 
+
 let matches=[];
+
 let historyRows=[];
 
 
-/* =========================
+/* =====================================================
    页面切换
-========================= */
+===================================================== */
 
 function showPage(id,btn){
 
- document.querySelectorAll(".page").forEach(x=>{
+ document.querySelectorAll(".page")
+ .forEach(function(x){
   x.classList.remove("active");
  });
 
- document.getElementById(id).classList.add("active");
+ document.getElementById(id)
+ .classList.add("active");
 
- document.querySelectorAll("nav button").forEach(x=>{
+
+ document.querySelectorAll("nav button")
+ .forEach(function(x){
   x.classList.remove("active");
  });
 
  btn.classList.add("active");
 
- if(id==="forecast") renderForecast();
- if(id==="data") renderData();
+
+ if(id==="data"){
+  renderData();
+ }
+
+ if(id==="forecast"){
+  renderForecast();
+ }
+
 }
 
 
-/* =========================
-   今日赛事
-========================= */
+/* =====================================================
+   工具：数字
+===================================================== */
+
+function num(v){
+
+ if(
+  v===undefined ||
+  v===null ||
+  v===""
+ ){
+  return null;
+ }
+
+ const n=parseFloat(
+  String(v).replace(/[^\d.]/g,"")
+ );
+
+ return isFinite(n)?n:null;
+}
+
+
+/* =====================================================
+   工具：第一个有效值
+===================================================== */
+
+function firstValue(){
+
+ for(
+  let i=0;
+  i<arguments.length;
+  i++
+ ){
+
+  const v=arguments[i];
+
+  if(
+   v!==undefined &&
+   v!==null &&
+   String(v).trim()!==""
+  ){
+   return v;
+  }
+
+ }
+
+ return "";
+}
+
+
+/* =====================================================
+   标准化赛事
+===================================================== */
+
+function normalize(raw){
+
+ const info=
+  raw.info ||
+  raw.match ||
+  raw.event ||
+  {};
+
+
+ const analysis=
+  raw.analysis ||
+  {};
+
+
+ const forecast=
+  raw.forecasts ||
+  raw.forecast ||
+  {};
+
+
+ const home=firstValue(
+
+  info.home,
+
+  info.homeTeam,
+
+  info.home_team,
+
+  info.homeName,
+
+  raw.home,
+
+  raw.homeTeam,
+
+  raw.home_team,
+
+  raw.homeName,
+
+  raw.home_team_name,
+
+  analysis.home,
+
+  analysis.homeTeam
+
+ );
+
+
+ const away=firstValue(
+
+  info.away,
+
+  info.awayTeam,
+
+  info.away_team,
+
+  info.awayName,
+
+  raw.away,
+
+  raw.awayTeam,
+
+  raw.away_team,
+
+  raw.awayName,
+
+  raw.away_team_name,
+
+  analysis.away,
+
+  analysis.awayTeam
+
+ );
+
+
+ const league=firstValue(
+
+  info.league,
+
+  info.leagueName,
+
+  info.league_name,
+
+  info.competition,
+
+  info.competitionName,
+
+  info.tournament,
+
+  raw.league,
+
+  raw.leagueName,
+
+  raw.league_name,
+
+  raw.competition,
+
+  raw.competitionName,
+
+  analysis.league
+
+ );
+
+
+ const matchNo=firstValue(
+
+  info.matchNo,
+
+  info.match_no,
+
+  info.code,
+
+  info.issue,
+
+  info.number,
+
+  raw.matchNo,
+
+  raw.match_no,
+
+  raw.code,
+
+  raw.issue
+
+ );
+
+
+ const time=firstValue(
+
+  info.time,
+
+  info.startTime,
+
+  info.start_time,
+
+  info.dateTime,
+
+  raw.time,
+
+  raw.startTime,
+
+  raw.start_time,
+
+  raw.dateTime
+
+ );
+
+
+ return {
+
+  id:firstValue(
+   info.id,
+   raw.id,
+   matchNo,
+   home+"_"+away
+  ),
+
+  matchNo:matchNo,
+
+  league:league || "未知联赛",
+
+  home:home || "主队",
+
+  away:away || "客队",
+
+  time:time,
+
+  odds:normalizeOdds(
+
+   raw.odds ||
+
+   raw.oddsData ||
+
+   raw.williamOdds ||
+
+   analysis.odds ||
+
+   forecast.odds ||
+
+   {}
+
+  ),
+
+  opening:normalizeOdds(
+
+   raw.opening ||
+
+   raw.openingOdds ||
+
+   raw.openOdds ||
+
+   analysis.opening ||
+
+   {}
+
+  ),
+
+  raw:raw,
+
+  analysis:analysis,
+
+  forecast:forecast
+
+ };
+
+}
+
+
+/* =====================================================
+   赔率
+===================================================== */
+
+function normalizeOdds(o){
+
+ if(
+  !o ||
+  typeof o!=="object"
+ ){
+
+  return {
+   home:null,
+   draw:null,
+   away:null
+  };
+
+ }
+
+
+ return {
+
+  home:num(firstValue(
+
+   o.home,
+
+   o.homeWin,
+
+   o.win,
+
+   o["3"],
+
+   o["主胜"],
+
+   o["胜"]
+
+  )),
+
+  draw:num(firstValue(
+
+   o.draw,
+
+   o.drawWin,
+
+   o.x,
+
+   o["1"],
+
+   o["平"],
+
+   o["平局"]
+
+  )),
+
+  away:num(firstValue(
+
+   o.away,
+
+   o.awayWin,
+
+   o.lose,
+
+   o["0"],
+
+   o["负"],
+
+   o["客胜"]
+
+  ))
+
+ };
+
+}
+
+
+/* =====================================================
+   市场概率
+===================================================== */
+
+function marketProbability(m){
+
+ const h=m.odds.home;
+
+ const d=m.odds.draw;
+
+ const a=m.odds.away;
+
+
+ if(!h || !d || !a){
+
+  return {
+
+   home:.3333,
+
+   draw:.3334,
+
+   away:.3333,
+
+   valid:false
+
+  };
+
+ }
+
+
+ const x=1/h;
+
+ const y=1/d;
+
+ const z=1/a;
+
+ const s=x+y+z;
+
+
+ return {
+
+  home:x/s,
+
+  draw:y/s,
+
+  away:z/s,
+
+  valid:true
+
+ };
+
+}
+
+
+/* =====================================================
+   历史相似赔率
+===================================================== */
+
+function findSimilar(m){
+
+ if(!historyRows.length)
+  return [];
+
+
+ const h=m.odds.home;
+
+ const d=m.odds.draw;
+
+ const a=m.odds.away;
+
+
+ if(!h || !d || !a)
+  return [];
+
+
+ return historyRows.filter(function(row){
+
+  const rh=num(firstValue(
+
+   row["主胜"],
+
+   row["主胜赔率"],
+
+   row["胜"],
+
+   row["home"],
+
+   row["Home"]
+
+  ));
+
+
+  const rd=num(firstValue(
+
+   row["平"],
+
+   row["平局"],
+
+   row["平局赔率"],
+
+   row["draw"],
+
+   row["Draw"]
+
+  ));
+
+
+  const ra=num(firstValue(
+
+   row["负"],
+
+   row["客胜"],
+
+   row["客胜赔率"],
+
+   row["away"],
+
+   row["Away"]
+
+  ));
+
+
+  if(
+   !rh ||
+   !rd ||
+   !ra
+  ){
+   return false;
+  }
+
+
+  return(
+
+   Math.abs(rh-h)<=.15 &&
+
+   Math.abs(rd-d)<=.15 &&
+
+   Math.abs(ra-a)<=.15
+
+  );
+
+ }).slice(0,200);
+
+}
+
+
+/* =====================================================
+   历史赛果
+===================================================== */
+
+function historyResult(row){
+
+ const r=firstValue(
+
+  row["赛果"],
+
+  row["结果"],
+
+  row["竞彩结果"],
+
+  row["胜平负"],
+
+  row["result"],
+
+  row["Result"]
+
+ );
+
+
+ const s=String(r).trim();
+
+
+ if(
+  s==="3" ||
+  s==="胜" ||
+  s==="主胜"
+ ){
+  return "主胜";
+ }
+
+
+ if(
+  s==="1" ||
+  s==="平"
+ ){
+  return "平";
+ }
+
+
+ if(
+  s==="0" ||
+  s==="负" ||
+  s==="客胜"
+ ){
+  return "客胜";
+ }
+
+
+ return "";
+
+}
+
+
+/* =====================================================
+   历史分析
+===================================================== */
+
+function historyAnalysis(m){
+
+ const rows=findSimilar(m);
+
+
+ if(!rows.length){
+
+  return {
+
+   count:0,
+
+   home:0,
+
+   draw:0,
+
+   away:0
+
+  };
+
+ }
+
+
+ let h=0;
+
+ let d=0;
+
+ let a=0;
+
+
+ rows.forEach(function(row){
+
+  const r=historyResult(row);
+
+  if(r==="主胜")h++;
+
+  if(r==="平")d++;
+
+  if(r==="客胜")a++;
+
+ });
+
+
+ const total=h+d+a;
+
+
+ if(!total){
+
+  return {
+
+   count:rows.length,
+
+   home:0,
+
+   draw:0,
+
+   away:0
+
+  };
+
+ }
+
+
+ return {
+
+  count:total,
+
+  home:h/total,
+
+  draw:d/total,
+
+  away:a/total
+
+ };
+
+}
+
+
+/* =====================================================
+   核心分析
+===================================================== */
+
+function analyzeMatch(m){
+
+ const market=marketProbability(m);
+
+
+ let h=market.home;
+
+ let d=market.draw;
+
+ let a=market.away;
+
+
+ const hist=
+  historyAnalysis(m);
+
+
+ /*
+  * 历史样本至少8场才参与修正
+  */
+
+ if(hist.count>=8){
+
+  h=h*.72+hist.home*.28;
+
+  d=d*.72+hist.draw*.28;
+
+  a=a*.72+hist.away*.28;
+
+
+  const total=h+d+a;
+
+  h/=total;
+
+  d/=total;
+
+  a/=total;
+
+ }
+
+
+ const arr=[
+
+  {
+   name:"主胜",
+   value:h
+  },
+
+  {
+   name:"平",
+   value:d
+  },
+
+  {
+   name:"客胜",
+   value:a
+  }
+
+ ];
+
+
+ arr.sort(function(x,y){
+  return y.value-x.value;
+ });
+
+
+ const first=arr[0];
+
+ const second=arr[1];
+
+
+ let risk=0;
+
+
+ const gap=
+  first.value-
+  second.value;
+
+
+ if(gap<.04)
+  risk+=35;
+
+ else if(gap<.08)
+  risk+=25;
+
+ else if(gap<.12)
+  risk+=15;
+
+
+ if(first.value<.40)
+  risk+=30;
+
+ else if(first.value<.45)
+  risk+=20;
+
+ else if(first.value<.50)
+  risk+=10;
+
+
+ /*
+  * 平局必须同时满足：
+  * 1. 概率>=32%
+  * 2. 主客差距<=10%
+  * 3. 平局不能明显落后
+  */
+
+ let drawSignal=false;
+
+
+ if(
+
+  d>=.32 &&
+
+  Math.abs(h-a)<=.10 &&
+
+  d>=second.value-.015
+
+ ){
+
+  drawSignal=true;
+
+ }
+
+
+ let cold="";
+
+
+ if(first.value<.40){
+
+  cold="超级冷门观察";
+
+  risk+=15;
+
+ }
+
+ else if(first.value<.44){
+
+  cold="冷门观察";
+
+  risk+=8;
+
+ }
+
+
+ risk=Math.min(
+  100,
+  risk
+ );
+
+
+ let pick="";
+
+
+ if(drawSignal){
+
+  pick="平";
+
+ }
+
+ else if(first.value>=.45){
+
+  pick=first.name;
+
+ }
+
+ else{
+
+  pick="暂不推荐";
+
+ }
+
+
+ return {
+
+  home:h,
+
+  draw:d,
+
+  away:a,
+
+  first:first,
+
+  second:second,
+
+  pick:pick,
+
+  risk:risk,
+
+  cold:cold,
+
+  history:hist,
+
+  drawSignal:drawSignal
+
+ };
+
+}
+
+
+/* =====================================================
+   赛事卡片
+===================================================== */
+
+function renderMatchCard(m){
+
+ const a=analyzeMatch(m);
+
+
+ return `
+
+ <div class="card">
+
+  <div class="league">
+
+   ${esc(m.matchNo || "")}
+
+   ${m.matchNo ? " · " : ""}
+
+   ${esc(m.league)}
+
+  </div>
+
+
+  <div class="match-title">
+
+   ${esc(m.home)}
+
+   <span class="vs">
+    VS
+   </span>
+
+   ${esc(m.away)}
+
+  </div>
+
+
+  <div class="time">
+
+   ${esc(
+    m.time ||
+    "开赛时间待更新"
+   )}
+
+  </div>
+
+
+  <div class="prob">
+
+   <div
+    class="p-home"
+    style="width:${a.home*100}%">
+   </div>
+
+   <div
+    class="p-draw"
+    style="width:${a.draw*100}%">
+   </div>
+
+   <div
+    class="p-away"
+    style="width:${a.away*100}%">
+   </div>
+
+  </div>
+
+
+  <div class="labels">
+
+   <span>
+    主 ${pct(a.home)}
+   </span>
+
+   <span>
+    平 ${pct(a.draw)}
+   </span>
+
+   <span>
+    客 ${pct(a.away)}
+   </span>
+
+  </div>
+
+
+  <div class="grid">
+
+   <div class="stat">
+
+    <b>
+     ${m.odds.home || "-"}
+    </b>
+
+    <span>
+     主胜赔率
+    </span>
+
+   </div>
+
+
+   <div class="stat">
+
+    <b>
+     ${m.odds.draw || "-"}
+    </b>
+
+    <span>
+     平局赔率
+    </span>
+
+   </div>
+
+
+   <div class="stat">
+
+    <b>
+     ${m.odds.away || "-"}
+    </b>
+
+    <span>
+     客胜赔率
+    </span>
+
+   </div>
+
+  </div>
+
+
+  <div class="badges">
+
+   <span class="badge main">
+
+    单选：
+
+    ${a.pick}
+
+   </span>
+
+
+   <span class="badge">
+
+    风险 ${a.risk}
+
+   </span>
+
+
+   ${
+    a.drawSignal
+
+    ?
+
+    `<span class="badge draw">
+      防平信号
+     </span>`
+
+    :
+
+    ""
+   }
+
+
+   ${
+    a.cold
+
+    ?
+
+    `<span class="badge cold">
+      ${a.cold}
+     </span>`
+
+    :
+
+    ""
+   }
+
+  </div>
+
+
+  <div class="analysis">
+
+   <div class="analysis-title">
+    🧠 深度分析
+   </div>
+
+
+   <div class="reason">
+
+    市场/模型概率：
+
+    主 ${pct(a.home)}
+
+    ·
+
+    平 ${pct(a.draw)}
+
+    ·
+
+    客 ${pct(a.away)}
+
+    <br>
+
+    第一概率：
+
+    <b>
+     ${a.first.name}
+    </b>
+
+    <br>
+
+    ${
+     a.pick==="暂不推荐"
+
+     ?
+
+     "三项概率优势不足，暂不强行推荐。"
+
+     :
+
+     a.pick==="平"
+
+     ?
+
+     "平局同时满足模型触发条件，进入防平/平局观察。"
+
+     :
+
+     "当前最高概率方向具有一定优势，暂列单选方向。"
+    }
+
+    <br>
+
+    历史同赔样本：
+
+    <b>
+     ${a.history.count}
+    </b>
+
+    场
+
+   </div>
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+
+/* =====================================================
+   渲染赛事
+===================================================== */
+
+function renderMatches(){
+
+ const list=
+  document.getElementById(
+   "matchList"
+  );
+
+
+ const q=
+  String(
+   document.getElementById(
+    "search"
+   ).value || ""
+  ).toLowerCase();
+
+
+ const league=
+  document.getElementById(
+   "league"
+  ).value;
+
+
+ const arr=
+  matches.filter(function(m){
+
+   const text=
+    (
+     m.home+
+     " "+
+     m.away+
+     " "+
+     m.league
+    ).toLowerCase();
+
+
+   return(
+
+    (!q ||
+     text.includes(q)) &&
+
+    (!league ||
+     m.league===league)
+
+   );
+
+  });
+
+
+ if(!arr.length){
+
+  list.innerHTML=
+   `<div class="empty">
+     暂无符合条件的赛事
+    </div>`;
+
+  return;
+
+ }
+
+
+ list.innerHTML=
+  arr.map(
+   renderMatchCard
+  ).join("");
+
+}
+
+
+/* =====================================================
+   联赛
+===================================================== */
+
+function renderLeagues(){
+
+ const select=
+  document.getElementById(
+   "league"
+  );
+
+
+ const leagues=[
+
+  ...new Set(
+
+   matches
+   .map(function(m){
+    return m.league;
+   })
+   .filter(Boolean)
+
+  )
+
+ ];
+
+
+ select.innerHTML=
+  `<option value="">
+    全部联赛
+   </option>`+
+
+  leagues.map(function(x){
+
+   return `
+    <option value="${esc(x)}">
+     ${esc(x)}
+    </option>
+   `;
+
+  }).join("");
+
+}
+
+
+/* =====================================================
+   读取今日赛事
+===================================================== */
 
 async function loadToday(){
 
- const list=document.getElementById("matchList");
+ const list=
+  document.getElementById(
+   "matchList"
+  );
+
 
  list.innerHTML=
- '<div class="empty">正在读取今日赛事数据...</div>';
+  `<div class="empty">
+    正在读取今日赛事...
+   </div>`;
 
- let result=[];
 
- for(const file of TODAY_FILES){
+ const result=[];
+
+
+ for(
+  const file of TODAY_FILES
+ ){
 
   try{
 
-   const r=await fetch(file+"?t="+Date.now());
+   const response=
+    await fetch(
+     file+
+     "?t="+
+     Date.now()
+    );
 
-   if(!r.ok) continue;
 
-   const raw=await r.json();
+   if(!response.ok)
+    continue;
 
-   result.push(normalize(raw));
 
-  }catch(e){
+   const raw=
+    await response.json();
 
-   console.log("读取失败",file,e);
+
+   result.push(
+    normalize(raw)
+   );
+
+
+  }catch(error){
+
+   console.log(
+    "读取赛事失败",
+    file,
+    error
+   );
 
   }
 
  }
 
+
  matches=result;
 
- renderLeague();
+
+ renderLeagues();
 
  renderMatches();
 
@@ -413,515 +1829,479 @@ async function loadToday(){
 }
 
 
-/* =========================
-   数据标准化
-========================= */
+/* =====================================================
+   数据页面
+===================================================== */
 
-function normalize(raw){
+function renderData(){
 
- const info=raw.info||{};
- const analysis=raw.analysis||{};
- const forecast=raw.forecasts||raw.forecast||{};
+ document.getElementById(
+  "totalMatches"
+ ).textContent=
+  matches.length;
 
- return {
 
-  id:info.id||raw.id||Math.random(),
+ let home=0;
 
-  matchNo:info.matchNo||info.code||raw.matchNo||"",
+ let away=0;
 
-  league:info.league||raw.league||"未知联赛",
+ let homeP=0;
 
-  home:info.home||info.homeTeam||raw.home||"主队",
+ let drawP=0;
 
-  away:info.away||info.awayTeam||raw.away||"客队",
+ let awayP=0;
 
-  time:info.time||info.startTime||raw.time||"",
 
-  odds:normalizeOdds(
-   raw.odds||analysis.odds||forecast.odds||{}
-  ),
+ matches.forEach(function(m){
 
-  opening:normalizeOdds(
-   raw.opening||analysis.opening||{}
-  ),
+  const a=
+   analyzeMatch(m);
 
-  forecast:forecast,
 
-  analysis:analysis,
+  if(a.pick==="主胜")
+   home++;
 
-  risk:raw.riskAlert||analysis.riskAlert||""
 
- };
+  if(a.pick==="客胜")
+   away++;
 
-}
 
+  homeP+=a.home;
 
-/* =========================
-   赔率
-========================= */
+  drawP+=a.draw;
 
-function normalizeOdds(o){
-
- return {
-
-  home:num(
-   o.home||o.win||o["3"]||o["主胜"]
-  ),
-
-  draw:num(
-   o.draw||o.x||o["1"]||o["平"]
-  ),
-
-  away:num(
-   o.away||o.lose||o["0"]||o["客胜"]
-  )
-
- };
-
-}
-
-function num(x){
-
- const n=parseFloat(x);
-
- return isFinite(n)?n:null;
-
-}
-
-
-/* =========================
-   隐含概率
-========================= */
-
-function marketProbability(m){
-
- const a=m.odds.home;
- const b=m.odds.draw;
- const c=m.odds.away;
-
- if(!(a&&b&&c)){
-
-  return {
-   home:0.33,
-   draw:0.34,
-   away:0.33,
-   valid:false
-  };
-
- }
-
- const x=1/a;
- const y=1/b;
- const z=1/c;
-
- const s=x+y+z;
-
- return {
-  home:x/s,
-  draw:y/s,
-  away:z/s,
-  valid:true
- };
-
-}
-
-
-/* =========================
-   深度分析
-========================= */
-
-function deepAnalyze(m){
-
- const p=marketProbability(m);
-
- let probs=[
-  p.home,
-  p.draw,
-  p.away
- ];
-
- let max=Math.max(...probs);
-
- let direction=
-  max===p.home?"主胜":
-  max===p.draw?"平":
-  "客胜";
-
- let sorted=[...probs].sort((a,b)=>b-a);
-
- let gap=sorted[0]-sorted[1];
-
- let risk=0;
-
- if(gap<0.08) risk+=30;
- else if(gap<0.15) risk+=15;
-
- if(p.draw>=0.30) risk+=15;
-
- if(max<0.45) risk+=20;
-
- let cold="";
-
- if(max<0.40){
-  cold="超级冷门候选";
- }else if(max<0.48){
-  cold="冷门观察";
- }
-
- let primary=direction;
-
- if(p.draw>=0.31 && Math.abs(p.home-p.away)<0.12){
-  primary="平";
- }
-
- let confidence=Math.round(max*100);
-
- return {
-  p,
-  direction,
-  primary,
-  confidence,
-  risk,
-  cold,
-  gap
- };
-
-}
-
-
-/* =========================
-   渲染赛事
-========================= */
-
-function renderMatches(){
-
- const q=(document.getElementById("search").value||"").toLowerCase();
-
- const lg=document.getElementById("league").value;
-
- const list=document.getElementById("matchList");
-
- let arr=matches.filter(m=>{
-
-  const text=(m.league+" "+m.home+" "+m.away).toLowerCase();
-
-  return (!q||text.includes(q)) &&
-         (!lg||m.league===lg);
+  awayP+=a.away;
 
  });
 
- if(!arr.length){
 
-  list.innerHTML='<div class="empty">暂无赛事数据</div>';
-  return;
-
- }
-
- list.innerHTML=arr.map(renderMatchCard).join("");
-
-}
+ document.getElementById(
+  "homeCount"
+ ).textContent=
+  home;
 
 
-function renderMatchCard(m){
-
- const a=deepAnalyze(m);
- const p=a.p;
-
- return `
- <div class="card">
-
-  <div class="match-head">
-
-   <div>
-
-    <div class="muted">
-     ${esc(m.matchNo)} · ${esc(m.league)}
-    </div>
-
-    <div class="match-title">
-     ${esc(m.home)}
-     <span class="muted"> vs </span>
-     ${esc(m.away)}
-    </div>
-
-    <div class="muted">
-     ${esc(m.time)}
-    </div>
-
-   </div>
-
-   <div style="text-align:right">
-
-    <span class="badge">
-     ${a.confidence}%倾向
-    </span>
-
-    ${
-     a.cold
-     ? `<span class="badge cold">${a.cold}</span>`
-     : `<span class="badge safe">相对稳定</span>`
-    }
-
-   </div>
-
-  </div>
+ document.getElementById(
+  "awayCount"
+ ).textContent=
+  away;
 
 
-  <div class="prob">
+ if(matches.length){
 
-   <div class="p1" style="width:${p.home*100}%"></div>
+  homeP/=matches.length;
 
-   <div class="px" style="width:${p.draw*100}%"></div>
+  drawP/=matches.length;
 
-   <div class="p2" style="width:${p.away*100}%"></div>
+  awayP/=matches.length;
 
-  </div>
 
-  <div class="labels">
-
-   <span>主 ${pct(p.home)}</span>
-
-   <span>平 ${pct(p.draw)}</span>
-
-   <span>客 ${pct(p.away)}</span>
-
-  </div>
-
+  document.getElementById(
+   "direction"
+  ).innerHTML=`
 
   <div class="grid">
 
    <div class="stat">
-    <b>${m.odds.home||"-"}</b>
-    <span>主胜赔率</span>
+
+    <b>
+     ${pct(homeP)}
+    </b>
+
+    <span>
+     平均主胜
+    </span>
+
    </div>
+
 
    <div class="stat">
-    <b>${m.odds.draw||"-"}</b>
-    <span>平局赔率</span>
+
+    <b>
+     ${pct(drawP)}
+    </b>
+
+    <span>
+     平均平局
+    </span>
+
    </div>
+
 
    <div class="stat">
-    <b>${m.odds.away||"-"}</b>
-    <span>客胜赔率</span>
-   </div>
 
-  </div>
+    <b>
+     ${pct(awayP)}
+    </b>
 
-
-  <div class="pick">
-
-   <span class="badge hot">单选判断</span>
-
-   <strong>${a.primary}</strong>
-
-   ${
-    a.cold
-    ? `<span class="badge cold">${a.cold}</span>`
-    : ""
-   }
-
-   <div class="reason">
-
-    市场概率：
-    主 ${pct(p.home)} /
-    平 ${pct(p.draw)} /
-    客 ${pct(p.away)}。
-
-    ${
-     a.primary==="平"
-     ? "双方概率接近且平局概率较高，建议重点防平。"
-     : "当前最高概率方向为"+a.primary+"，但仍需结合后续变盘和历史同赔验证。"
-    }
-
-    风险评分：${a.risk}/100。
+    <span>
+     平均客胜
+    </span>
 
    </div>
 
   </div>
 
- </div>
- `;
-
-}
-
-
-/* =========================
-   数据页
-========================= */
-
-function renderData(){
-
- document.getElementById("totalMatches").textContent=matches.length;
-
- let draw=0;
- let cold=0;
-
- matches.forEach(m=>{
-
-  const a=deepAnalyze(m);
-
-  if(a.primary==="平") draw++;
-
-  if(a.cold) cold++;
-
- });
-
- document.getElementById("drawCount").textContent=draw;
- document.getElementById("coldCount").textContent=cold;
-
-
- let h=0,d=0,a=0;
-
- matches.forEach(m=>{
-
-  const p=marketProbability(m);
-
-  h+=p.home;
-  d+=p.draw;
-  a+=p.away;
-
- });
-
- if(matches.length){
-
-  h/=matches.length;
-  d/=matches.length;
-  a/=matches.length;
-
-  document.getElementById("direction").innerHTML=`
-
-   <div class="grid">
-
-    <div class="stat">
-     <b>${pct(h)}</b>
-     <span>平均主胜概率</span>
-    </div>
-
-    <div class="stat">
-     <b>${pct(d)}</b>
-     <span>平均平局概率</span>
-    </div>
-
-    <div class="stat">
-     <b>${pct(a)}</b>
-     <span>平均客胜概率</span>
-    </div>
-
-   </div>
-  `;
-
- }else{
-
-  document.getElementById("direction").innerHTML="暂无数据";
-
- }
-
-
- document.getElementById("movement").innerHTML=
-  movementAnalysis();
-
-}
-
-
-function movementAnalysis(){
-
- let available=matches.filter(m=>
-  m.opening.home &&
-  m.opening.draw &&
-  m.opening.away &&
-  m.odds.home &&
-  m.odds.draw &&
-  m.odds.away
- );
-
- if(!available.length){
-
-  return `
-   <div class="notice">
-    当前赛事数据没有完整的“初盘 + 即时盘”字段，
-    因此暂不判断真实变盘，避免制造虚假异动。
-   </div>
   `;
 
  }
 
- return available.map(m=>{
 
-  const dh=m.odds.home-m.opening.home;
-  const dd=m.odds.draw-m.opening.draw;
-  const da=m.odds.away-m.opening.away;
+ renderMovement();
 
-  return `
-   <div class="reason">
-    <b>${esc(m.home)} vs ${esc(m.away)}</b><br>
-    主胜 ${dh>0?"↑":dh<0?"↓":"—"}
-    · 平 ${dd>0?"↑":dd<0?"↓":"—"}
-    · 客胜 ${da>0?"↑":da<0?"↓":"—"}
-   </div>
-  `;
-
- }).join("");
+ renderCold();
 
 }
 
 
-/* =========================
-   前瞻
-========================= */
+/* =====================================================
+   变盘
+===================================================== */
 
-function renderForecast(){
+function renderMovement(){
 
- const box=document.getElementById("forecastList");
+ const box=
+  document.getElementById(
+   "movement"
+  );
 
- if(!matches.length){
 
-  box.innerHTML='<div class="empty">暂无赛事</div>';
+ const arr=
+  matches.filter(function(m){
+
+   return(
+
+    m.opening.home &&
+
+    m.opening.draw &&
+
+    m.opening.away &&
+
+    m.odds.home &&
+
+    m.odds.draw &&
+
+    m.odds.away
+
+   );
+
+  });
+
+
+ if(!arr.length){
+
+  box.innerHTML=
+   "当前 JSON 没有完整初盘和即时盘数据，暂不判断变盘。";
+
   return;
 
  }
 
- const arr=matches
-  .map(m=>({
-   m,
-   a:deepAnalyze(m)
-  }))
-  .sort((x,y)=>y.a.confidence-x.a.confidence);
+
+ box.innerHTML=
+  arr.map(function(m){
+
+   const h=
+    m.odds.home-
+    m.opening.home;
 
 
- box.innerHTML=arr.map(x=>{
+   const d=
+    m.odds.draw-
+    m.opening.draw;
 
-  const m=x.m;
-  const a=x.a;
 
-  return `
+   const a=
+    m.odds.away-
+    m.opening.away;
+
+
+   return `
+
+   <div class="reason">
+
+    <b>
+     ${esc(m.home)}
+     VS
+     ${esc(m.away)}
+    </b>
+
+    <br>
+
+    主：
+    ${
+     h<0
+     ?"↓ 降赔"
+     :
+     h>0
+     ?"↑ 升赔"
+     :
+     "—"
+    }
+
+    ·
+
+    平：
+    ${
+     d<0
+     ?"↓ 降赔"
+     :
+     d>0
+     ?"↑ 升赔"
+     :
+     "—"
+    }
+
+    ·
+
+    客：
+    ${
+     a<0
+     ?"↓ 降赔"
+     :
+     a>0
+     ?"↑ 升赔"
+     :
+     "—"
+    }
+
+   </div>
+
+   `;
+
+  }).join("");
+
+}
+
+
+/* =====================================================
+   冷门
+===================================================== */
+
+function renderCold(){
+
+ const box=
+  document.getElementById(
+   "coldList"
+  );
+
+
+ const arr=
+  matches
+  .map(function(m){
+
+   return {
+
+    m:m,
+
+    a:analyzeMatch(m)
+
+   };
+
+  })
+  .filter(function(x){
+
+   return x.a.cold;
+
+  });
+
+
+ if(!arr.length){
+
+  box.innerHTML=
+   "目前没有明显冷门信号。";
+
+  return;
+
+ }
+
+
+ box.innerHTML=
+  arr.map(function(x){
+
+   return `
+
+   <div class="reason">
+
+    <b>
+     ${esc(x.m.home)}
+     VS
+     ${esc(x.m.away)}
+    </b>
+
+    →
+
+    <span class="badge cold">
+
+     ${x.a.cold}
+
+    </span>
+
+    风险：
+
+    ${x.a.risk}
+
+   </div>
+
+   `;
+
+  }).join("");
+
+}
+
+
+/* =====================================================
+   前瞻
+===================================================== */
+
+function renderForecast(){
+
+ const box=
+  document.getElementById(
+   "forecastList"
+  );
+
+
+ if(!matches.length){
+
+  box.innerHTML=
+   `<div class="empty">
+    暂无赛事
+   </div>`;
+
+  return;
+
+ }
+
+
+ const arr=
+  matches
+  .map(function(m){
+
+   return {
+
+    m:m,
+
+    a:analyzeMatch(m)
+
+   };
+
+  })
+  .sort(function(x,y){
+
+   const sx=
+    x.a.first.value-
+    x.a.risk*.002;
+
+
+   const sy=
+    y.a.first.value-
+    y.a.risk*.002;
+
+
+   return sy-sx;
+
+  });
+
+
+ box.innerHTML=
+  arr.map(function(x,i){
+
+   const m=x.m;
+
+   const a=x.a;
+
+
+   return `
+
    <div class="card">
 
-    <div class="muted">
-     ${esc(m.league)} · ${esc(m.time)}
+    <div class="league">
+
+     NO.${i+1}
+
+     ·
+
+     ${esc(m.league)}
+
     </div>
+
 
     <div class="match-title">
-     ${esc(m.home)} vs ${esc(m.away)}
+
+     ${esc(m.home)}
+
+     <span class="vs">
+      VS
+     </span>
+
+     ${esc(m.away)}
+
     </div>
 
-    <div class="pick">
 
-     <span class="badge hot">首选</span>
+    <div class="badges">
 
-     <strong>${a.primary}</strong>
+     <span class="badge main">
 
-     <div class="reason">
-      概率 ${a.confidence}%；
-      平局 ${pct(a.p.draw)}；
-      风险 ${a.risk}/100。
-     </div>
+      ${a.pick}
+
+     </span>
+
+
+     <span class="badge">
+
+      风险 ${a.risk}
+
+     </span>
+
+
+     ${
+      a.cold
+
+      ?
+
+      `<span class="badge cold">
+        ${a.cold}
+       </span>`
+
+      :
+
+      ""
+     }
+
+    </div>
+
+
+    <div
+     class="reason"
+     style="margin-top:8px">
+
+     主胜 ${pct(a.home)}
+
+     ·
+
+     平 ${pct(a.draw)}
+
+     ·
+
+     客胜 ${pct(a.away)}
+
+     <br>
+
+     历史同赔：
+
+     ${a.history.count}
+
+     场
 
     </div>
 
    </div>
-  `;
 
- }).join("");
+   `;
+
+  }).join("");
 
 
  renderParlays(arr);
@@ -929,148 +2309,283 @@ function renderForecast(){
 }
 
 
+/* =====================================================
+   串关
+===================================================== */
+
 function renderParlays(arr){
 
- const box=document.getElementById("parlays");
-
- const good=arr
-  .filter(x=>x.a.confidence>=45 && x.a.risk<65)
-  .slice(0,8);
-
- if(good.length<3){
-
-  box.innerHTML=`
-
-   <div class="notice">
-    当前证据不足，暂不强行生成串关。
-    至少需要 3 场达到基础置信条件。
-   </div>
-
-  `;
-
-  return;
-
- }
+ const box=
+  document.getElementById(
+   "parlays"
+  );
 
 
- const sizes=[8,7,6,5,3];
+ const candidates=
+  arr.filter(function(x){
 
- box.innerHTML=sizes.map(n=>{
+   return(
 
-  if(good.length<n){
+    x.a.pick!=="暂不推荐" &&
 
-   return `
-    <div class="card">
-     <b>${n}串1</b>
-     <div class="reason">
-      暂不推荐：符合条件的赛事不足 ${n} 场。
-     </div>
-    </div>
-   `;
+    x.a.first.value>=.45 &&
 
-  }
+    x.a.risk<65
 
-  const picks=good.slice(0,n);
-
-  return `
-   <div class="card">
-
-    <b>${n}串1</b>
-
-    <div class="reason">
-
-     ${picks.map((x,i)=>`
-      ${i+1}. ${esc(x.m.home)} vs ${esc(x.m.away)}
-      → <b>${x.a.primary}</b>
-     `).join("<br>")}
-
-    </div>
-
-   </div>
-  `;
-
- }).join("");
-
-}
-
-
-/* =========================
-   CSV
-========================= */
-
-document.getElementById("csvFile").addEventListener("change",function(e){
-
- const file=e.target.files[0];
-
- if(!file)return;
-
- const reader=new FileReader();
-
- reader.onload=function(){
-
-  const text=reader.result;
-
-  historyRows=parseCSV(text);
-
-  try{
-   localStorage.setItem(
-    "qiuxiaoce_history_csv_v3",
-    JSON.stringify(historyRows)
    );
-  }catch(e){}
 
-  updateHistoryInfo();
-
- };
-
- reader.readAsText(file,"UTF-8");
-
-});
-
-
-function parseCSV(text){
-
- const lines=text
-  .replace(/\r/g,"")
-  .split("\n")
-  .filter(x=>x.trim());
-
- if(!lines.length)return[];
-
- const headers=parseCSVLine(lines[0]);
-
- return lines.slice(1).map(line=>{
-
-  const cells=parseCSVLine(line);
-
-  const obj={};
-
-  headers.forEach((h,i)=>{
-   obj[h]=(cells[i]||"").trim();
   });
 
-  return obj;
+
+ const sizes=[
+  8,
+  7,
+  6,
+  5,
+  3
+ ];
+
+
+ let html="";
+
+
+ sizes.forEach(function(size){
+
+  const rows=
+   candidates.slice(0,size);
+
+
+  html+=`
+
+  <div class="card">
+
+   <div class="section-title">
+
+    ${size}串1
+
+   </div>
+
+
+   ${
+    rows.length<size
+
+    ?
+
+    `<div class="reason">
+
+      暂不推荐。
+
+      当前只有
+
+      ${rows.length}
+
+      场达到条件，
+
+      不为了凑串关强行加入。
+
+     </div>`
+
+    :
+
+    rows.map(function(x,i){
+
+     return `
+
+      <div class="reason">
+
+       ${i+1}.
+
+       ${esc(x.m.home)}
+
+       VS
+
+       ${esc(x.m.away)}
+
+       →
+
+       <b>
+        ${x.a.pick}
+       </b>
+
+       (${pct(x.a.first.value)})
+
+      </div>
+
+     `;
+
+    }).join("")
+
+   }
+
+  </div>
+
+  `;
 
  });
 
+
+ box.innerHTML=html;
+
 }
 
+
+/* =====================================================
+   CSV文件
+===================================================== */
+
+document.getElementById(
+ "csvFile"
+).addEventListener(
+ "change",
+ function(e){
+
+  const file=
+   e.target.files[0];
+
+
+  if(!file)
+   return;
+
+
+  const reader=
+   new FileReader();
+
+
+  reader.onload=
+   function(){
+
+    historyRows=
+     parseCSV(
+      reader.result
+     );
+
+
+    try{
+
+     localStorage.setItem(
+
+      "qiuxiaoce_history_v5",
+
+      JSON.stringify(
+       historyRows
+      )
+
+     );
+
+    }catch(error){
+
+     console.log(error);
+
+    }
+
+
+    updateHistory();
+
+    renderMatches();
+
+    renderForecast();
+
+   };
+
+
+  reader.readAsText(
+   file,
+   "UTF-8"
+  );
+
+ }
+);
+
+
+/* =====================================================
+   CSV解析
+===================================================== */
+
+function parseCSV(text){
+
+ const lines=
+  String(text)
+  .replace(/\r/g,"")
+  .split("\n")
+  .filter(function(x){
+
+   return x.trim();
+
+  });
+
+
+ if(!lines.length)
+  return [];
+
+
+ const headers=
+  parseCSVLine(
+   lines[0]
+  );
+
+
+ return lines
+  .slice(1)
+  .map(function(line){
+
+   const cells=
+    parseCSVLine(line);
+
+
+   const obj={};
+
+
+   headers.forEach(
+    function(h,i){
+
+     obj[h]=
+      (
+       cells[i] ||
+       ""
+      ).trim();
+
+    }
+   );
+
+
+   return obj;
+
+  });
+
+}
+
+
+/* =====================================================
+   CSV单行解析
+===================================================== */
 
 function parseCSVLine(line){
 
  const arr=[];
- let cur="";
+
+ let current="";
+
  let quote=false;
 
- for(let i=0;i<line.length;i++){
+
+ for(
+  let i=0;
+  i<line.length;
+  i++
+ ){
 
   const c=line[i];
 
+
   if(c==='"'){
 
-   if(quote && line[i+1]==='"'){
+   if(
+    quote &&
+    line[i+1]==='"'
+   ){
 
-    cur+='"';
+    current+='"';
+
     i++;
 
    }else{
@@ -1079,69 +2594,55 @@ function parseCSVLine(line){
 
    }
 
-  }else if(c===","&&!quote){
+  }
 
-   arr.push(cur);
-   cur="";
+  else if(
+   c==="," &&
+   !quote
+  ){
 
-  }else{
+   arr.push(current);
 
-   cur+=c;
+   current="";
+
+  }
+
+  else{
+
+   current+=c;
 
   }
 
  }
 
- arr.push(cur);
+
+ arr.push(current);
 
  return arr;
 
 }
 
 
-/* =========================
+/* =====================================================
    历史数据库
-========================= */
-
-function updateHistoryInfo(){
-
- document.getElementById("historyInfo").innerHTML=
-  `已读取 <b>${historyRows.length}</b> 条历史记录。`;
-
- renderThirtyDays();
-
-}
-
-
-function clearHistory(){
-
- historyRows=[];
-
- localStorage.removeItem(
-  "qiuxiaoce_history_csv_v3"
- );
-
- updateHistoryInfo();
-
- document.getElementById("similarHistory").innerHTML=
-  "历史数据库已清除。";
-
-}
-
+===================================================== */
 
 function loadHistory(){
 
  try{
 
-  const x=localStorage.getItem(
-   "qiuxiaoce_history_csv_v3"
-  );
+  const data=
+   localStorage.getItem(
+    "qiuxiaoce_history_v5"
+   );
 
-  if(x){
 
-   historyRows=JSON.parse(x);
+  if(data){
 
-   updateHistoryInfo();
+   historyRows=
+    JSON.parse(data);
+
+   updateHistory();
 
   }
 
@@ -1154,1031 +2655,184 @@ function loadHistory(){
 }
 
 
-/* =========================
-   历史匹配
-========================= */
+function updateHistory(){
 
-function findSimilar(m){
+ document.getElementById(
+  "historyInfo"
+ ).innerHTML=
 
- if(!historyRows.length)return[];
+  `已加载历史数据库：
+   <b>${historyRows.length}</b>
+   条记录。`;
 
- const odds=m.odds;
 
- if(!odds.home||!odds.draw||!odds.away){
-
-  return[];
-
- }
-
- return historyRows.filter(row=>{
-
-  const oh=num(
-   row["主胜"]||
-   row["主胜赔率"]||
-   row["胜"]||
-   row["home"]
-  );
-
-  const od=num(
-   row["平"]||
-   row["平局"]||
-   row["平局赔率"]||
-   row["draw"]
-  );
-
-  const oa=num(
-   row["负"]||
-   row["客胜"]||
-   row["客胜赔率"]||
-   row["away"]
-  );
-
-  if(!oh||!od||!oa)return false;
-
-  return Math.abs(oh-odds.home)<=0.15 &&
-         Math.abs(od-odds.draw)<=0.15 &&
-         Math.abs(oa-odds.away)<=0.15;
-
- }).slice(0,100);
+ renderThirtyDays();
 
 }
 
 
-function analyzeSimilar(m){
+function clearHistory(){
 
- const rows=findSimilar(m);
+ historyRows=[];
 
- if(!rows.length){
 
-  return {
-   count:0,
-   text:"暂无足够历史同赔样本"
-  };
+ localStorage.removeItem(
+  "qiuxiaoce_history_v5"
+ );
 
- }
 
- let win=0;
- let draw=0;
- let lose=0;
+ document.getElementById(
+  "historyInfo"
+ ).textContent=
+  "历史数据库已清除。";
 
- rows.forEach(r=>{
 
-  const result=
-   r["赛果"]||
-   r["结果"]||
-   r["result"]||
-   r["Result"]||
-   "";
+ document.getElementById(
+  "similarHistory"
+ ).textContent=
+  "暂无历史数据库。";
 
-  if(
-   result==="胜"||
-   result==="主胜"||
-   result==="3"
-  )win++;
 
-  else if(
-   result==="平"||
-   result==="1"
-  )draw++;
-
-  else if(
-   result==="负"||
-   result==="客胜"||
-   result==="0"
-  )lose++;
-
- });
-
- return {
-
-  count:rows.length,
-
-  text:
-   `样本 ${rows.length} 场；`+
-   `主胜 ${rows.length?Math.round(win/rows.length*100):0}%；`+
-   `平 ${rows.length?Math.round(draw/rows.length*100):0}%；`+
-   `客胜 ${rows.length?Math.round(lose/rows.length*100):0}%。`
-
- };
+ renderThirtyDays();
 
 }
 
 
-/* =========================
+/* =====================================================
    30天统计
-========================= */
+===================================================== */
 
 function renderThirtyDays(){
 
- const box=document.getElementById("thirtyDays");
+ const box=
+  document.getElementById(
+   "thirtyDays"
+  );
+
 
  if(!historyRows.length){
 
-  box.innerHTML="暂无历史数据。";
+  box.textContent=
+   "暂无历史数据。";
+
   return;
 
  }
 
- const dates=[];
 
- historyRows.forEach(r=>{
+ let h=0;
 
-  const d=
-   r["日期"]||
-   r["比赛日期"]||
-   r["date"]||
-   r["Date"];
+ let d=0;
 
-  if(d)dates.push(d);
+ let a=0;
+
+ let unknown=0;
+
+
+ historyRows.forEach(function(row){
+
+  const r=
+   historyResult(row);
+
+
+  if(r==="主胜")
+   h++;
+
+  else if(r==="平")
+   d++;
+
+  else if(r==="客胜")
+   a++;
+
+  else
+   unknown++;
 
  });
 
- if(!dates.length){
-
-  box.innerHTML=
-   `数据库已载入 ${historyRows.length} 条，但没有识别到标准日期字段。`;
-
-  return;
-
- }
-
- box.innerHTML=
-  `数据库共 ${historyRows.length} 条记录。<br>
-   已识别日期字段 ${dates.length} 条。<br>
-   后续可根据你的 CSV 实际字段进一步计算 30 天命中率。`;
-
-}
-
-
-/* =========================
-   联赛
-========================= */
-
-function renderLeague(){
-
- const select=document.getElementById("league");
-
- const leagues=[
-  ...new Set(matches.map(x=>x.league))
- ].filter(Boolean);
-
- select.innerHTML=
-  '<option value="">全部联赛</option>'+
-  leagues.map(x=>
-   `<option value="${esc(x)}">${esc(x)}</option>`
-  ).join("");
-
-}
-
-
-/* =========================
-   搜索
-========================= */
-
-document.getElementById("search").addEventListener(
- "input",
- renderMatches
-);
-
-document.getElementById("league").addEventListener(
- "change",
- renderMatches
-);
-
-
-/* =========================
-   历史匹配显示
-========================= */
-
-function showSimilar(m){
-
- const box=document.getElementById("similarHistory");
-
- const a=analyzeSimilar(m);
 
  box.innerHTML=`
 
-  <div class="reason">
-   <b>${esc(m.home)} vs ${esc(m.away)}</b><br>
-   当前赔率：
-   ${m.odds.home||"-"} /
-   ${m.odds.draw||"-"} /
-   ${m.odds.away||"-"}<br><br>
+  数据库：
 
-   ${a.text}
-  </div>
+  <b>
+   ${historyRows.length}
+  </b>
+
+  条
+
+  <br><br>
+
+  主胜：
+
+  <b>${h}</b>
+
+  ·
+
+  平：
+
+  <b>${d}</b>
+
+  ·
+
+  客胜：
+
+  <b>${a}</b>
+
+  <br><br>
+
+  未识别赛果：
+
+  ${unknown}
+
+  <br><br>
+
+  <span style="color:#98a2b3">
+
+   当前统计历史赛果分布。
+   没有预测字段时，不虚构命中率。
+
+  </span>
 
  `;
 
 }
 
 
-/* =========================
+/* =====================================================
    工具
-========================= */
+===================================================== */
 
-function pct(x){
+function esc(value){
 
- return Math.round(x*100)+"%";
-
-}
-
-
-function esc(x){
-
- return String(x??"")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;");
+ return String(
+  value ?? ""
+ )
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;");
 
 }
 
 
-/* =========================
+function pct(value){
+
+ return Math.round(
+  value*100
+ )+"%";
+
+}
+
+
+/* =====================================================
    启动
-========================= */
+===================================================== */
 
 loadHistory();
+
 loadToday();
 
 </script>
 
-</body>
-</html>
-/* =====================================================
-   竞彩足球预测分析 V3 高级分析引擎
-   历史同赔 / 相似盘型 / 冷门 / 变盘 / 综合评分
-===================================================== */
-
-function advancedProbability(m){
-
-    const p = marketProbability(m);
-
-    let hp = p.home;
-    let dp = p.draw;
-    let ap = p.away;
-
-    const hist = analyzeSimilar(m);
-
-    let histHome = null;
-    let histDraw = null;
-    let histAway = null;
-
-    if(hist.count > 0){
-
-        const rows = findSimilar(m);
-
-        let w = 0;
-        let d = 0;
-        let l = 0;
-
-        rows.forEach(r=>{
-
-            const result =
-                r["赛果"] ||
-                r["结果"] ||
-                r["result"] ||
-                r["Result"] ||
-                r["竞彩结果"] ||
-                "";
-
-            const s = String(result).trim();
-
-            if(
-                s==="胜" ||
-                s==="主胜" ||
-                s==="3"
-            ) w++;
-
-            else if(
-                s==="平" ||
-                s==="1"
-            ) d++;
-
-            else if(
-                s==="负" ||
-                s==="客胜" ||
-                s==="0"
-            ) l++;
-
-        });
-
-        const total = w+d+l;
-
-        if(total >= 5){
-
-            histHome = w/total;
-            histDraw = d/total;
-            histAway = l/total;
-
-            /*
-             * 当前市场 60%
-             * 历史同赔 40%
-             */
-            hp = hp*0.60 + histHome*0.40;
-            dp = dp*0.60 + histDraw*0.40;
-            ap = ap*0.60 + histAway*0.40;
-
-            const sum = hp+dp+ap;
-
-            hp/=sum;
-            dp/=sum;
-            ap/=sum;
-        }
-    }
-
-    const arr=[
-        {name:"主胜",value:hp},
-        {name:"平",value:dp},
-        {name:"客胜",value:ap}
-    ].sort((a,b)=>b.value-a.value);
-
-    const first=arr[0];
-    const second=arr[1];
-
-    let risk=0;
-
-    /* 概率接近 */
-    if(first.value-second.value < 0.05)
-        risk+=30;
-    else if(first.value-second.value < 0.10)
-        risk+=20;
-    else if(first.value-second.value < 0.15)
-        risk+=10;
-
-    /* 平局高概率 */
-    if(dp>=0.31)
-        risk+=15;
-
-    /* 首选概率不足 */
-    if(first.value<0.40)
-        risk+=25;
-    else if(first.value<0.45)
-        risk+=15;
-
-    /* 历史样本不足 */
-    if(hist.count<5)
-        risk+=15;
-
-    risk=Math.min(100,risk);
-
-    let label="正常";
-
-    if(risk>=70)
-        label="高风险";
-    else if(risk>=50)
-        label="风险偏高";
-    else if(risk>=30)
-        label="需要防范";
-    else
-        label="相对稳定";
-
-    let cold="";
-
-    if(first.value<0.40)
-        cold="超级冷门观察";
-
-    else if(first.value<0.45)
-        cold="冷门观察";
-
-    /*
-     * 平局强化
-     */
-    let drawAlert="";
-
-    if(
-        dp>=0.31 &&
-        Math.abs(hp-ap)<=0.10
-    ){
-        drawAlert="强烈防平";
-    }
-    else if(dp>=0.29){
-        drawAlert="重点防平";
-    }
-
-    /*
-     * 让平逻辑
-     *
-     * 如果主客概率接近，而平局概率较高，
-     * 将“让平”作为保护方向。
-     */
-    let handicap="";
-
-    if(
-        Math.abs(hp-ap)<=0.12 &&
-        dp>=0.29
-    ){
-        handicap="让平观察";
-    }
-
-    return {
-        home:hp,
-        draw:dp,
-        away:ap,
-        first:first,
-        second:second,
-        risk:risk,
-        label:label,
-        cold:cold,
-        drawAlert:drawAlert,
-        handicap:handicap,
-        historyCount:hist.count,
-        histHome:histHome,
-        histDraw:histDraw,
-        histAway:histAway
-    };
-}
-
-
-/* =====================================================
-   数据异动高级判断
-===================================================== */
-
-function advancedMovement(m){
-
-    const o=m.opening;
-    const n=m.odds;
-
-    if(
-        !o.home ||
-        !o.draw ||
-        !o.away ||
-        !n.home ||
-        !n.draw ||
-        !n.away
-    ){
-        return {
-            available:false,
-            text:"暂无完整初盘/即时盘数据"
-        };
-    }
-
-    const dh=n.home-o.home;
-    const dd=n.draw-o.draw;
-    const da=n.away-o.away;
-
-    let signals=[];
-
-    if(dh<=-0.15)
-        signals.push("主胜明显降赔");
-
-    if(dh>=0.15)
-        signals.push("主胜明显升赔");
-
-    if(dd<=-0.12)
-        signals.push("平局降赔");
-
-    if(dd>=0.12)
-        signals.push("平局升赔");
-
-    if(da<=-0.15)
-        signals.push("客胜明显降赔");
-
-    if(da>=0.15)
-        signals.push("客胜明显升赔");
-
-    return {
-        available:true,
-        signals:signals
-    };
-}
-
-
-/* =====================================================
-   高级赛事卡片
-===================================================== */
-
-function renderAdvancedMatches(){
-
-    if(!matches.length)
-        return;
-
-    const list=document.getElementById("matchList");
-
-    const old=list.innerHTML;
-
-    /*
-     * 在原赛事卡片后面增加高级分析
-     */
-    list.innerHTML=old;
-
-    const cards=list.querySelectorAll(".card");
-
-    matches.forEach((m,i)=>{
-
-        if(!cards[i]) return;
-
-        const a=advancedProbability(m);
-        const mv=advancedMovement(m);
-
-        const box=document.createElement("div");
-
-        box.style.marginTop="12px";
-
-        box.innerHTML=`
-
-        <div style="
-            border-top:1px solid #eee;
-            padding-top:12px;
-        ">
-
-            <div style="
-                font-size:14px;
-                font-weight:800;
-                margin-bottom:8px;
-            ">
-                🧠 深度模型
-            </div>
-
-            <div class="grid">
-
-                <div class="stat">
-                    <b>${pct(a.home)}</b>
-                    <span>模型主胜</span>
-                </div>
-
-                <div class="stat">
-                    <b>${pct(a.draw)}</b>
-                    <span>模型平局</span>
-                </div>
-
-                <div class="stat">
-                    <b>${pct(a.away)}</b>
-                    <span>模型客胜</span>
-                </div>
-
-            </div>
-
-            <div style="margin-top:10px">
-
-                <span class="badge hot">
-                    首选：${a.first.name}
-                </span>
-
-                ${
-                    a.handicap
-                    ? `<span class="badge draw">${a.handicap}</span>`
-                    : ""
-                }
-
-                ${
-                    a.drawAlert
-                    ? `<span class="badge draw">${a.drawAlert}</span>`
-                    : ""
-                }
-
-                ${
-                    a.cold
-                    ? `<span class="badge cold">${a.cold}</span>`
-                    : ""
-                }
-
-                <span class="badge">
-                    风险 ${a.risk}/100
-                </span>
-
-            </div>
-
-            <div class="reason">
-
-                历史同赔样本：
-                <b>${a.historyCount}</b> 场
-
-                ${
-                    a.historyCount>=5
-                    ? "<br>已进入历史样本校准。"
-                    : "<br>历史样本不足，不强行使用历史数据修正。"
-                }
-
-                ${
-                    mv.available
-                    ? "<br>变盘信号："+(
-                        mv.signals.length
-                        ? mv.signals.join("、")
-                        : "暂无明显异动"
-                    )
-                    : ""
-                }
-
-            </div>
-
-        </div>
-
-        `;
-
-        cards[i].appendChild(box);
-
-    });
-
-}
-
-
-/* =====================================================
-   高级预测排行榜
-===================================================== */
-
-function renderAdvancedForecast(){
-
-    const box=document.getElementById("forecastList");
-
-    if(!box || !matches.length)
-        return;
-
-    const data=matches.map(m=>{
-
-        const a=advancedProbability(m);
-
-        return {
-            m:m,
-            a:a
-        };
-
-    }).sort((x,y)=>{
-
-        /*
-         * 不是单纯按照最高概率排序，
-         * 同时考虑风险。
-         */
-        const sx=x.a.first.value*100-x.a.risk*0.20;
-        const sy=y.a.first.value*100-y.a.risk*0.20;
-
-        return sy-sx;
-
-    });
-
-    box.innerHTML=data.map((x,i)=>{
-
-        const m=x.m;
-        const a=x.a;
-
-        return `
-
-        <div class="card">
-
-            <div class="muted">
-                NO.${i+1} · ${esc(m.league)}
-            </div>
-
-            <div class="match-title">
-                ${esc(m.home)}
-                <span class="muted"> vs </span>
-                ${esc(m.away)}
-            </div>
-
-            <div style="margin-top:8px">
-
-                <span class="badge hot">
-                    首选 ${a.first.name}
-                </span>
-
-                <span class="badge">
-                    ${pct(a.first.value)}
-                </span>
-
-                <span class="badge">
-                    风险 ${a.risk}
-                </span>
-
-                ${
-                    a.handicap
-                    ? `<span class="badge draw">${a.handicap}</span>`
-                    : ""
-                }
-
-                ${
-                    a.cold
-                    ? `<span class="badge cold">${a.cold}</span>`
-                    : ""
-                }
-
-            </div>
-
-            <div class="reason">
-
-                概率：
-                主 ${pct(a.home)} /
-                平 ${pct(a.draw)} /
-                客 ${pct(a.away)}
-
-                <br>
-
-                ${
-                    a.drawAlert
-                    ? "⚠️ "+a.drawAlert+"。"
-                    : ""
-                }
-
-                ${
-                    a.historyCount>=5
-                    ? `<br>历史同赔：${a.historyCount}场，已纳入模型。`
-                    : `<br>历史同赔：样本不足。`
-                }
-
-            </div>
-
-        </div>
-
-        `;
-
-    }).join("");
-
-}
-
-
-/* =====================================================
-   高级串关
-===================================================== */
-
-function renderAdvancedParlays(){
-
-    const box=document.getElementById("parlays");
-
-    if(!box || !matches.length)
-        return;
-
-    const data=matches.map(m=>{
-
-        const a=advancedProbability(m);
-
-        return {
-            m:m,
-            a:a
-        };
-
-    });
-
-    /*
-     * 正常候选
-     */
-    const normal=data
-        .filter(x=>
-            x.a.first.value>=0.45 &&
-            x.a.risk<55
-        )
-        .sort((a,b)=>
-            b.a.first.value-a.a.first.value
-        );
-
-    /*
-     * 平局/让平候选
-     */
-    const draw=data
-        .filter(x=>
-            x.a.draw>=0.29 &&
-            x.a.risk<70
-        )
-        .sort((a,b)=>
-            b.a.draw-a.a.draw
-        );
-
-    /*
-     * 冷门候选
-     */
-    const cold=data
-        .filter(x=>
-            x.a.cold
-        )
-        .sort((a,b)=>
-            b.a.risk-a.a.risk
-        );
-
-    let html="";
-
-    html+=`
-
-    <div class="card">
-
-        <div class="section-title">
-            🟢 高概率组合
-        </div>
-
-        ${
-            normal.length
-            ? normal.slice(0,8).map((x,i)=>`
-                <div class="reason">
-                    ${i+1}.
-                    ${esc(x.m.home)} vs ${esc(x.m.away)}
-                    → <b>${x.a.first.name}</b>
-                    (${pct(x.a.first.value)})
-                </div>
-            `).join("")
-            : `<div class="reason">暂无足够证据，不强行推荐。</div>`
-        }
-
-    </div>
-
-    <div class="card">
-
-        <div class="section-title">
-            🟡 让平 / 平重点
-        </div>
-
-        ${
-            draw.length
-            ? draw.slice(0,8).map((x,i)=>`
-                <div class="reason">
-                    ${i+1}.
-                    ${esc(x.m.home)} vs ${esc(x.m.away)}
-                    →
-                    <b>${x.a.draw>=0.31?"平":"让平观察"}</b>
-                    平局概率 ${pct(x.a.draw)}
-                </div>
-            `).join("")
-            : `<div class="reason">暂未发现明显平局结构。</div>`
-        }
-
-    </div>
-
-    <div class="card">
-
-        <div class="section-title">
-            🔴 冷门 / 超级冷门
-        </div>
-
-        ${
-            cold.length
-            ? cold.slice(0,5).map((x,i)=>`
-                <div class="reason">
-                    ${i+1}.
-                    ${esc(x.m.home)} vs ${esc(x.m.away)}
-                    →
-                    <b>${x.a.cold}</b>
-                    <br>
-                    风险 ${x.a.risk}/100，
-                    首选概率 ${pct(x.a.first.value)}
-                </div>
-            `).join("")
-            : `<div class="reason">暂无明确超级冷门信号。</div>`
-        }
-
-    </div>
-
-    `;
-
-    box.innerHTML=html;
-
-}
-
-
-/* =====================================================
-   30天真实统计
-===================================================== */
-
-function advancedThirtyDays(){
-
-    const box=document.getElementById("thirtyDays");
-
-    if(!box)
-        return;
-
-    if(!historyRows.length){
-
-        box.innerHTML="暂无历史数据库。";
-
-        return;
-    }
-
-    let wins=0;
-    let draws=0;
-    let losses=0;
-    let unknown=0;
-
-    historyRows.forEach(r=>{
-
-        const result=
-            r["赛果"]||
-            r["结果"]||
-            r["result"]||
-            r["Result"]||
-            "";
-
-        const s=String(result).trim();
-
-        if(
-            s==="胜"||
-            s==="主胜"||
-            s==="3"
-        )
-            wins++;
-
-        else if(
-            s==="平"||
-            s==="1"
-        )
-            draws++;
-
-        else if(
-            s==="负"||
-            s==="客胜"||
-            s==="0"
-        )
-            losses++;
-
-        else
-            unknown++;
-
-    });
-
-    const known=wins+draws+losses;
-
-    box.innerHTML=`
-
-        <div class="grid">
-
-            <div class="stat">
-                <b>${wins}</b>
-                <span>主胜</span>
-            </div>
-
-            <div class="stat">
-                <b>${draws}</b>
-                <span>平局</span>
-            </div>
-
-            <div class="stat">
-                <b>${losses}</b>
-                <span>客胜</span>
-            </div>
-
-        </div>
-
-        <div class="reason">
-
-            已识别赛果：
-            <b>${known}</b> 条
-
-            <br>
-
-            未识别：
-            <b>${unknown}</b> 条
-
-            <br><br>
-
-            ⚠️ 当前 CSV 如果没有“预测结果/预测方向”字段，
-            这里只能统计历史赛果分布，
-            不能冒充预测命中率。
-
-        </div>
-
-    `;
-
-}
-
-
-/* =====================================================
-   自动刷新高级模块
-===================================================== */
-
-function refreshAdvanced(){
-
-    try{
-        renderAdvancedMatches();
-        renderAdvancedForecast();
-        renderAdvancedParlays();
-        advancedThirtyDays();
-    }catch(e){
-        console.log("高级分析错误",e);
-    }
-
-}
-
-
-/*
- * 今日数据异步加载完成后自动执行
- */
-setTimeout(refreshAdvanced,1200);
-setTimeout(refreshAdvanced,3000);
-
-
-/* =====================================================
-   拦截原来的刷新
-===================================================== */
-
-const oldLoadToday=loadToday;
-
-loadToday=async function(){
-
-    await oldLoadToday();
-
-    setTimeout(refreshAdvanced,300);
-
-};
-
-
-/* =====================================================
-   历史数据库载入后重新分析
-===================================================== */
-
-const oldUpdateHistoryInfo=updateHistoryInfo;
-
-updateHistoryInfo=function(){
-
-    oldUpdateHistoryInfo();
-
-    setTimeout(refreshAdvanced,300);
-
-};
-</script>
 </body>
 </html>
