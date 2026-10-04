@@ -1,548 +1,181 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>竞彩足球预测分析</title>
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-    background:#f4f6f9;
-    color:#1f2937;
-    font-family:-apple-system,BlinkMacSystemFont,
-    "PingFang SC","Microsoft YaHei",Arial,sans-serif;
-}
-
-.header{
-    background:linear-gradient(135deg,#111827,#1f2937);
-    color:#fff;
-    padding:22px 18px;
-}
-
-.header h1{
-    font-size:24px;
-    font-weight:700;
-}
-
-.header p{
-    margin-top:7px;
-    color:#b8c1ce;
-    font-size:13px;
-}
-
-.container{
-    width:100%;
-    max-width:1100px;
-    margin:auto;
-    padding:16px;
-}
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:16px;
-    gap:10px;
-}
-
-.date{
-    font-size:14px;
-    color:#6b7280;
-}
-
-.refresh{
-    background:#2563eb;
-    color:white;
-    border:none;
-    border-radius:8px;
-    padding:9px 15px;
-    cursor:pointer;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-bottom:16px;
-}
-
-.stat{
-    background:#fff;
-    border-radius:12px;
-    padding:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-
-.stat strong{
-    display:block;
-    font-size:23px;
-}
-
-.stat span{
-    display:block;
-    margin-top:5px;
-    font-size:12px;
-    color:#6b7280;
-}
-
-.card{
-    background:#fff;
-    border-radius:14px;
-    margin-bottom:16px;
-    overflow:hidden;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
-}
-
-.card-head{
-    padding:13px 15px;
-    background:#f8fafc;
-    border-bottom:1px solid #edf0f3;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.code{
-    font-size:12px;
-    color:#2563eb;
-    font-weight:600;
-}
-
-.league{
-    margin-left:8px;
-    color:#6b7280;
-    font-size:12px;
-}
-
-.time{
-    font-size:12px;
-    color:#6b7280;
-}
-
-.teams{
-    display:grid;
-    grid-template-columns:1fr 70px 1fr;
-    align-items:center;
-    text-align:center;
-    padding:20px 15px 10px;
-}
-
-.team{
-    font-size:19px;
-    font-weight:700;
-}
-
-.vs{
-    font-size:12px;
-    color:#9ca3af;
-}
-
-.odds{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    padding:5px 15px 18px;
-}
-
-.odd{
-    width:75px;
-    text-align:center;
-    border:1px solid #e5e7eb;
-    border-radius:8px;
-    padding:7px;
-}
-
-.odd small{
-    display:block;
-    color:#6b7280;
-    font-size:11px;
-}
-
-.odd b{
-    display:block;
-    margin-top:3px;
-    font-size:16px;
-}
-
-.analysis{
-    padding:0 15px 15px;
-}
-
-.analysis-title{
-    font-size:16px;
-    font-weight:700;
-    margin-bottom:10px;
-}
-
-.analysis-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.box{
-    background:#f8fafc;
-    border-radius:9px;
-    padding:12px;
-}
-
-.box h3{
-    font-size:13px;
-    margin-bottom:6px;
-}
-
-.box p{
-    font-size:13px;
-    line-height:1.7;
-    color:#5b6472;
-}
-
-.conclusion{
-    margin-top:10px;
-    padding:14px;
-    border-radius:10px;
-    background:#eff6ff;
-    border-left:4px solid #2563eb;
-}
-
-.conclusion-title{
-    font-size:13px;
-    color:#6b7280;
-}
-
-.pick{
-    margin-top:5px;
-    font-size:22px;
-    font-weight:800;
-}
-
-.reason{
-    margin-top:6px;
-    font-size:13px;
-    line-height:1.7;
-    color:#4b5563;
-}
-
-.warning{
-    margin-top:10px;
-    padding:10px 12px;
-    border-radius:8px;
-    background:#fff7ed;
-    color:#9a3412;
-    font-size:12px;
-}
-
-.footer{
-    text-align:center;
-    padding:25px;
-    font-size:12px;
-    color:#9ca3af;
-}
-
-@media(max-width:700px){
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .analysis-grid{
-        grid-template-columns:1fr;
-    }
-
-    .team{
-        font-size:16px;
-    }
-
-    .teams{
-        grid-template-columns:1fr 45px 1fr;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<header class="header">
-    <h1>竞彩足球预测分析</h1>
-    <p>赛前数据分析 · 赔率结构 · 比赛预测</p>
-</header>
-
-<div class="container">
-
-    <div class="topbar">
-        <div class="date" id="date"></div>
-        <button class="refresh" onclick="location.reload()">刷新</button>
-    </div>
-
-    <div class="stats">
-
-        <div class="stat">
-            <strong>6</strong>
-            <span>今日比赛</span>
-        </div>
-
-        <div class="stat">
-            <strong>3</strong>
-            <span>重点场次</span>
-        </div>
-
-        <div class="stat">
-            <strong>2</strong>
-            <span>平局关注</span>
-        </div>
-
-        <div class="stat">
-            <strong>1</strong>
-            <span>冷门预警</span>
-        </div>
-
-    </div>
-
-
-    <!-- 比赛01 -->
-
-    <div class="card">
-
-        <div class="card-head">
-
-            <div>
-                <span class="code">001</span>
-                <span class="league">英超</span>
-            </div>
-
-            <span class="time">20:00</span>
-
-        </div>
-
-
-        <div class="teams">
-
-            <div class="team">主队</div>
-
-            <div class="vs">VS</div>
-
-            <div class="team">客队</div>
-
-        </div>
-
-
-        <div class="odds">
-
-            <div class="odd">
-                <small>胜</small>
-                <b>1.72</b>
-            </div>
-
-            <div class="odd">
-                <small>平</small>
-                <b>3.55</b>
-            </div>
-
-            <div class="odd">
-                <small>负</small>
-                <b>4.60</b>
-            </div>
-
-        </div>
-
-
-        <div class="analysis">
-
-            <div class="analysis-title">
-                深度分析
-            </div>
-
-            <div class="analysis-grid">
-
-                <div class="box">
-                    <h3>基本面</h3>
-                    <p>
-                        主队主场具备一定优势，但不能仅依据排名直接判断。
-                        需要结合近期状态、攻防表现以及主客场表现综合判断。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>赔率结构</h3>
-                    <p>
-                        当前主胜处于低位，市场对主队存在明显倾向。
-                        但低赔并不等于必胜，需要观察后续是否继续压低。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>数据异动</h3>
-                    <p>
-                        如果临场主胜继续下降，而平负方向没有同步变化，
-                        需要防范热门过热。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>冷门风险</h3>
-                    <p>
-                        暂未出现非常强烈的冷门信号，但热门方向存在一定防范价值。
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="conclusion">
-
-                <div class="conclusion-title">
-                    单场综合判断
-                </div>
-
-                <div class="pick">
-                    胜
-                </div>
-
-                <div class="reason">
-                    当前赔率结构仍支持主队方向，
-                    但属于“可支持、不可盲信”的类型。
-                    如果临场出现明显反向变盘，应重新评估。
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- 比赛02 -->
-
-    <div class="card">
-
-        <div class="card-head">
-
-            <div>
-                <span class="code">002</span>
-                <span class="league">西甲</span>
-            </div>
-
-            <span class="time">21:30</span>
-
-        </div>
-
-
-        <div class="teams">
-
-            <div class="team">主队</div>
-
-            <div class="vs">VS</div>
-
-            <div class="team">客队</div>
-
-        </div>
-
-
-        <div class="odds">
-
-            <div class="odd">
-                <small>胜</small>
-                <b>2.55</b>
-            </div>
-
-            <div class="odd">
-                <small>平</small>
-                <b>3.10</b>
-            </div>
-
-            <div class="odd">
-                <small>负</small>
-                <b>2.65</b>
-            </div>
-
-        </div>
-
-
-        <div class="analysis">
-
-            <div class="analysis-title">
-                深度分析
-            </div>
-
-            <div class="analysis-grid">
-
-                <div class="box">
-                    <h3>基本面</h3>
-                    <p>
-                        双方实力接近，主场优势并没有形成明显赔率差。
-                        本场不适合简单按照排名判断。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>赔率结构</h3>
-                    <p>
-                        胜负赔率非常接近，说明市场对于双方方向存在明显分歧。
-                        这种结构需要特别关注平局。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>数据异动</h3>
-                    <p>
-                        如果临场胜负赔率继续靠拢，
-                        平局的关注度应该进一步提高。
-                    </p>
-                </div>
-
-                <div class="box">
-                    <h3>冷门风险</h3>
-                    <p>
-                        本场属于高波动比赛，
-                        任何一方成为热门后都需要防范反向结果。
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="conclusion">
-
-                <div class="conclusion-title">
-                    单场综合判断
-                </div>
-
-                <div class="pick">
-                    平
-                </div>
-
-                <div class="reason">
-                    胜负赔率接近，双方市场定位较为接近。
-                    在这种盘面下，平局具备一定结构性价值。
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<div class="footer">
-    竞彩足球预测分析 · 数据仅供研究参考
-</div>
-
-
 <script>
+(function () {
+    'use strict';
 
-const now=new Date();
+    /* =========================================
+       免费模式：只移除收费/会员限制
+       不增加任何新功能
+       ========================================= */
 
-document.getElementById("date").innerText =
-    now.getFullYear()+"年"+
-    String(now.getMonth()+1).padStart(2,"0")+"月"+
-    String(now.getDate()).padStart(2,"0")+"日";
+    const removeWords = [
+        'VIP',
+        '会员',
+        '会员中心',
+        '开通会员',
+        '立即开通',
+        '购买会员',
+        '订阅',
+        '充值',
+        '支付',
+        '付费',
+        '付款',
+        '积分充值',
+        '购买积分',
+        '积分商城',
+        '付费解锁',
+        '会员专享',
+        'VIP专享',
+        '会员专属',
+        '登录后查看',
+        '开通后查看',
+        '购买后查看',
+        '充值后查看'
+    ];
 
+    function hasPayWord(text) {
+        if (!text) return false;
+
+        return removeWords.some(function(word) {
+            return text.indexOf(word) !== -1;
+        });
+    }
+
+    function removePayElements() {
+
+        const elements = document.querySelectorAll(
+            'button, a, div, span, p, li, section, article'
+        );
+
+        elements.forEach(function(el) {
+
+            const text = (el.innerText || '').trim();
+
+            if (!text || text.length > 80) return;
+
+            if (hasPayWord(text)) {
+
+                /*
+                 * 只删除明显的收费入口。
+                 * 如果是整个分析区域，则不删除。
+                 */
+                const cls = (
+                    (el.className || '') + ' ' +
+                    (el.id || '')
+                ).toLowerCase();
+
+                const payClass =
+                    cls.indexOf('vip') !== -1 ||
+                    cls.indexOf('member') !== -1 ||
+                    cls.indexOf('pay') !== -1 ||
+                    cls.indexOf('charge') !== -1 ||
+                    cls.indexOf('subscribe') !== -1;
+
+                if (payClass || text.length < 30) {
+                    el.remove();
+                }
+            }
+        });
+    }
+
+    function unlockButtons() {
+
+        const elements = document.querySelectorAll(
+            'button, a, input'
+        );
+
+        elements.forEach(function(el) {
+
+            const text =
+                (el.innerText || '') +
+                ' ' +
+                (el.value || '') +
+                ' ' +
+                (el.getAttribute('title') || '');
+
+            if (hasPayWord(text)) {
+
+                /*
+                 * 收费按钮直接移除，
+                 * 不替换成新的按钮。
+                 */
+                el.remove();
+            }
+        });
+    }
+
+    function removePayOverlays() {
+
+        const elements = document.querySelectorAll(
+            '[class], [id]'
+        );
+
+        elements.forEach(function(el) {
+
+            const name = (
+                (el.className || '') + ' ' +
+                (el.id || '')
+            ).toLowerCase();
+
+            if (
+                name.includes('vip') ||
+                name.includes('member') ||
+                name.includes('payment') ||
+                name.includes('paywall') ||
+                name.includes('subscribe') ||
+                name.includes('recharge')
+            ) {
+
+                /*
+                 * 避免误删整个页面主体
+                 */
+                const text = (el.innerText || '').trim();
+
+                if (
+                    text.length < 300 ||
+                    name.includes('paywall') ||
+                    name.includes('payment')
+                ) {
+                    el.remove();
+                }
+            }
+        });
+    }
+
+    function restorePage() {
+
+        removePayElements();
+        unlockButtons();
+        removePayOverlays();
+    }
+
+    /*
+     * 页面加载后执行
+     */
+    if (document.readyState === 'loading') {
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            restorePage
+        );
+
+    } else {
+
+        restorePage();
+
+    }
+
+    /*
+     * 如果原模板通过 JS 动态加载会员层，
+     * 只监听 DOM 变化并继续清除收费入口。
+     */
+    const observer = new MutationObserver(function() {
+        restorePage();
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+})();
 </script>
-
-</body>
-</html>
