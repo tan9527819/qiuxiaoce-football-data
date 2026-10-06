@@ -57,12 +57,11 @@ input{
     flex:1;
     border:1px solid #d9dee7;
     padding:0 12px;
-    background:#fff;
 }
 
 button{
     border:0;
-    padding:0 15px;
+    padding:0 16px;
     background:#172033;
     color:#fff;
 }
@@ -70,7 +69,7 @@ button{
 .container{
     max-width:900px;
     margin:15px auto;
-    padding:0 12px 40px;
+    padding:0 12px 50px;
 }
 
 .status{
@@ -95,22 +94,29 @@ button{
     border-bottom:1px solid #edf0f4;
 }
 
-.comp{
-    font-size:12px;
+.code{
+    color:#1677ff;
+    font-weight:700;
+    font-size:13px;
+}
+
+.league{
     color:#667085;
-    margin-bottom:9px;
+    font-size:12px;
+    margin-left:6px;
 }
 
 .teams{
     display:flex;
     align-items:center;
     gap:10px;
+    margin-top:12px;
 }
 
 .team{
     flex:1;
     font-size:18px;
-    font-weight:700;
+    font-weight:800;
 }
 
 .away{
@@ -138,42 +144,47 @@ button{
 }
 
 .title{
-    font-weight:700;
     font-size:14px;
+    font-weight:800;
     margin-bottom:10px;
 }
 
-.grid{
+.odds{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:8px;
 }
 
-.item{
+.odd{
     background:#f7f8fa;
     border-radius:9px;
-    padding:10px;
+    padding:12px 8px;
+    text-align:center;
 }
 
-.label{
-    font-size:11px;
+.odd-label{
+    font-size:12px;
     color:#667085;
-    margin-bottom:5px;
+    margin-bottom:6px;
 }
 
-.value{
-    font-size:14px;
-    font-weight:600;
-    word-break:break-word;
+.odd-value{
+    font-size:19px;
+    font-weight:800;
+}
+
+.handicap{
+    background:#f8fafc;
+    border-radius:9px;
+    padding:10px;
+    margin-bottom:10px;
+    text-align:center;
+    font-weight:700;
 }
 
 .analysis{
+    line-height:1.8;
     font-size:14px;
-    line-height:1.75;
-}
-
-.analysis p{
-    margin:5px 0;
 }
 
 .final{
@@ -181,67 +192,57 @@ button{
 }
 
 .final-main{
-    font-size:18px;
-    font-weight:800;
-    margin-bottom:10px;
+    font-size:19px;
+    font-weight:900;
 }
 
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-}
-
-.tag{
-    background:#fff;
-    border:1px solid #e1e5eb;
-    border-radius:7px;
-    padding:7px 9px;
-    font-size:13px;
-}
-
-.good{
-    color:#087443;
-    font-weight:700;
-}
-
-.warn{
-    color:#b54708;
-    font-weight:700;
-}
-
-.empty,
-.loading{
-    text-align:center;
-    padding:45px 15px;
+.muted{
     color:#98a2b3;
 }
 
 .error{
-    color:#b42318;
     background:#fff5f5;
-    padding:12px;
-    border-radius:8px;
+    color:#b42318;
+    padding:14px;
+    border-radius:9px;
+    line-height:1.7;
 }
 
-.raw{
+.empty{
+    background:#fff;
+    padding:45px 15px;
+    border-radius:12px;
+    text-align:center;
+    color:#98a2b3;
+}
+
+.loading{
+    background:#fff;
+    padding:45px 15px;
+    border-radius:12px;
+    text-align:center;
+    color:#667085;
+}
+
+.refresh{
     margin-top:10px;
-    padding:10px;
-    border-radius:8px;
-    background:#111827;
-    color:#d1d5db;
+    width:100%;
+    height:42px;
+}
+
+.source{
     font-size:11px;
-    overflow:auto;
-    white-space:pre-wrap;
+    color:#98a2b3;
+    margin-top:10px;
 }
 
 @media(max-width:600px){
-    .grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
     .team{
         font-size:16px;
+    }
+
+    .odd-value{
+        font-size:17px;
     }
 }
 </style>
@@ -251,25 +252,25 @@ button{
 
 <header class="header">
     <h1>竞彩足球预测分析</h1>
-    <p>真实数据 · 欧赔 · XG · 基本面</p>
+    <p>真实竞彩比赛 · 胜平负 · 让球胜平负</p>
 </header>
 
 <div class="toolbar">
     <div class="toolbar-inner">
         <input id="date" type="date">
-        <button onclick="loadMatches()">刷新数据</button>
+        <button onclick="loadData()">刷新</button>
     </div>
 </div>
 
 <main class="container">
 
     <div id="status" class="status">
-        正在读取数据……
+        正在连接中国竞彩网……
     </div>
 
     <div id="matches">
         <div class="loading">
-            正在加载……
+            正在读取今日竞彩足球……
         </div>
     </div>
 
@@ -277,12 +278,8 @@ button{
 
 <script>
 
-const OWNER = "tan9527819";
-const REPO = "qiuxiaoce-football-data";
-const BRANCH = "main";
-
 const API =
-`https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+"https://webapi.sporttery.cn/gateway/jc/football/getMatchCalculatorV1.qry";
 
 const dateInput =
 document.getElementById("date");
@@ -302,21 +299,23 @@ function today(){
 
     const d = new Date();
 
-    return d.getFullYear()+"-"+
-        String(d.getMonth()+1).padStart(2,"0")+"-"+
-        String(d.getDate()).padStart(2,"0");
+    return d.getFullYear()
+        + "-"
+        + String(d.getMonth()+1).padStart(2,"0")
+        + "-"
+        + String(d.getDate()).padStart(2,"0");
 }
 
-dateInput.value = today();
+dateInput.value=today();
 
 
 /* =========================
-   HTML安全
+   安全输出
 ========================= */
 
 function esc(v){
 
-    if(v===null || v===undefined)
+    if(v===undefined || v===null)
         return "";
 
     return String(v)
@@ -328,179 +327,116 @@ function esc(v){
 
 
 /* =========================
-   显示真实数据
+   数字
 ========================= */
 
-function show(v){
+function number(v){
 
-    if(v===null ||
-       v===undefined ||
-       v==="")
-        return "暂无数据";
-
-    if(Array.isArray(v))
-        return v.join(" / ");
-
-    if(typeof v==="object"){
-
-        return Object.entries(v)
-            .map(([k,x]) =>
-                k+"："+show(x)
-            )
-            .join("；");
-    }
+    if(v===undefined || v===null)
+        return "暂无";
 
     return String(v);
 }
 
 
 /* =========================
-   GitHub JSON
+   请求官方竞彩
 ========================= */
 
-async function getJSON(url){
+async function requestOfficial(date){
+
+    /*
+      竞彩接口使用日期参数。
+      格式：yyyy-MM-dd
+    */
+
+    const url =
+        API
+        + "?matchDate="
+        + encodeURIComponent(date)
+        + "&lotteryCode=JCZQ";
 
     const response =
         await fetch(url,{
+            method:"GET",
             headers:{
-                "Accept":
-                "application/vnd.github+json"
-            }
+                "Accept":"application/json"
+            },
+            cache:"no-store"
         });
 
-    if(!response.ok)
+    if(!response.ok){
+
         throw new Error(
-            "GitHub "+response.status
+            "官方接口 HTTP "+response.status
         );
+    }
 
-    return await response.json();
+    const json =
+        await response.json();
+
+    return json;
 }
 
 
 /* =========================
-   正确读取日期目录
-
-   关键：
-
-   2026/10/05/*.json
-
-   而不是：
-
-   2026/10/*.json
+   从接口提取比赛
 ========================= */
 
-async function getDateFiles(date){
+function extractMatches(json){
 
-    const [year,month,day] =
-        date.split("-");
+    /*
+      不同版本接口字段可能略有差异，
+      因此这里兼容常见结构。
+    */
 
-    /* 先读取当天 */
+    if(!json)
+        return [];
 
-    const todayURL =
-        `${API}/${year}/${month}/${day}?ref=${BRANCH}`;
+    if(Array.isArray(json))
+        return json;
 
-    try{
+    if(json.value &&
+       Array.isArray(json.value))
+        return json.value;
 
-        const files =
-            await getJSON(todayURL);
+    if(json.data &&
+       Array.isArray(json.data))
+        return json.data;
 
-        return {
-            files,
-            date
-        };
+    if(json.data &&
+       Array.isArray(json.data.matchList))
+        return json.data.matchList;
 
-    }catch(e){
+    if(json.value &&
+       Array.isArray(json.value.matchList))
+        return json.value.matchList;
 
-        /* 当天不存在 */
+    if(json.data &&
+       json.data.matchInfo &&
+       Array.isArray(json.data.matchInfo))
+        return json.data.matchInfo;
 
-        console.log(
-            "当天没有数据，寻找最近日期"
-        );
-    }
-
-
-    /* =========================
-       读取月份目录
-    ========================= */
-
-    const monthURL =
-        `${API}/${year}/${month}?ref=${BRANCH}`;
-
-    const monthFiles =
-        await getJSON(monthURL);
-
-
-    const days =
-        monthFiles
-        .filter(x =>
-            x.type==="dir" &&
-            /^\d{2}$/.test(x.name)
-        )
-        .map(x => x.name)
-        .sort();
-
-
-    /* 找到 <= 当前日期的最后一天 */
-
-    const usable =
-        days
-        .filter(x => x <= day)
-        .pop();
-
-
-    if(!usable){
-
-        return {
-            files:[],
-            date:null
-        };
-    }
-
-
-    const fallbackDate =
-        `${year}-${month}-${usable}`;
-
-
-    const fallbackURL =
-        `${API}/${year}/${month}/${usable}?ref=${BRANCH}`;
-
-
-    const fallbackFiles =
-        await getJSON(fallbackURL);
-
-
-    return {
-        files:fallbackFiles,
-        date:fallbackDate
-    };
+    return [];
 }
 
 
 /* =========================
-   读取单场JSON
+   字段兼容
 ========================= */
 
-async function getMatch(file){
+function pick(obj,keys){
 
-    try{
+    for(const key of keys){
 
-        if(file.download_url){
-
-            const response =
-                await fetch(
-                    file.download_url
-                );
-
-            if(response.ok)
-                return await response.json();
+        if(
+            obj &&
+            obj[key]!==undefined &&
+            obj[key]!==null &&
+            obj[key]!==""
+        ){
+            return obj[key];
         }
-
-    }catch(e){
-
-        console.log(
-            "赛事读取失败",
-            file.name
-        );
     }
 
     return null;
@@ -508,108 +444,176 @@ async function getMatch(file){
 
 
 /* =========================
-   球队
+   主队
 ========================= */
 
-function getTeams(data){
+function homeName(m){
 
-    const info =
-        data.info || {};
+    return pick(m,[
+        "homeTeamName",
+        "homeTeam",
+        "home",
+        "homeName",
+        "hName"
+    ]) || "主队";
+}
 
-    let teams =
-        info.teams || "";
 
-    if(!teams)
-        return {
-            home:"主队",
-            away:"客队"
-        };
+/* =========================
+   客队
+========================= */
 
-    const parts =
-        teams.split(/\s+vs\s+/i);
+function awayName(m){
 
-    if(parts.length<2){
+    return pick(m,[
+        "awayTeamName",
+        "awayTeam",
+        "away",
+        "awayName",
+        "aName"
+    ]) || "客队";
+}
 
-        const p =
-            teams.split("vs");
 
-        if(p.length>=2)
-            return {
-                home:p[0].trim(),
-                away:p[1].trim()
-            };
-    }
+/* =========================
+   赛事
+========================= */
+
+function leagueName(m){
+
+    const league =
+        m.league ||
+        m.leagueInfo ||
+        {};
+
+    if(typeof league==="string")
+        return league;
+
+    return pick(league,[
+        "leagueName",
+        "name",
+        "abbName"
+    ])
+    ||
+    pick(m,[
+        "leagueName",
+        "competitionName",
+        "league"
+    ])
+    ||
+    "竞彩足球";
+}
+
+
+/* =========================
+   编号
+========================= */
+
+function matchNumber(m){
+
+    return pick(m,[
+        "matchNumStr",
+        "matchNum",
+        "matchNumber",
+        "num",
+        "matchCode",
+        "code"
+    ]) || "竞彩";
+
+
+}
+
+
+/* =========================
+   时间
+========================= */
+
+function matchTime(m){
+
+    return pick(m,[
+        "matchDateTime",
+        "matchTime",
+        "startTime",
+        "dateTime",
+        "kickoffTime"
+    ]) || "暂无时间";
+}
+
+
+/* =========================
+   胜平负
+========================= */
+
+function getHad(m){
+
+    const had =
+        m.had ||
+        m.HAD ||
+        m.spf ||
+        m.winDrawLose ||
+        {};
 
     return {
-        home:parts[0].trim(),
-        away:parts[1].trim()
+
+        win:pick(had,[
+            "h",
+            "home",
+            "win",
+            "homeWin"
+        ]),
+
+        draw:pick(had,[
+            "d",
+            "draw"
+        ]),
+
+        lose:pick(had,[
+            "a",
+            "away",
+            "lose",
+            "awayWin"
+        ])
     };
 }
 
 
 /* =========================
-   欧赔
+   让球
 ========================= */
 
-function getOdds(data){
+function getHhad(m){
 
-    /*
-      当前公开JSON如果没有欧赔，
-      必须显示暂无数据。
-    */
-
-    const odds =
-        data.odds ||
-        data.euroOdds ||
-        data.europeOdds ||
-        data["欧赔"] ||
-        null;
-
-    if(!odds)
-        return {
-            initial:null,
-            current:null
-        };
+    const hhad =
+        m.hhad ||
+        m.HHAD ||
+        m.handicap ||
+        {};
 
     return {
-        initial:
-            odds.initial ||
-            odds.opening ||
-            odds.first ||
-            odds["初赔"] ||
-            null,
 
-        current:
-            odds.current ||
-            odds.latest ||
-            odds.instant ||
-            odds["即时赔"] ||
-            null
-    };
-}
+        line:pick(hhad,[
+            "goalLine",
+            "handicap",
+            "goal",
+            "letBall"
+        ]),
 
+        win:pick(hhad,[
+            "h",
+            "home",
+            "win"
+        ]),
 
-/* =========================
-   XG
-========================= */
+        draw:pick(hhad,[
+            "d",
+            "draw"
+        ]),
 
-function getXG(data){
-
-    const xg =
-        data.xg ||
-        data.XG ||
-        data.expectedGoals ||
-        null;
-
-    const xga =
-        data.xga ||
-        data.XGA ||
-        data.expectedGoalsAgainst ||
-        null;
-
-    return {
-        xg,
-        xga
+        lose:pick(hhad,[
+            "a",
+            "away",
+            "lose"
+        ])
     };
 }
 
@@ -618,175 +622,164 @@ function getXG(data){
    分析
 ========================= */
 
-function getAnalysis(data){
+function buildAnalysis(m,had,hhad){
 
-    const a =
-        data.analysis || {};
+    const list=[];
 
-    const win =
-        a.win || {};
+    if(
+        had.win!==null &&
+        had.draw!==null &&
+        had.lose!==null
+    ){
 
-    const handicap =
-        a.handicap || {};
+        const nums=[
+            Number(had.win),
+            Number(had.draw),
+            Number(had.lose)
+        ];
 
-    const exact =
-        a.exact || {};
+        const min=Math.min(...nums);
 
-    const over =
-        a.overUnder || {};
+        if(Number(had.win)===min){
 
-    const htft =
-        a.htft || {};
+            list.push(
+                "竞彩赔率当前最低项为主胜。"
+            );
 
-    return {
+        }else if(Number(had.draw)===min){
 
-        win:win.pick || null,
-        winNote:win.note || null,
+            list.push(
+                "竞彩赔率当前最低项为平。"
+            );
 
-        handicap:
-            handicap.pick || null,
+        }else{
 
-        handicapNote:
-            handicap.note || null,
+            list.push(
+                "竞彩赔率当前最低项为主负。"
+            );
+        }
 
-        exact:
-            exact.pick ||
-            data.forecasts?.scoreline ||
-            null,
+    }else{
 
-        goals:
-            over.pick ||
-            data.forecasts?.goals ||
-            null,
-
-        htft:
-            htft.pick ||
-            data.forecasts?.halftime ||
-            null
-    };
-}
+        list.push(
+            "胜平负赔率暂无完整数据。"
+        );
+    }
 
 
-/* =========================
-   风险
-========================= */
+    if(hhad.line!==null){
 
-function getRisk(data){
-
-    const r =
-        data.riskAlert;
-
-    if(!r)
-        return null;
-
-    return r.risk || null;
-}
-
-
-/* =========================
-   单场HTML
-========================= */
-
-function render(data){
-
-    const info =
-        data.info || {};
-
-    const teams =
-        getTeams(data);
-
-    const odds =
-        getOdds(data);
-
-    const xg =
-        getXG(data);
-
-    const a =
-        getAnalysis(data);
-
-    const risk =
-        getRisk(data);
-
-    const result =
-        data.result?.actual_score ||
-        null;
-
-
-    let analysis = [];
-
-
-    if(a.winNote){
-
-        analysis.push(
-            "欧赔/赛前分析："+a.winNote
+        list.push(
+            "竞彩让球："+hhad.line+"。"
         );
 
     }else{
 
-        analysis.push(
-            "欧赔：暂无足够真实赔率数据。"
+        list.push(
+            "让球数据暂无。"
         );
     }
 
 
-    if(xg.xg!==null){
+    list.push(
+        "XG：暂无数据。"
+    );
 
-        analysis.push(
-            "XG："+show(xg.xg)
+    list.push(
+        "历史同赔：暂无数据。"
+    );
+
+    return list;
+}
+
+
+/* =========================
+   渲染比赛
+========================= */
+
+function renderMatch(m,index){
+
+    const had =
+        getHad(m);
+
+    const hhad =
+        getHhad(m);
+
+    const home =
+        homeName(m);
+
+    const away =
+        awayName(m);
+
+    const league =
+        leagueName(m);
+
+    const num =
+        matchNumber(m);
+
+    const time =
+        matchTime(m);
+
+    const analysis =
+        buildAnalysis(
+            m,
+            had,
+            hhad
         );
 
-    }else{
 
-        analysis.push(
-            "XG：暂无数据。"
-        );
-    }
-
-
-    if(a.win){
-
-        analysis.push(
-            "胜平负："+show(a.win)
-        );
-    }
-
-
-    if(a.handicap){
-
-        analysis.push(
-            "让球："+show(a.handicap)
-        );
-    }
-
-
-    if(risk){
-
-        analysis.push(
-            "风险提醒："+risk
-        );
-    }
-
-
-    const final =
-        a.win ||
+    let finalText =
         "暂不推荐";
+
+    if(
+        had.win!==null &&
+        had.draw!==null &&
+        had.lose!==null
+    ){
+
+        const arr=[
+            {
+                label:"主胜",
+                value:Number(had.win)
+            },
+            {
+                label:"平",
+                value:Number(had.draw)
+            },
+            {
+                label:"主负",
+                value:Number(had.lose)
+            }
+        ];
+
+        arr.sort(
+            (a,b)=>a.value-b.value
+        );
+
+        finalText =
+            "赔率最低方向："+arr[0].label;
+    }
 
 
     return `
-
     <article class="card">
 
         <div class="card-head">
 
-            <div class="comp">
-                ${esc(info.code || "")}
-                ${info.comp ? " · "+esc(info.comp) : ""}
+            <div>
+                <span class="code">
+                    ${esc(num)}
+                </span>
+
+                <span class="league">
+                    ${esc(league)}
+                </span>
             </div>
 
             <div class="teams">
 
                 <div class="team">
-                    ${esc(teams.home)}
+                    ${esc(home)}
                 </div>
 
                 <div class="vs">
@@ -794,15 +787,13 @@ function render(data){
                 </div>
 
                 <div class="team away">
-                    ${esc(teams.away)}
+                    ${esc(away)}
                 </div>
 
             </div>
 
             <div class="time">
-                ${info.time
-                    ? "开赛："+esc(info.time)
-                    : "开赛时间：暂无数据"}
+                开赛：${esc(time)}
             </div>
 
         </div>
@@ -811,43 +802,38 @@ function render(data){
         <section class="section">
 
             <div class="title">
-                欧赔
+                胜平负
             </div>
 
-            <div class="grid">
+            <div class="odds">
 
-                <div class="item">
-                    <div class="label">
-                        初赔
+                <div class="odd">
+                    <div class="odd-label">
+                        主胜
                     </div>
 
-                    <div class="value">
-                        ${esc(show(odds.initial))}
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="label">
-                        即时赔
-                    </div>
-
-                    <div class="value">
-                        ${esc(show(odds.current))}
+                    <div class="odd-value">
+                        ${esc(number(had.win))}
                     </div>
                 </div>
 
-                <div class="item">
-                    <div class="label">
-                        赔率方向
+                <div class="odd">
+                    <div class="odd-label">
+                        平
                     </div>
 
-                    <div class="value">
-                        ${
-                            odds.initial ||
-                            odds.current
-                            ? "有真实赔率数据"
-                            : "暂无数据"
-                        }
+                    <div class="odd-value">
+                        ${esc(number(had.draw))}
+                    </div>
+                </div>
+
+                <div class="odd">
+                    <div class="odd-label">
+                        主负
+                    </div>
+
+                    <div class="odd-value">
+                        ${esc(number(had.lose))}
                     </div>
                 </div>
 
@@ -859,33 +845,50 @@ function render(data){
         <section class="section">
 
             <div class="title">
-                XG
+                让球胜平负
             </div>
 
-            <div class="grid">
+            <div class="handicap">
 
-                <div class="item">
+                让球：
+                ${esc(
+                    hhad.line===null
+                    ? "暂无"
+                    : hhad.line
+                )}
 
-                    <div class="label">
-                        XG
+            </div>
+
+            <div class="odds">
+
+                <div class="odd">
+                    <div class="odd-label">
+                        让胜
                     </div>
 
-                    <div class="value">
-                        ${esc(show(xg.xg))}
+                    <div class="odd-value">
+                        ${esc(number(hhad.win))}
                     </div>
-
                 </div>
 
-                <div class="item">
-
-                    <div class="label">
-                        XGA
+                <div class="odd">
+                    <div class="odd-label">
+                        让平
                     </div>
 
-                    <div class="value">
-                        ${esc(show(xg.xga))}
+                    <div class="odd-value">
+                        ${esc(number(hhad.draw))}
+                    </div>
+                </div>
+
+                <div class="odd">
+                    <div class="odd-label">
+                        让负
                     </div>
 
+                    <div class="odd-value">
+                        ${esc(number(hhad.lose))}
+                    </div>
                 </div>
 
             </div>
@@ -901,13 +904,9 @@ function render(data){
 
             <div class="analysis">
 
-                ${
-                    analysis
-                    .map(x =>
-                        `<p>• ${esc(x)}</p>`
-                    )
-                    .join("")
-                }
+                ${analysis.map(x=>
+                    `<div>• ${esc(x)}</div>`
+                ).join("")}
 
             </div>
 
@@ -920,201 +919,74 @@ function render(data){
                 最终判断
             </div>
 
-            <div class="final-main ${
-                a.win
-                ? "good"
-                : "warn"
-            }">
-
-                ${esc(show(final))}
-
+            <div class="final-main">
+                ${esc(finalText)}
             </div>
 
-            <div class="tags">
-
-                <div class="tag">
-                    胜平负：
-                    ${esc(show(a.win))}
-                </div>
-
-                <div class="tag">
-                    让球：
-                    ${esc(show(a.handicap))}
-                </div>
-
-                <div class="tag">
-                    比分：
-                    ${esc(show(a.exact))}
-                </div>
-
-                <div class="tag">
-                    进球：
-                    ${esc(show(a.goals))}
-                </div>
-
-                <div class="tag">
-                    半全场：
-                    ${esc(show(a.htft))}
-                </div>
-
+            <div class="source">
+                仅根据当前真实竞彩赔率判断，不代表比赛结果。
             </div>
-
-        </section>
-
-
-        ${
-            result
-            ?
-            `
-            <section class="section">
-
-                <div class="title">
-                    赛后结果
-                </div>
-
-                <div class="final-main">
-                    ${esc(result)}
-                </div>
-
-            </section>
-            `
-            :
-            ""
-        }
-
-
-        <section class="section">
-
-            <details>
-
-                <summary>
-                    查看原始数据
-                </summary>
-
-                <div class="raw">
-                    ${esc(
-                        JSON.stringify(
-                            data,
-                            null,
-                            2
-                        )
-                    )}
-                </div>
-
-            </details>
 
         </section>
 
     </article>
-
     `;
 }
 
 
 /* =========================
-   主程序
+   加载数据
 ========================= */
 
-async function loadMatches(){
+async function loadData(){
 
-    const requestedDate =
+    const date =
         dateInput.value ||
         today();
 
+    statusBox.innerHTML =
+        "正在读取中国竞彩网真实数据……";
 
     matchesBox.innerHTML =
-        `<div class="loading">
-            正在读取真实赛事数据……
-        </div>`;
-
-
-    statusBox.innerHTML =
-        "正在连接 GitHub 公共数据……";
+        `
+        <div class="loading">
+            正在读取竞彩足球……
+        </div>
+        `;
 
 
     try{
 
-        const result =
-            await getDateFiles(
-                requestedDate
-            );
+        const json =
+            await requestOfficial(date);
 
-
-        if(!result.files.length){
-
-            statusBox.innerHTML =
-                `请求日期：${requestedDate} · 暂无公开数据`;
-
-            matchesBox.innerHTML =
-                `
-                <div class="empty">
-                    ${requestedDate}
-                    <br><br>
-                    暂无公开赛事数据
-                </div>
-                `;
-
-            return;
-        }
-
-
-        const jsonFiles =
-            result.files.filter(file =>
-                file.type==="file" &&
-                file.name
-                    .toLowerCase()
-                    .endsWith(".json")
-            );
-
-
-        const matches = [];
-
-
-        /*
-          手机端最多读取50场
-        */
-
-        for(
-            const file of jsonFiles.slice(0,50)
-        ){
-
-            const data =
-                await getMatch(file);
-
-            if(data)
-                matches.push(data);
-        }
+        const matches =
+            extractMatches(json);
 
 
         if(!matches.length){
 
             throw new Error(
-                "赛事文件存在，但JSON读取失败"
+                "官方接口返回成功，但当前日期没有可读取的竞彩比赛。"
             );
         }
 
 
         matchesBox.innerHTML =
             matches
-            .map(render)
+            .map(renderMatch)
             .join("");
 
 
-        if(result.date !== requestedDate){
-
-            statusBox.innerHTML =
-                `请求日期：${requestedDate} · `+
-                `当天暂无数据 · `+
-                `已自动读取最近可用日期：${result.date} · `+
-                `共 ${matches.length} 场`;
-
-        }else{
-
-            statusBox.innerHTML =
-                `数据日期：${result.date} · `+
-                `已读取 ${matches.length} 场 · `+
-                `仅显示真实数据`;
-        }
+        statusBox.innerHTML =
+            `
+            <b>竞彩足球</b>
+            · ${esc(date)}
+            · 已读取 ${matches.length} 场
+            <div class="source">
+                数据来源：中国竞彩网公开数据
+            </div>
+            `;
 
 
     }catch(error){
@@ -1122,16 +994,34 @@ async function loadMatches(){
         console.error(error);
 
         statusBox.innerHTML =
-            `<div class="error">
-                数据读取失败：${esc(error.message)}
-            </div>`;
+            "竞彩数据读取失败";
 
         matchesBox.innerHTML =
             `
-            <div class="empty">
-                数据暂时无法读取。
+            <div class="error">
+
+                <b>无法直接读取官方竞彩接口</b>
+
                 <br><br>
-                不使用虚假数据替代。
+
+                ${esc(error.message)}
+
+                <br><br>
+
+                这不是虚假数据。
+                页面不会用其他网站数据冒充竞彩数据。
+
+                <br><br>
+
+                官方竞彩数据来源：
+                sporttery.cn
+
+                <br><br>
+
+                如果你的 GitHub Pages 被官方接口的跨域或 WAF 拦截，
+                下一步只需要增加一个很小的中转方式，
+                网页本身不用重新设计。
+
             </div>
             `;
     }
@@ -1142,7 +1032,7 @@ async function loadMatches(){
    启动
 ========================= */
 
-loadMatches();
+loadData();
 
 </script>
 
