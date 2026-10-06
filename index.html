@@ -7,213 +7,242 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
     margin:0;
     background:#f4f6f9;
     color:#172033;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
-    "Microsoft YaHei",Arial,sans-serif
+    font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
 }
+
 .header{
     background:linear-gradient(135deg,#101827,#1d3557);
     color:#fff;
     padding:22px 16px 18px;
 }
+
 .header h1{
     margin:0;
     font-size:23px;
-    font-weight:700;
 }
+
 .header p{
     margin:7px 0 0;
-    opacity:.75;
     font-size:13px;
+    opacity:.75;
 }
+
 .toolbar{
     background:#fff;
     padding:12px;
-    border-bottom:1px solid #e6e9ee;
+    border-bottom:1px solid #e5e7eb;
     position:sticky;
     top:0;
-    z-index:10;
+    z-index:20;
 }
+
 .toolbar-inner{
     display:flex;
     gap:8px;
-    max-width:900px;
-    margin:auto;
 }
+
 input,button{
-    height:40px;
-    border-radius:8px;
-    border:1px solid #d9dee7;
-    background:#fff;
-    padding:0 12px;
-    font-size:14px;
+    height:42px;
+    border-radius:9px;
+    font-size:15px;
 }
-input{flex:1}
+
+input{
+    flex:1;
+    border:1px solid #d9dee7;
+    padding:0 12px;
+    background:#fff;
+}
+
 button{
+    border:0;
+    padding:0 15px;
     background:#172033;
     color:#fff;
-    border:0;
-    cursor:pointer;
 }
+
 .container{
     max-width:900px;
     margin:15px auto;
     padding:0 12px 40px;
 }
+
 .status{
     background:#fff;
-    border-radius:10px;
-    padding:12px 14px;
-    margin-bottom:12px;
-    font-size:13px;
+    border-radius:12px;
+    padding:13px 14px;
+    margin-bottom:13px;
     color:#667085;
+    font-size:13px;
 }
+
 .card{
     background:#fff;
     border-radius:14px;
-    margin-bottom:14px;
     overflow:hidden;
-    box-shadow:0 2px 12px rgba(16,24,40,.06);
+    margin-bottom:15px;
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
 }
+
 .card-head{
-    padding:14px;
+    padding:15px;
     border-bottom:1px solid #edf0f4;
 }
+
 .comp{
     font-size:12px;
     color:#667085;
-    margin-bottom:7px;
+    margin-bottom:9px;
 }
+
 .teams{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    gap:12px;
+    gap:10px;
 }
+
 .team{
     flex:1;
     font-size:18px;
     font-weight:700;
 }
-.team.away{text-align:right}
+
+.away{
+    text-align:right;
+}
+
 .vs{
     color:#98a2b3;
     font-size:12px;
 }
+
 .time{
-    margin-top:7px;
-    font-size:12px;
+    margin-top:8px;
     color:#667085;
+    font-size:12px;
 }
+
 .section{
-    padding:13px 14px;
-    border-bottom:1px solid #f0f2f5;
+    padding:14px 15px;
+    border-bottom:1px solid #edf0f4;
 }
-.section:last-child{border-bottom:0}
-.section-title{
+
+.section:last-child{
+    border-bottom:0;
+}
+
+.title{
     font-weight:700;
     font-size:14px;
     margin-bottom:10px;
 }
+
 .grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:8px;
 }
+
 .item{
     background:#f7f8fa;
-    border-radius:8px;
-    padding:9px;
+    border-radius:9px;
+    padding:10px;
 }
+
 .label{
-    color:#667085;
     font-size:11px;
+    color:#667085;
     margin-bottom:5px;
 }
+
 .value{
     font-size:14px;
     font-weight:600;
     word-break:break-word;
 }
+
 .analysis{
-    line-height:1.75;
     font-size:14px;
+    line-height:1.75;
 }
+
 .analysis p{
     margin:5px 0;
 }
+
+.final{
+    background:#f8fafc;
+}
+
+.final-main{
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.tag{
+    background:#fff;
+    border:1px solid #e1e5eb;
+    border-radius:7px;
+    padding:7px 9px;
+    font-size:13px;
+}
+
 .good{
     color:#087443;
     font-weight:700;
 }
+
 .warn{
     color:#b54708;
     font-weight:700;
 }
-.bad{
-    color:#b42318;
-    font-weight:700;
-}
-.final{
-    background:#f8fafc;
-}
-.final-main{
-    font-size:19px;
-    font-weight:800;
-    margin-bottom:10px;
-}
-.final-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-}
-.tag{
-    display:inline-block;
-    padding:7px 10px;
-    border-radius:7px;
-    background:#fff;
-    border:1px solid #e1e5eb;
-    font-size:13px;
-}
-.empty{
-    text-align:center;
-    padding:40px 15px;
-    color:#98a2b3;
-}
+
+.empty,
 .loading{
     text-align:center;
-    padding:30px;
-    color:#667085;
+    padding:45px 15px;
+    color:#98a2b3;
 }
+
 .error{
     color:#b42318;
     background:#fff5f5;
-    border:1px solid #ffd6d6;
     padding:12px;
     border-radius:8px;
 }
-details summary{
-    cursor:pointer;
-    color:#344054;
-    font-weight:600;
-}
+
 .raw{
     margin-top:10px;
-    background:#111827;
-    color:#d1d5db;
     padding:10px;
     border-radius:8px;
-    overflow:auto;
+    background:#111827;
+    color:#d1d5db;
     font-size:11px;
+    overflow:auto;
     white-space:pre-wrap;
 }
+
 @media(max-width:600px){
-    .grid{grid-template-columns:repeat(2,1fr)}
-    .team{font-size:16px}
-    .header h1{font-size:21px}
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .team{
+        font-size:16px;
+    }
 }
 </style>
 </head>
@@ -222,203 +251,234 @@ details summary{
 
 <header class="header">
     <h1>竞彩足球预测分析</h1>
-    <p>真实数据分析 · 欧赔 · XG · 基本面</p>
+    <p>真实数据 · 欧赔 · XG · 基本面</p>
 </header>
 
 <div class="toolbar">
     <div class="toolbar-inner">
-        <input id="dateInput" type="date">
-        <button onclick="loadData()">刷新数据</button>
+        <input id="date" type="date">
+        <button onclick="loadMatches()">刷新数据</button>
     </div>
 </div>
 
 <main class="container">
 
     <div id="status" class="status">
-        正在读取真实赛事数据……
+        正在读取数据……
     </div>
 
-    <div id="list">
-        <div class="loading">正在加载……</div>
+    <div id="matches">
+        <div class="loading">
+            正在加载……
+        </div>
     </div>
 
 </main>
 
 <script>
 
-/* =========================================================
-   基础配置
-   ========================================================= */
-
 const OWNER = "tan9527819";
 const REPO = "qiuxiaoce-football-data";
 const BRANCH = "main";
 
-const API_ROOT =
-    `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+const API =
+`https://api.github.com/repos/${OWNER}/${REPO}/contents`;
 
-const RAW_ROOT =
-    `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}`;
+const dateInput =
+document.getElementById("date");
 
-const statusBox = document.getElementById("status");
-const listBox = document.getElementById("list");
-const dateInput = document.getElementById("dateInput");
+const statusBox =
+document.getElementById("status");
+
+const matchesBox =
+document.getElementById("matches");
 
 
-/* =========================================================
-   日期
-   ========================================================= */
+/* =========================
+   今天
+========================= */
 
-function localDate(){
+function today(){
 
     const d = new Date();
 
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,"0");
-    const day = String(d.getDate()).padStart(2,"0");
-
-    return `${y}-${m}-${day}`;
+    return d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
 }
 
-dateInput.value = localDate();
+dateInput.value = today();
 
 
-/* =========================================================
-   通用工具
-   ========================================================= */
+/* =========================
+   HTML安全
+========================= */
 
-function esc(value){
+function esc(v){
 
-    if(value === undefined || value === null)
+    if(v===null || v===undefined)
         return "";
 
-    return String(value)
+    return String(v)
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(/"/g,"&quot;");
 }
 
 
-function show(value){
+/* =========================
+   显示真实数据
+========================= */
 
-    if(value === undefined ||
-       value === null ||
-       value === "" ||
-       (Array.isArray(value) && value.length === 0))
+function show(v){
+
+    if(v===null ||
+       v===undefined ||
+       v==="")
         return "暂无数据";
 
-    if(Array.isArray(value))
-        return value.join(" / ");
+    if(Array.isArray(v))
+        return v.join(" / ");
 
-    if(typeof value === "object")
-        return Object.entries(value)
-            .map(([k,v]) => `${k}: ${show(v)}`)
+    if(typeof v==="object"){
+
+        return Object.entries(v)
+            .map(([k,x]) =>
+                k+"："+show(x)
+            )
             .join("；");
-
-    return String(value);
-}
-
-
-function pick(obj, keys){
-
-    if(!obj || typeof obj !== "object")
-        return null;
-
-    for(const key of keys){
-
-        if(obj[key] !== undefined &&
-           obj[key] !== null &&
-           obj[key] !== "")
-            return obj[key];
     }
 
-    return null;
+    return String(v);
 }
 
 
-function findKeyDeep(obj, keys, depth=0){
+/* =========================
+   GitHub JSON
+========================= */
 
-    if(!obj || typeof obj !== "object" || depth > 5)
-        return null;
+async function getJSON(url){
 
-    for(const key of keys){
+    const response =
+        await fetch(url,{
+            headers:{
+                "Accept":
+                "application/vnd.github+json"
+            }
+        });
 
-        if(Object.prototype.hasOwnProperty.call(obj,key)){
+    if(!response.ok)
+        throw new Error(
+            "GitHub "+response.status
+        );
 
-            const value = obj[key];
+    return await response.json();
+}
 
-            if(value !== null &&
-               value !== undefined &&
-               value !== "")
-                return value;
-        }
+
+/* =========================
+   正确读取日期目录
+
+   关键：
+
+   2026/10/05/*.json
+
+   而不是：
+
+   2026/10/*.json
+========================= */
+
+async function getDateFiles(date){
+
+    const [year,month,day] =
+        date.split("-");
+
+    /* 先读取当天 */
+
+    const todayURL =
+        `${API}/${year}/${month}/${day}?ref=${BRANCH}`;
+
+    try{
+
+        const files =
+            await getJSON(todayURL);
+
+        return {
+            files,
+            date
+        };
+
+    }catch(e){
+
+        /* 当天不存在 */
+
+        console.log(
+            "当天没有数据，寻找最近日期"
+        );
     }
 
-    for(const key of Object.keys(obj)){
 
-        const result =
-            findKeyDeep(obj[key],keys,depth+1);
+    /* =========================
+       读取月份目录
+    ========================= */
 
-        if(result !== null &&
-           result !== undefined &&
-           result !== "")
-            return result;
+    const monthURL =
+        `${API}/${year}/${month}?ref=${BRANCH}`;
+
+    const monthFiles =
+        await getJSON(monthURL);
+
+
+    const days =
+        monthFiles
+        .filter(x =>
+            x.type==="dir" &&
+            /^\d{2}$/.test(x.name)
+        )
+        .map(x => x.name)
+        .sort();
+
+
+    /* 找到 <= 当前日期的最后一天 */
+
+    const usable =
+        days
+        .filter(x => x <= day)
+        .pop();
+
+
+    if(!usable){
+
+        return {
+            files:[],
+            date:null
+        };
     }
 
-    return null;
+
+    const fallbackDate =
+        `${year}-${month}-${usable}`;
+
+
+    const fallbackURL =
+        `${API}/${year}/${month}/${usable}?ref=${BRANCH}`;
+
+
+    const fallbackFiles =
+        await getJSON(fallbackURL);
+
+
+    return {
+        files:fallbackFiles,
+        date:fallbackDate
+    };
 }
 
 
-/* =========================================================
-   读取 GitHub
-   ========================================================= */
-
-async function githubJSON(url){
-
-    const res = await fetch(url, {
-        headers:{
-            "Accept":"application/vnd.github+json"
-        }
-    });
-
-    if(!res.ok)
-        throw new Error(`GitHub ${res.status}`);
-
-    return await res.json();
-}
-
-
-/* =========================================================
-   获取某一天目录
-   ========================================================= */
-
-async function getDirectory(date){
-
-    const parts = date.split("-");
-
-    const year = parts[0];
-    const month = parts[1];
-
-    /*
-      qiuxiaoce 数据结构：
-
-      2026/
-        09/
-          xxx.json
-    */
-
-    const url =
-        `${API_ROOT}/${year}/${month}?ref=${BRANCH}`;
-
-    return await githubJSON(url);
-}
-
-
-/* =========================================================
-   下载单个 JSON
-   ========================================================= */
+/* =========================
+   读取单场JSON
+========================= */
 
 async function getMatch(file){
 
@@ -426,546 +486,301 @@ async function getMatch(file){
 
         if(file.download_url){
 
-            const res = await fetch(file.download_url);
-
-            if(res.ok)
-                return await res.json();
-        }
-
-        const data =
-            await githubJSON(file.url);
-
-        if(data.content){
-
-            const text =
-                decodeURIComponent(
-                    escape(
-                        atob(
-                            data.content.replace(/\n/g,"")
-                        )
-                    )
+            const response =
+                await fetch(
+                    file.download_url
                 );
 
-            return JSON.parse(text);
+            if(response.ok)
+                return await response.json();
         }
 
     }catch(e){
 
-        console.warn("读取赛事失败",file.name,e);
+        console.log(
+            "赛事读取失败",
+            file.name
+        );
     }
 
     return null;
 }
 
 
-/* =========================================================
-   从 JSON 提取球队
-   ========================================================= */
+/* =========================
+   球队
+========================= */
 
 function getTeams(data){
 
-    const info = data?.info || {};
+    const info =
+        data.info || {};
 
-    let home =
-        pick(info,[
-            "home",
-            "homeTeam",
-            "home_team",
-            "主队"
-        ]);
+    let teams =
+        info.teams || "";
 
-    let away =
-        pick(info,[
-            "away",
-            "awayTeam",
-            "away_team",
-            "客队"
-        ]);
+    if(!teams)
+        return {
+            home:"主队",
+            away:"客队"
+        };
 
-    const teams =
-        pick(info,[
-            "teams",
-            "match",
-            "对阵"
-        ]);
+    const parts =
+        teams.split(/\s+vs\s+/i);
 
-    if((!home || !away) && typeof teams === "string"){
+    if(parts.length<2){
 
-        const arr =
-            teams.split(/\s*(?:vs|VS|v|—|-)\s*/);
+        const p =
+            teams.split("vs");
 
-        if(arr.length >= 2){
-
-            home = home || arr[0];
-            away = away || arr[1];
-        }
+        if(p.length>=2)
+            return {
+                home:p[0].trim(),
+                away:p[1].trim()
+            };
     }
 
     return {
-        home:home || "主队",
-        away:away || "客队"
+        home:parts[0].trim(),
+        away:parts[1].trim()
     };
 }
 
 
-/* =========================================================
-   提取欧赔
-   ========================================================= */
+/* =========================
+   欧赔
+========================= */
 
 function getOdds(data){
 
-    const root = data || {};
+    /*
+      当前公开JSON如果没有欧赔，
+      必须显示暂无数据。
+    */
 
     const odds =
-        findKeyDeep(root,[
-            "odds",
-            "euroOdds",
-            "europeOdds",
-            "europeanOdds",
-            "欧赔",
-            "欧洲赔率"
-        ]);
+        data.odds ||
+        data.euroOdds ||
+        data.europeOdds ||
+        data["欧赔"] ||
+        null;
 
     if(!odds)
-        return null;
-
-    if(typeof odds === "string")
         return {
-            current:odds
+            initial:null,
+            current:null
         };
 
-    return odds;
+    return {
+        initial:
+            odds.initial ||
+            odds.opening ||
+            odds.first ||
+            odds["初赔"] ||
+            null,
+
+        current:
+            odds.current ||
+            odds.latest ||
+            odds.instant ||
+            odds["即时赔"] ||
+            null
+    };
 }
 
 
-function oddsText(value){
-
-    if(value === null ||
-       value === undefined ||
-       value === "")
-        return "暂无数据";
-
-    if(typeof value !== "object")
-        return String(value);
-
-    const home =
-        pick(value,[
-            "home",
-            "h",
-            "主",
-            "主胜"
-        ]);
-
-    const draw =
-        pick(value,[
-            "draw",
-            "d",
-            "平",
-            "平局"
-        ]);
-
-    const away =
-        pick(value,[
-            "away",
-            "a",
-            "客",
-            "客胜"
-        ]);
-
-    if(home !== null ||
-       draw !== null ||
-       away !== null){
-
-        return [
-            home !== null ? `主 ${home}` : "",
-            draw !== null ? `平 ${draw}` : "",
-            away !== null ? `客 ${away}` : ""
-        ].filter(Boolean).join(" / ");
-    }
-
-    return show(value);
-}
-
-
-/* =========================================================
-   提取 XG
-   ========================================================= */
+/* =========================
+   XG
+========================= */
 
 function getXG(data){
 
-    const root = data || {};
-
     const xg =
-        findKeyDeep(root,[
-            "xg",
-            "XG",
-            "expectedGoals",
-            "expected_goals"
-        ]);
+        data.xg ||
+        data.XG ||
+        data.expectedGoals ||
+        null;
 
     const xga =
-        findKeyDeep(root,[
-            "xga",
-            "XGA",
-            "expectedGoalsAgainst",
-            "expected_goals_against"
-        ]);
+        data.xga ||
+        data.XGA ||
+        data.expectedGoalsAgainst ||
+        null;
 
     return {
-        xg:xg,
-        xga:xga
+        xg,
+        xga
     };
 }
 
 
-/* =========================================================
-   基本信息
-   ========================================================= */
-
-function getInfo(data){
-
-    const info = data?.info || {};
-
-    return {
-        code:pick(info,[
-            "code",
-            "matchCode",
-            "编号"
-        ]),
-        comp:pick(info,[
-            "comp",
-            "competition",
-            "league",
-            "联赛"
-        ]),
-        time:pick(info,[
-            "time",
-            "date",
-            "datetime",
-            "开赛时间"
-        ])
-    };
-}
-
-
-/* =========================================================
-   分析数据
-   ========================================================= */
+/* =========================
+   分析
+========================= */
 
 function getAnalysis(data){
 
-    const analysis =
-        data?.analysis || {};
-
-    const forecasts =
-        data?.forecasts || {};
+    const a =
+        data.analysis || {};
 
     const win =
-        analysis.win || {};
+        a.win || {};
 
     const handicap =
-        analysis.handicap || {};
+        a.handicap || {};
 
     const exact =
-        analysis.exact || {};
+        a.exact || {};
 
-    const overUnder =
-        analysis.overUnder || {};
+    const over =
+        a.overUnder || {};
 
     const htft =
-        analysis.htft || {};
+        a.htft || {};
 
     return {
 
-        winPick:
-            pick(win,[
-                "pick",
-                "result",
-                "recommend"
-            ]),
+        win:win.pick || null,
+        winNote:win.note || null,
 
-        winNote:
-            pick(win,[
-                "note",
-                "reason",
-                "analysis"
-            ]),
+        handicap:
+            handicap.pick || null,
 
-        handicapPick:
-            pick(handicap,[
-                "pick",
-                "result",
-                "recommend"
-            ]),
+        handicapNote:
+            handicap.note || null,
 
-        handicapLine:
-            pick(handicap,[
-                "line",
-                "handicap",
-                "让球"
-            ]),
-
-        exactPick:
-            pick(exact,[
-                "pick",
-                "score",
-                "scores"
-            ]) ||
-            forecasts.scoreline,
+        exact:
+            exact.pick ||
+            data.forecasts?.scoreline ||
+            null,
 
         goals:
-            pick(overUnder,[
-                "pick",
-                "result"
-            ]) ||
-            forecasts.goals,
+            over.pick ||
+            data.forecasts?.goals ||
+            null,
 
         htft:
-            pick(htft,[
-                "pick",
-                "result"
-            ]) ||
-            forecasts.halftime,
-
-        risk:
-            pick(data,[
-                "riskAlert",
-                "risk",
-                "风险"
-            ]),
-
-        directions:
-            data.directions || []
+            htft.pick ||
+            data.forecasts?.halftime ||
+            null
     };
 }
 
 
-/* =========================================================
-   赛果
-   ========================================================= */
+/* =========================
+   风险
+========================= */
 
-function getResult(data){
+function getRisk(data){
+
+    const r =
+        data.riskAlert;
+
+    if(!r)
+        return null;
+
+    return r.risk || null;
+}
+
+
+/* =========================
+   单场HTML
+========================= */
+
+function render(data){
+
+    const info =
+        data.info || {};
+
+    const teams =
+        getTeams(data);
+
+    const odds =
+        getOdds(data);
+
+    const xg =
+        getXG(data);
+
+    const a =
+        getAnalysis(data);
+
+    const risk =
+        getRisk(data);
 
     const result =
-        data?.result || {};
-
-    return pick(result,[
-        "actual_score",
-        "actualScore",
-        "score",
-        "比分",
-        "result"
-    ]);
-}
-
-
-/* =========================================================
-   欧赔市场倾向
-   ========================================================= */
-
-function oddsDirection(odds){
-
-    if(!odds)
-        return "暂无数据";
-
-    const current =
-        odds.current ||
-        odds.latest ||
-        odds.instant ||
-        odds.即时 ||
+        data.result?.actual_score ||
         null;
 
-    const initial =
-        odds.initial ||
-        odds.opening ||
-        odds.first ||
-        odds.初赔 ||
-        null;
 
-    if(!current)
-        return "暂无数据";
+    let analysis = [];
 
-    /*
-      不计算所谓真实概率。
-      这里只在源数据本身提供方向时显示。
-    */
-
-    const direction =
-        pick(odds,[
-            "direction",
-            "trend",
-            "market",
-            "倾向"
-        ]);
-
-    if(direction)
-        return show(direction);
-
-    if(initial)
-        return "已读取初赔与即时赔，结合变化判断";
-
-    return "已有即时赔率";
-}
-
-
-/* =========================================================
-   生成简单分析
-   ========================================================= */
-
-function makeAnalysis(data){
-
-    const odds = getOdds(data);
-    const xg = getXG(data);
-    const a = getAnalysis(data);
-
-    const lines = [];
 
     if(a.winNote){
-        lines.push(
-            `欧赔/赛前分析：${show(a.winNote)}`
-        );
-    }else if(odds){
-        lines.push(
-            `欧赔：已读取真实赔率数据，可结合初赔与即时赔观察市场方向。`
-        );
-    }else{
-        lines.push(
-            `欧赔：暂无真实赔率数据。`
-        );
-    }
 
-    if(xg.xg !== null){
-
-        lines.push(
-            `XG：${show(xg.xg)}`
+        analysis.push(
+            "欧赔/赛前分析："+a.winNote
         );
 
     }else{
 
-        lines.push(
-            `XG：暂无数据。`
+        analysis.push(
+            "欧赔：暂无足够真实赔率数据。"
         );
     }
 
-    if(a.winPick){
 
-        lines.push(
-            `胜平负原始分析：${show(a.winPick)}`
+    if(xg.xg!==null){
+
+        analysis.push(
+            "XG："+show(xg.xg)
+        );
+
+    }else{
+
+        analysis.push(
+            "XG：暂无数据。"
         );
     }
 
-    if(a.handicapPick){
 
-        lines.push(
-            `让球原始分析：${show(a.handicapPick)}`
+    if(a.win){
+
+        analysis.push(
+            "胜平负："+show(a.win)
         );
     }
 
-    if(a.risk){
 
-        if(typeof a.risk === "object"){
+    if(a.handicap){
 
-            const riskText =
-                pick(a.risk,[
-                    "text",
-                    "note",
-                    "message",
-                    "risk"
-                ]);
-
-            if(riskText)
-                lines.push(
-                    `风险提醒：${show(riskText)}`
-                );
-            else
-                lines.push(
-                    `风险提醒：${show(a.risk)}`
-                );
-
-        }else{
-
-            lines.push(
-                `风险提醒：${show(a.risk)}`
-            );
-        }
-    }
-
-    if(odds && xg.xg !== null){
-
-        lines.push(
-            `<span class="good">欧赔与 XG：均有真实数据，可进行交叉验证。</span>`
-        );
-
-    }else if(!odds && xg.xg === null){
-
-        lines.push(
-            `<span class="warn">目前关键数据不足，不强行给出结论。</span>`
+        analysis.push(
+            "让球："+show(a.handicap)
         );
     }
 
-    return lines;
-}
+
+    if(risk){
+
+        analysis.push(
+            "风险提醒："+risk
+        );
+    }
 
 
-/* =========================================================
-   渲染赛事
-   ========================================================= */
-
-function renderMatch(data, index){
-
-    const teams = getTeams(data);
-    const info = getInfo(data);
-    const odds = getOdds(data);
-    const xg = getXG(data);
-    const a = getAnalysis(data);
-    const result = getResult(data);
-
-    const oddsInitial =
-        odds ?
-        pick(odds,[
-            "initial",
-            "opening",
-            "first",
-            "open",
-            "初赔"
-        ]) : null;
-
-    const oddsCurrent =
-        odds ?
-        pick(odds,[
-            "current",
-            "latest",
-            "instant",
-            "now",
-            "即时",
-            "即时赔"
-        ]) : null;
-
-    const analysisLines =
-        makeAnalysis(data);
-
-    const hasRecommendation =
-        a.winPick ||
-        a.handicapPick ||
-        a.exactPick;
-
-    const finalMain =
-        a.winPick ||
+    const final =
+        a.win ||
         "暂不推荐";
 
-    const riskClass =
-        hasRecommendation ?
-        "good" :
-        "warn";
 
     return `
+
     <article class="card">
 
         <div class="card-head">
 
             <div class="comp">
-                ${esc(info.code || `赛事 ${index+1}`)}
-                ${info.comp ? " · " + esc(info.comp) : ""}
+                ${esc(info.code || "")}
+                ${info.comp ? " · "+esc(info.comp) : ""}
             </div>
 
             <div class="teams">
@@ -984,65 +799,56 @@ function renderMatch(data, index){
 
             </div>
 
-            ${
-                info.time
-                ?
-                `<div class="time">
-                    开赛：${esc(info.time)}
-                </div>`
-                :
-                ""
-            }
+            <div class="time">
+                ${info.time
+                    ? "开赛："+esc(info.time)
+                    : "开赛时间：暂无数据"}
+            </div>
 
         </div>
 
 
-        <!-- 欧赔 -->
-
         <section class="section">
 
-            <div class="section-title">
+            <div class="title">
                 欧赔
             </div>
 
             <div class="grid">
 
                 <div class="item">
-
                     <div class="label">
                         初赔
                     </div>
 
                     <div class="value">
-                        ${esc(oddsText(oddsInitial))}
+                        ${esc(show(odds.initial))}
                     </div>
-
                 </div>
 
-
                 <div class="item">
-
                     <div class="label">
                         即时赔
                     </div>
 
                     <div class="value">
-                        ${esc(oddsText(oddsCurrent))}
+                        ${esc(show(odds.current))}
                     </div>
-
                 </div>
 
-
                 <div class="item">
-
                     <div class="label">
-                        市场方向
+                        赔率方向
                     </div>
 
                     <div class="value">
-                        ${esc(oddsDirection(odds))}
+                        ${
+                            odds.initial ||
+                            odds.current
+                            ? "有真实赔率数据"
+                            : "暂无数据"
+                        }
                     </div>
-
                 </div>
 
             </div>
@@ -1050,11 +856,9 @@ function renderMatch(data, index){
         </section>
 
 
-        <!-- XG -->
-
         <section class="section">
 
-            <div class="section-title">
+            <div class="title">
                 XG
             </div>
 
@@ -1089,63 +893,19 @@ function renderMatch(data, index){
         </section>
 
 
-        <!-- 基本面 -->
-
         <section class="section">
 
-            <div class="section-title">
-                基本面
-            </div>
-
-            <div class="analysis">
-
-                ${
-                    a.directions &&
-                    a.directions.length
-                    ?
-                    a.directions
-                    .slice(0,3)
-                    .map(d => {
-
-                        const text =
-                            typeof d === "string"
-                            ? d
-                            : pick(d,[
-                                "title",
-                                "text",
-                                "name",
-                                "direction"
-                            ]);
-
-                        return text
-                            ?
-                            `<p>• ${esc(text)}</p>`
-                            :
-                            "";
-
-                    }).join("")
-                    :
-                    `<p>暂无足够基本面数据。</p>`
-                }
-
-            </div>
-
-        </section>
-
-
-        <!-- 简单分析 -->
-
-        <section class="section">
-
-            <div class="section-title">
+            <div class="title">
                 简单分析
             </div>
 
             <div class="analysis">
 
                 ${
-                    analysisLines
-                    .map(x => `<p>${x}</p>`)
+                    analysis
+                    .map(x =>
+                        `<p>• ${esc(x)}</p>`
+                    )
                     .join("")
                 }
 
@@ -1154,63 +914,53 @@ function renderMatch(data, index){
         </section>
 
 
-        <!-- 最终 -->
-
         <section class="section final">
 
-            <div class="section-title">
+            <div class="title">
                 最终判断
             </div>
 
-            <div class="final-main ${riskClass}">
-                ${esc(show(finalMain))}
+            <div class="final-main ${
+                a.win
+                ? "good"
+                : "warn"
+            }">
+
+                ${esc(show(final))}
+
             </div>
 
-            <div class="final-row">
+            <div class="tags">
 
                 <div class="tag">
                     胜平负：
-                    ${esc(show(a.winPick))}
+                    ${esc(show(a.win))}
                 </div>
 
                 <div class="tag">
                     让球：
-                    ${esc(show(a.handicapPick))}
+                    ${esc(show(a.handicap))}
                 </div>
 
                 <div class="tag">
                     比分：
-                    ${esc(show(a.exactPick))}
+                    ${esc(show(a.exact))}
                 </div>
 
-                ${
-                    a.goals
-                    ?
-                    `<div class="tag">
-                        进球：
-                        ${esc(show(a.goals))}
-                    </div>`
-                    :
-                    ""
-                }
+                <div class="tag">
+                    进球：
+                    ${esc(show(a.goals))}
+                </div>
 
-                ${
-                    a.htft
-                    ?
-                    `<div class="tag">
-                        半全场：
-                        ${esc(show(a.htft))}
-                    </div>`
-                    :
-                    ""
-                }
+                <div class="tag">
+                    半全场：
+                    ${esc(show(a.htft))}
+                </div>
 
             </div>
 
         </section>
 
-
-        <!-- 赛果 -->
 
         ${
             result
@@ -1218,12 +968,12 @@ function renderMatch(data, index){
             `
             <section class="section">
 
-                <div class="section-title">
+                <div class="title">
                     赛后结果
                 </div>
 
                 <div class="final-main">
-                    ${esc(show(result))}
+                    ${esc(result)}
                 </div>
 
             </section>
@@ -1232,8 +982,6 @@ function renderMatch(data, index){
             ""
         }
 
-
-        <!-- 原始数据 -->
 
         <section class="section">
 
@@ -1244,7 +992,13 @@ function renderMatch(data, index){
                 </summary>
 
                 <div class="raw">
-                    ${esc(JSON.stringify(data,null,2))}
+                    ${esc(
+                        JSON.stringify(
+                            data,
+                            null,
+                            2
+                        )
+                    )}
                 </div>
 
             </details>
@@ -1252,67 +1006,77 @@ function renderMatch(data, index){
         </section>
 
     </article>
+
     `;
 }
 
 
-/* =========================================================
-   主加载函数
-   ========================================================= */
+/* =========================
+   主程序
+========================= */
 
-async function loadData(){
+async function loadMatches(){
 
-    const date =
+    const requestedDate =
         dateInput.value ||
-        localDate();
+        today();
 
-    listBox.innerHTML =
-        `<div class="loading">正在读取 ${date} 的真实赛事数据……</div>`;
+
+    matchesBox.innerHTML =
+        `<div class="loading">
+            正在读取真实赛事数据……
+        </div>`;
+
 
     statusBox.innerHTML =
-        `正在读取 GitHub 公共数据……`;
+        "正在连接 GitHub 公共数据……";
+
 
     try{
 
-        const files =
-            await getDirectory(date);
-
-        if(!Array.isArray(files)){
-
-            throw new Error("没有读取到赛事目录");
-        }
-
-        const jsonFiles =
-            files.filter(file =>
-                file.type === "file" &&
-                file.name.toLowerCase().endsWith(".json")
+        const result =
+            await getDateFiles(
+                requestedDate
             );
 
-        if(jsonFiles.length === 0){
 
-            listBox.innerHTML =
-                `<div class="empty">
-                    ${date}<br><br>
-                    暂无公开赛事数据
-                </div>`;
+        if(!result.files.length){
 
             statusBox.innerHTML =
-                `数据日期：${date} · 暂无公开 JSON 数据`;
+                `请求日期：${requestedDate} · 暂无公开数据`;
+
+            matchesBox.innerHTML =
+                `
+                <div class="empty">
+                    ${requestedDate}
+                    <br><br>
+                    暂无公开赛事数据
+                </div>
+                `;
 
             return;
         }
 
-        /*
-          为避免手机一次加载过多文件，
-          默认最多显示前 50 场。
-        */
 
-        const selected =
-            jsonFiles.slice(0,50);
+        const jsonFiles =
+            result.files.filter(file =>
+                file.type==="file" &&
+                file.name
+                    .toLowerCase()
+                    .endsWith(".json")
+            );
+
 
         const matches = [];
 
-        for(const file of selected){
+
+        /*
+          手机端最多读取50场
+        */
+
+        for(
+            const file of jsonFiles.slice(0,50)
+        ){
 
             const data =
                 await getMatch(file);
@@ -1321,22 +1085,37 @@ async function loadData(){
                 matches.push(data);
         }
 
-        if(matches.length === 0){
+
+        if(!matches.length){
 
             throw new Error(
-                "赛事文件存在，但没有成功读取 JSON"
+                "赛事文件存在，但JSON读取失败"
             );
         }
 
-        listBox.innerHTML =
+
+        matchesBox.innerHTML =
             matches
-            .map((data,i) =>
-                renderMatch(data,i)
-            )
+            .map(render)
             .join("");
 
-        statusBox.innerHTML =
-            `数据日期：${date} · 已读取 ${matches.length} 场 · 仅显示真实数据`;
+
+        if(result.date !== requestedDate){
+
+            statusBox.innerHTML =
+                `请求日期：${requestedDate} · `+
+                `当天暂无数据 · `+
+                `已自动读取最近可用日期：${result.date} · `+
+                `共 ${matches.length} 场`;
+
+        }else{
+
+            statusBox.innerHTML =
+                `数据日期：${result.date} · `+
+                `已读取 ${matches.length} 场 · `+
+                `仅显示真实数据`;
+        }
+
 
     }catch(error){
 
@@ -1345,28 +1124,25 @@ async function loadData(){
         statusBox.innerHTML =
             `<div class="error">
                 数据读取失败：${esc(error.message)}
-                <br><br>
-                请确认 GitHub 仓库为公开仓库，
-                并确认 ${date} 对应目录存在。
             </div>`;
 
-        listBox.innerHTML =
+        matchesBox.innerHTML =
             `
             <div class="empty">
-                暂时无法读取赛事数据。
+                数据暂时无法读取。
                 <br><br>
-                不会使用虚假数据替代。
+                不使用虚假数据替代。
             </div>
             `;
     }
 }
 
 
-/* =========================================================
+/* =========================
    启动
-   ========================================================= */
+========================= */
 
-loadData();
+loadMatches();
 
 </script>
 
